@@ -1,5 +1,4 @@
 # -*- encoding: utf-8 -*-
-require File.expand_path('../lib/timers/version', __FILE__)
 
 Gem::Specification.new do |gem|
   gem.authors       = ["Donovan Keme"]
