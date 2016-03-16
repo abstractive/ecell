@@ -1,0 +1,47 @@
+source "https://rubygems.org"
+
+gem 'msgpack'
+
+gem 'celluloid',
+    github: 'celluloid/celluloid',
+    branch: 'master',
+    submodules: true
+
+gem 'celluloid-io',
+    github: 'celluloid/celluloid-io',
+    branch: 'master',
+    submodules: true
+
+gem 'celluloid-zmq',
+    github: 'celluloid/celluloid-zmq',
+    branch: 'router-patch',
+    submodules: true
+
+gem 'celluloid-task-pooledfiber',
+    github: 'celluloid/celluloid-task-pooledfiber',
+    branch: '0.2.0-prerelease'
+
+platforms :rbx do
+  gem 'rubysl-socket',
+    github: 'abstractive/rubysl-socket',
+    branch: 'phyre'
+end
+
+gem 'abstractive',
+    github: 'abstractive/abstractive',
+    branch: 'master'
+
+gem 'timespans',
+    github: 'abstractive/timespans',
+    branch: 'master'
+
+gem 'esto',
+    github: 'abstractive/esto',
+    branch: 'master'
+
+gem 'refrescar',
+    github: 'abstractive/refrescar',
+    branch: 'master'
+
+gem 'pry'
+gem 'colorize'
