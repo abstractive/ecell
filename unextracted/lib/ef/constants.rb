@@ -6,7 +6,7 @@ module Ef::Constants
   DEBUG             = true
   DEBUG_DEEP        = false
   DEBUG_AUTOMATA    = false
-  DEBUG_RESOURCES   = true
+  DEBUG_RESOURCES   = false #de Broken gem!
   DEBUG_SHUTDOWN    = false
   DEBUG_SERVICES    = true
   DEBUG_RELOADING   = false
@@ -123,7 +123,7 @@ module Ef::Constants
   CHANNELS = [
     :logging_push,
     :logging_pull,
-    
+
     :assertion_request,
     :assertion_reply,
     :assertion_router,

@@ -2,24 +2,11 @@ source "https://rubygems.org"
 
 gem 'msgpack'
 
-gem 'celluloid',
-    github: 'celluloid/celluloid',
-    branch: 'master',
-    submodules: true
+gem 'celluloid'
+gem 'celluloid-io'
+gem 'celluloid-zmq'
 
-gem 'celluloid-io',
-    github: 'celluloid/celluloid-io',
-    branch: 'master',
-    submodules: true
-
-gem 'celluloid-zmq',
-    github: 'celluloid/celluloid-zmq',
-    branch: 'router-patch',
-    submodules: true
-
-gem 'celluloid-task-pooledfiber',
-    github: 'celluloid/celluloid-task-pooledfiber',
-    branch: '0.2.0-prerelease'
+gem 'celluloid-task-pooledfiber'
 
 platforms :rbx do
   gem 'rubysl-socket',

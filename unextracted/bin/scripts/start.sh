@@ -15,7 +15,7 @@ echo -e "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 echo -e "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" >> logs/$1-console.log
 echo "" > logs/$1-console.log
 echo "" > logs/$1-errors.log
-echo -e "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nEnergyFlow[$1] STARTING [ `date` ]" >> logs/$1-errors.log 
+echo -e "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nEnergyFlow[$1] STARTING [ `date` ]" >> logs/$1-errors.log
 
 command="bundle exec ruby bin/start_service.rb $1"
 

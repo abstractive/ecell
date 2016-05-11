@@ -1,7 +1,7 @@
 module Ef
   include Ef::Constants
   module Task
-    Terminated = Celluloid::Task::TerminatedError
+    Terminated = Celluloid::TaskTerminated
   end
   Tasks = if DEBUG_BACKTRACING
     Celluloid::Task::Threaded
@@ -22,13 +22,13 @@ module Ef
         else
           Celluloid[:spool][actor] rescue nil
         end
-      end  
+      end
     end
   end
   class Blocker
     def method_missing(method, data={}, &block)
       error!(:shutdown)
-    end    
+    end
   end
   class Supervisor < Celluloid::Supervision::Container; end
   Celluloid.services.supervise(type: Ef::Supervisor, as: :service)
