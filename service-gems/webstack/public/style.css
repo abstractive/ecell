@@ -1,0 +1,75 @@
+body {
+  font-family: 'Verdana, Helvetica, Arial';
+  background: #222;
+  color: #eee;
+  margin: 0px;
+}
+
+.toolbar {
+  padding: 25px 15px;
+}
+
+.toolbar span {
+  padding: 0px 10px;
+  color: #999;
+}
+
+.welcome {
+  padding: 50px;
+}
+
+.console {
+  padding: 0px;
+  margin: 0px;
+}
+
+.toolbar a, .toolbar a:visited {
+  padding: 10px;
+  color: #111;
+  background: #f60;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.toolbar a:hover, .toolbar a:active {
+  color: #000;
+  background: #999;
+}
+
+.toolbar .trigger {
+  margin-right: 15px;
+}
+
+.toolbar a:not(.trigger) {
+  margin-left: 5px;
+}
+
+a, a:visited {
+  text-decoration: none;
+  color: #f60;
+  font-weight: bold;
+}
+
+a:hover, a:active {
+  color: #999;
+}
+
+.right {
+  float: right;
+}
+
+.toolbar .right a {
+  background: #444;
+  color: #bbb;
+}
+
+.toolbar .right a, .toolbar .right a:visited {
+  background: #444;
+  color: #bbb;
+}
+
+.toolbar .right a:hover, .toolbar .right a:active {
+  background: #999;
+  color: #222;
+}
