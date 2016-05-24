@@ -32,3 +32,7 @@ gem 'refrescar',
 
 gem 'pry'
 gem 'colorize'
+gem 'sinatra'
+gem 'puma'
+gem 'websocket_parser'
+

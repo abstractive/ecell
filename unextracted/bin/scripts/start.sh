@@ -1,5 +1,12 @@
 #!/bin/bash
 
+if ! [ $# -gt 0 ];
+then
+  echo "No ecell instance passed in."
+  exit 1
+fi
+
+
 cd `export EF="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../../"; echo $EF`
 
 PID=`./bin/scripts/pid.sh $1`
