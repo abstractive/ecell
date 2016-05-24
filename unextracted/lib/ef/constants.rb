@@ -17,7 +17,7 @@ module Ef::Constants
   DEBUG_RPCS        = false
   DEBUG_BACKTRACING = true
 
-  CODE_RELOADING    = true
+  CODE_RELOADING    = false
   CODE_PRYING       = true
 
   RETURN_TYPES = [

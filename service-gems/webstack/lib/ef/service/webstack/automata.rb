@@ -13,7 +13,7 @@ module Ef::Service::Webstack::Automata
       Ef::Call[:process].check_in!{ |rpc|
         begin
           dump!("checkin? #{rpc}")
-          clients_announce!("process[#{rpc.answer}] #{Time.at(rpc[:timestamp])}")
+          # clients_announce!("process[#{rpc.answer}] #{Time.at(rpc[:timestamp])}")
         rescue => ex
           caught(ex, "Problem with :presence announcing it is alive.")
         end
