@@ -42,7 +42,7 @@ This is the Webstack service of the EnergyFlow Service Pack. It is started and s
 **Visit:** http://localhost:4567
 
 ```
-curl http://localhost:4567
+curl http://localhost:4567/index.html
 Hello from the EnergyFlow sample web server
 ```
 
@@ -57,7 +57,7 @@ Then:
 * Choose one or both of the client sections to connect.
   * Each section can connect to the same topic or different topics by using the request URI.
 * Click on the 'Connect' button.
-  * This will make a connection on the same host and port that served the .swf file and the predefined topic (e.g. ws1 or ws2). 
+  * This will make a connection on the same host and port that served the .swf file and the predefined topic (e.g. ws1 or ws2).
 * Enter a message in the text field at the bottom of the window and press 'Send'.
 * Optionally 'Close' the connection.
   * WebSocket connections to any port / host / topic may be made by pressing 'Close' then entering ws://<hostname>:<port>/<topic> into the text field and then clicking 'Connect'.
