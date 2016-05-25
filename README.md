@@ -1,7 +1,7 @@
 ![ECell](https://github.com/energyone/ecell/raw/master/logo-ETh2-1024w.png)
 ---
 
-Carrying on the tradition of distributed [`Celluloid`](https://github.com/celluloid/celluloid) actors started by [`DCell`](https://github.com/celluloid/dcell), which implements [`Celluloid::ZMQ`](https://github.com/celluloid/celluloid-zmq); `ECell` introduces a completely new perspective on distributed [Celluloid](https://github.com/celluloid/celluloid) actor meshes.
+Carrying on the tradition of distributed [`Celluloid`](https://github.com/celluloid/celluloid) actors started by [`DCell`](https://github.com/celluloid/dcell), which implements [`Celluloid::ZMQ`](https://github.com/celluloid/celluloid-zmq); `ECell` introduces a new *strategic* perspective on distributed [`Celluloid`](https://github.com/celluloid/celluloid) actor meshes.
 
 ## Distributed + *Strategic* + Concurrent
 
