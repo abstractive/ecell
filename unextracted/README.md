@@ -1,12 +1,12 @@
 # Documentation in process during extraction.
 
-> The `ECell` framework was originally extracted from the demonstration decoupling of the `Ef::Service` infrastructure, commissioned by `EnergyOne Limited`
+> `ECell` was originally extracted from early demonstrations of decoupling the `Ef::Service` infrastructure, commissioned by `Energy One Limited`; as a framework developed by `emotive mediums limited`.
 
 
 Authors
 =======
 
-* Donovan Keme, //de
+* Donovan Keme, //de; *emotive mediums limited*
 
 License
 =======
