@@ -1,1 +1,2 @@
 unextracted/lib/ef/constants.rb
+unextracted/lib/ef/errors.rb
