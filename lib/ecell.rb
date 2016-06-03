@@ -1,3 +1,6 @@
+require 'celluloid/current'
+require 'ecell/constants'
+
 module ECell
   include ECell::Constants
 

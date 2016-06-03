@@ -1,55 +1,62 @@
-module ECell::Extensions
-  class << self
-    include ECell::Constants
-    def included(object)
-      object.extend Forwardable
-      object.send(:include, ECell::Constants)
+require 'forwardable'
+require 'celluloid/current'
+require 'ecell/constants'
 
-      object.def_delegators :"ECell::Elements::Color",
-                            :exception!,
-                            *COLORS.map { |co| :"#{co}!" }
+module ECell
+  module Extensions
+    class << self
+      include ECell::Constants
 
-      object.def_delegators :"ECell.async(:logging)",
-                            :caught,
-                            :console,
-                            :print!,
-                            :puts!,
-                            :log,
-                            :symbol!,
-                            *LOG_LEVELS,
-                            *LOG_LEVELS.map { |l| :"log_#{l}" },
-                            :warning
+      def included(object)
+        object.extend Forwardable
+        object.send(:include, ECell::Constants)
 
-      object.def_delegators :"ECell::Logger",
-                            :exception,
-                            :mark!,
-                            :dump!
+        object.def_delegators :"ECell::Elements::Color",
+          :exception!,
+          *COLORS.map { |co| :"#{co}!" }
 
-      object.def_delegators :"ECell::Internals::Conduit",
-                            *STROKES.inject([]) { |c,d| c << :"#{d}?"; c << d; c }
+        object.def_delegators :"ECell.async(:logging)",
+          :caught,
+          :console,
+          :print!,
+          :puts!,
+          :log,
+          :symbol!,
+          *LOG_LEVELS,
+          *LOG_LEVELS.map { |l| :"log_#{l}" },
+          :warning
 
-      object.def_delegators :"ECell.sync(:assertion)",
-                            :reply_condition,
-                            :assert!,
-                            :replying!
+        object.def_delegators :"ECell::Logger",
+          :exception,
+          :mark!,
+          :dump!
 
-      object.def_delegators :"ECell.async(:vitality)",
-                            :heartbeat!
+        object.def_delegators :"ECell::Internals::Conduit",
+          *STROKES.inject([]) { |c,d| c << :"#{d}?"; c << d; c }
 
-      object.def_delegators :"ECell.sync(:calling)",
-                            :answer_condition,
-                            :petition!,
-                            :courier!,
-                            :answering!
+        object.def_delegators :"ECell.sync(:assertion)",
+          :reply_condition,
+          :assert!,
+          :replying!
 
+        object.def_delegators :"ECell.async(:vitality)",
+          :heartbeat!
+
+        object.def_delegators :"ECell.sync(:calling)",
+          :answer_condition,
+          :petition!,
+          :courier!,
+          :answering!
+      end
     end
-  end
-  def uuid!
-    Celluloid::Internals::UUID.generate
-  end
 
-  def mock_id
-    uuid!.split("-").last
+    def uuid!
+      Celluloid::Internals::UUID.generate
+    end
+
+    def mock_id
+      uuid!.split("-").last
+    end
   end
 end
 
