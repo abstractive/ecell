@@ -1,3 +1,4 @@
 unextracted/lib/ef/constants.rb
 unextracted/lib/ef/errors.rb
 unextracted/lib/ef/pack/extensions.rb
+unextracted/lib/ef/selector.rb
