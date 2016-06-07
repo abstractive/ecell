@@ -5,3 +5,4 @@ unextracted/lib/ef/selector.rb
 unextracted/lib/ef/timer.rb
 unextracted/lib/ef/pack/automata.rb
 unextracted/lib/ef/pack/conduit.rb
+unextracted/lib/ef/pack/interventions.rb
