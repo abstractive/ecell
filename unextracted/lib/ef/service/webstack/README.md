@@ -41,9 +41,10 @@ This is the Webstack service of the EnergyFlow Service Pack. It is started and s
 
 **Visit:** http://localhost:4567
 
+**Or use `curl` as follows:**
+
 ```
 curl http://localhost:4567/index.html
-Hello from the EnergyFlow sample web server
 ```
 
 ### Testing Socket Policy File and WebSockets
@@ -61,15 +62,3 @@ Then:
 * Enter a message in the text field at the bottom of the window and press 'Send'.
 * Optionally 'Close' the connection.
   * WebSocket connections to any port / host / topic may be made by pressing 'Close' then entering ws://<hostname>:<port>/<topic> into the text field and then clicking 'Connect'.
-
-
-Authors
-=======
-
-* Harley Mackenzie
-* David Keutgens
-* Donovan Keme, //de
-
-
-## Copyright and Confidentiality
-All code and documentation in this repository is confidential to Energy One Limited and approved consultants, and the copyright is held by Energy One Limited, Australia. Files in this project are not to be distributed publicly without the consent of EnergyOne.
