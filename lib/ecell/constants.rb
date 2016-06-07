@@ -21,21 +21,21 @@ module ECell
     CODE_PRYING       = true
 
     #benzrf TODO: replace with color names
-    RETURN_COLORS = [
+    RETURN_FORMS = [
       :answer,
       :reply,
       :report,
       :failure
     ]
 
-    COLORS = [
+    COLOR_FORMS = [
       :presence,
       :assertion,
       :call,
       :error,
       :operation,
       :log
-    ] + RETURN_COLORS
+    ] + RETURN_FORMS
 
 
     CONSOLE_TIME_FORMAT = '%T.%L' #de This is a fairly globalized format.

@@ -16,7 +16,7 @@ module ECell
 
         object.def_delegators :"ECell::Elements::Color",
           :exception!,
-          *COLORS.map { |co| :"#{co}!" }
+          *COLOR_FORMS.map { |fo| :"#{fo}!" }
 
         object.def_delegators :"ECell.async(:logging)",
           :caught,
