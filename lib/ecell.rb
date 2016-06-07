@@ -11,7 +11,7 @@ module ECell
     Celluloid::Task::PooledFiber
   end
 
-  #benzrf TODO why use an empty subclass instead of the class itself?
+  #benzrf TODO: why use an empty subclass instead of the class itself?
   module Internals
     class Supervisor < Celluloid::Supervision::Container; end
     Celluloid.services.supervise(type: Supervisor, as: :service)

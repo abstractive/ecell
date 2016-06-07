@@ -11,6 +11,9 @@ module ECell
         object.extend Forwardable
         object.send(:include, ECell::Constants)
 
+        #benzrf TODO: when a file uses one of these delegators, make sure
+        # that it also requires the file to which the delegator delegates
+
         object.def_delegators :"ECell::Elements::Color",
           :exception!,
           *COLORS.map { |co| :"#{co}!" }
