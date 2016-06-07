@@ -76,7 +76,7 @@ module ECell
       wait_tasks_cycle: 3,
       calling_timeout: 4,
       assertion_timeout: 4,
-      reprovision_channel: 3,
+      reprovision_line: 3,
       allow_transition: 1.26,
       ping: 5,
       check: 20,
