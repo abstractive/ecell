@@ -12,8 +12,10 @@ module ECell
   end
 
   #benzrf TODO why use an empty subclass instead of the class itself?
-  class Supervisor < Celluloid::Supervision::Container; end
-  Celluloid.services.supervise(type: Supervisor, as: :service)
+  module Internals
+    class Supervisor < Celluloid::Supervision::Container; end
+    Celluloid.services.supervise(type: Supervisor, as: :service)
+  end
 
   class << self
     def async(actor)
