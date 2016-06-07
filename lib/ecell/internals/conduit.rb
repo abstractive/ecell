@@ -17,45 +17,45 @@ module ECell
           SERVICES[service][:interface]
         end
 
-        def port(service, stroke)
-          return DEFAULT_PORT unless BINDINGS[service] && BINDINGS[service][stroke]
-          BINDINGS[service][stroke]
+        def port(service, line_id)
+          return DEFAULT_PORT unless BINDINGS[service] && BINDINGS[service][line_id]
+          BINDINGS[service][line_id]
         end
 
-        STROKES.each { |stroke|
-          define_method("#{stroke}?") {
+        LINE_IDS.each { |line_id|
+          define_method("#{line_id}?") {
             begin
-              ECell.sync(stroke) && ECell.sync(stroke).online
+              ECell.sync(line_id) && ECell.sync(line_id).online
             rescue => ex
-              caught(ex, "Trouble checking line: #{stroke}")
+              caught(ex, "Trouble checking line: #{line_id}")
               false
             end
           }
-          define_method(stroke) {
-            ECell.sync(stroke)
+          define_method(line_id) {
+            ECell.sync(line_id)
           }
         }
 
-        def strokes(&block)
-          STROKES.inject([]) { |s,stroke|
-            s << stroke if send(:"#{stroke}?")
-            s
+        def running_line_ids(&block)
+          LINE_IDS.inject([]) { |l,line_id|
+            l << line_id if send(:"#{line_id}?")
+            l
           }
         end
 
-        def each_stroke
-          strokes.each { |s| yield(s) }
+        def each_running_line_id
+          running_line_ids.each { |s| yield(s) }
         end
 
         def endpoints
-          strokes.inject({}) { |endpoints,stroke|
+          running_line_ids.inject({}) { |endpoints,line_id|
             begin
-              line = ECell.sync(stroke)
+              line = ECell.sync(line_id)
               if endpoint = line.endpoint
-                endpoints[stroke] = endpoint
+                endpoints[line_id] = endpoint
               end
             rescue => ex
-              caught(ex, "Trouble getting endpoint for line of stroke: #{stroke}")
+              caught(ex, "Trouble getting endpoint for line: #{line_id}")
             end
             endpoints
           }

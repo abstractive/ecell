@@ -35,7 +35,7 @@ module ECell
           :dump!
 
         object.def_delegators :"ECell::Internals::Conduit",
-          *STROKES.inject([]) { |c,d| c << :"#{d}?"; c << d; c }
+          *LINE_IDS.inject([]) { |c,d| c << :"#{d}?"; c << d; c }
 
         object.def_delegators :"ECell.sync(:assertion)",
           :reply_condition,

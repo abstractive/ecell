@@ -121,7 +121,8 @@ module ECell
     MAX_SERVICE_FAILURES = 5
     MAX_SERVICE_TIMEOUTS = 3
 
-    STROKES = [
+    # also used as `Stroke` ids
+    LINE_IDS = [
       :logging_push,
       :logging_pull,
 
@@ -216,7 +217,7 @@ module ECell
       webstack: { http_server: WEBSTACK[:port] }
     }
 
-    LINE = "< -- = --- = ---- = ----- = ------ = ---+--- = ------ = ----- = ---- = --- = -- > "
+    LOG_LINE = "< -- = --- = ---- = ----- = ------ = ---+--- = ------ = ----- = ---- = --- = -- > "
 
     CONSOLE_SYMBOLS = {
       marked: '#'.freeze,
