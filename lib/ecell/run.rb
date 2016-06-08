@@ -1,9 +1,16 @@
 #benzrf this is a placeholder
 
 module ECell
+  # placeholder
   module Run
-    def self.identity
-      :placeholder
+    class << self
+      def identity
+        :placeholder
+      end
+
+      def online?
+        false
+      end
     end
   end
 end
