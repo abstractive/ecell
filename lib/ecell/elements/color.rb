@@ -11,6 +11,7 @@ module ECell
       class << self
         include ECell::Constants
 
+        #benzrf TODO: revise the mostly-unnecessary dynamic module stuff here
         COLOR_FORMS.each { |form|
           next if RETURN_FORMS.include?(form)
           form_cap = form.to_s.capitalize.to_sym
