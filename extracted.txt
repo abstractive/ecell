@@ -14,3 +14,4 @@ unextracted/lib/ef/pack/conduit/automaton.rb
 unextracted/lib/ef/pack/conduit/channel.rb
 unextracted/lib/ef/pack/conduit/data/rpc.rb
 unextracted/lib/ef/pack/conduit/handlers.rb
+unextracted/lib/ef/pack/conduit/initializers.rb
