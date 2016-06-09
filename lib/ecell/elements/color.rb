@@ -231,3 +231,80 @@ module ECell
   end
 end
 
+#benzrf TODO: put this into the same block, probably
+class ECell::Elements::Color
+  def executable
+    dump!(LOG_LINE)
+    dump!("Service: #{ECell::Run.identity} #{@data}")
+    _ = @data.delete(:args) || []
+    dump!("args: #{_}")
+    params = [@data[@data[:code].to_sym]]
+    if _.is_a?(Array)
+      if _.any?
+       dump!("Array has something in it.")
+        if _.first == :rpc
+          dump!("At the front it's :rpc")
+          _[0] = self
+        elsif _.first.is_a?(Hash)
+          dump!("First is a Hash. Keys: #{_.first.keys}")
+          if _.first.keys.one?
+            dump!("Just one key.")
+            if _.first[:rpc].is_a?(Hash)
+              dump!("It calls for an RPC merger.")
+              _ = [self.merge!(_[0][:rpc])]
+            end
+          end
+        else
+          debug("It's nothing special...")
+        end
+      end
+      params += _
+    end
+    dump!("params: #{params}")
+    params
+  rescue => ex
+    [:exception, ex, "Error in executable parser."]
+  end
+
+  class << self
+    RETURN_FORMS.each { |form|
+      define_method(:"#{form}!") { |rpc, value, add={}|
+        rpc.to = rpc.id
+        rpc.id = ECell::Run.identity
+        if value == :error
+          rpc.error = add[:type] || :unknown
+          rpc.code = :error
+        else
+          rpc[form] = value
+        end
+        rpc[:code] = form
+        rpc[form] = value
+        rpc.merge!(add) if add.any?
+        rpc
+      }
+    }
+  end
+end
+
+#benzrf TODO: figure out where this should go
+if false and ECell::Run.identity?(:webstack)
+  ECell::Figures.call_sync(:process).restful_trigger(rpc: {message: "RPC #{Time.now.iso8601}"}) { |rpc|
+      if rpc.success?
+        ECell.sync(:ClientRegistry).clients_announce!("#{rpc.id}[#{rpc.code}] #{rpc.message}.")
+        ECell.async(:logging).debug("Ran restful_trigger.", store: rpc, quiet: true)
+      else
+        message = if rpc.message?
+          "#{rpc.id}[#{rpc.error}] #{rpc.message}."
+        elsif rpc[:exception]
+          "#{rpc.id}[#{rpc[:exception][:type]}] #{rpc[:exception][:message]}."
+        else
+          "There was an unknown error. Sorry about that."
+        end
+        ECell.sync(:ClientRegistry).clients_announce!(message)
+      end
+      response = rpc
+    }
+
+  ECell::Logger.dump! ECell::Figures.call_async(:process).restful_trigger(rpc: {message: "RPC.async #{Time.now.iso8601}"})
+end
+
