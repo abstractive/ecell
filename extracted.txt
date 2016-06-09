@@ -10,3 +10,4 @@ unextracted/lib/ef/pack/conduit/data/types.rb
 unextracted/lib/ef/pack/conduit/data/base.rb
 unextracted/lib/ef/pack/capacity/calling/routing.rb
 unextracted/lib/ef/pack/capacity/assertion/routing.rb
+unextracted/lib/ef/pack/conduit/automaton.rb
