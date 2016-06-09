@@ -17,9 +17,9 @@ module ECell
           SERVICES[service][:interface]
         end
 
-        def port(service, line_id)
-          return DEFAULT_PORT unless BINDINGS[service] && BINDINGS[service][line_id]
-          BINDINGS[service][line_id]
+        def port(service, stroke_id)
+          return DEFAULT_PORT unless BINDINGS[service] && BINDINGS[service][stroke_id]
+          BINDINGS[service][stroke_id]
         end
 
         LINE_IDS.each { |line_id|

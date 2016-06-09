@@ -24,8 +24,8 @@ module ECell
     end
   end
 
-  #benzrf TODO: redesign channels through which Shape methods are called
-  module Shapes
+  #benzrf TODO: redesign the means through which Figure methods are called
+  module Figures
     class << self
       def call_sync(service)
         service = service.id if service.respond_to?(:id)

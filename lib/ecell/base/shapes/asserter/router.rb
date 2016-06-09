@@ -23,7 +23,7 @@ module ECell
     end
   end
 
-  module Shapes
+  module Figures
     class << self
       def assert_async(service)
         service = service.id if service.respond_to?(:id)

@@ -3,7 +3,7 @@ require 'ecell/run'
 
 module ECell
   module Elements
-    class Stroke
+    class Line
       class Automaton < ECell::Internals::BaseAutomaton
         default_state :offline
 

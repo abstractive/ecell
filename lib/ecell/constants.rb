@@ -121,7 +121,7 @@ module ECell
     MAX_SERVICE_FAILURES = 5
     MAX_SERVICE_TIMEOUTS = 3
 
-    # also used as `Stroke` ids
+    # also used as Stroke ids
     LINE_IDS = [
       :logging_push,
       :logging_pull,
