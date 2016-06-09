@@ -90,7 +90,7 @@ module ECell
           unless h.is_a?(Hash)
             h = h.export
           end
-          #benzf TODO: should this be `:merge!` instead?
+          #benzrf TODO: should this be `:merge!` instead?
           log_warn("Not keeping Color object intact") if m == :merge
           @data.send(m, h)
           self

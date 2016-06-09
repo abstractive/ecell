@@ -179,7 +179,7 @@ module ECell
       }
     }
 
-    #de Uses port 0 binding for everything except the presence channels...
+    #de Uses port 0 binding for everything except the presence lines...
     #de unless a port is set.
 
     WEBSTACK = {
