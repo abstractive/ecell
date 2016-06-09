@@ -15,3 +15,10 @@ unextracted/lib/ef/pack/conduit/channel.rb
 unextracted/lib/ef/pack/conduit/data/rpc.rb
 unextracted/lib/ef/pack/conduit/handlers.rb
 unextracted/lib/ef/pack/conduit/initializers.rb
+unextracted/lib/ef/pack/conduit/sockets.rb
+unextracted/lib/ef/pack/conduit/sockets/presence.rb
+unextracted/lib/ef/pack/conduit/sockets/logging.rb
+unextracted/lib/ef/pack/conduit/sockets/assertion.rb
+unextracted/lib/ef/pack/conduit/sockets/calling.rb
+unextracted/lib/ef/pack/conduit/sockets/coordinator.rb
+unextracted/lib/ef/pack/conduit/sockets/operative.rb
