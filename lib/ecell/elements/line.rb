@@ -214,3 +214,5 @@ module ECell
   end
 end
 
+require 'ecell/elements/line_handlers'
+
