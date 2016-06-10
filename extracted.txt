@@ -22,3 +22,4 @@ unextracted/lib/ef/pack/conduit/sockets/assertion.rb
 unextracted/lib/ef/pack/conduit/sockets/calling.rb
 unextracted/lib/ef/pack/conduit/sockets/coordinator.rb
 unextracted/lib/ef/pack/conduit/sockets/operative.rb
+unextracted/lib/ef/pack/actor.rb
