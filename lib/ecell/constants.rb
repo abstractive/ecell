@@ -8,7 +8,7 @@ module ECell
     DEBUG_AUTOMATA    = false
     DEBUG_RESOURCES   = false #de Broken gem!
     DEBUG_SHUTDOWN    = false
-    DEBUG_SERVICES    = true
+    DEBUG_PIECES      = true
     DEBUG_RELOADING   = false
     DEBUG_HTTP        = false
     DEBUG_SOCKET      = false
@@ -100,7 +100,7 @@ module ECell
       max_threads: 90
     }
 
-    SERVICE_STATES = [
+    PIECE_STATES = [
       :start,
       :attaching,
       :ready,
@@ -118,8 +118,8 @@ module ECell
     DEFAULT_INTERFACE = "127.0.0.1"
     DEFAULT_PORT = 0
 
-    MAX_SERVICE_FAILURES = 5
-    MAX_SERVICE_TIMEOUTS = 3
+    MAX_PIECE_FAILURES = 5
+    MAX_PIECE_TIMEOUTS = 3
 
     # also used as Stroke ids
     LINE_IDS = [
@@ -146,7 +146,7 @@ module ECell
       :operative_pull
     ]
 
-    SERVICES = {
+    PIECES = {
 =begin
     hostmaster: {
       interface: DEFAULT_INTERFACE,

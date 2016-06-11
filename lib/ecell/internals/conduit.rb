@@ -12,14 +12,14 @@ module ECell
       class << self
         include ECell::Extensions
 
-        def interface(service)
-          return DEFAULT_INTERFACE unless SERVICES[service] && SERVICES[service][:interface]
-          SERVICES[service][:interface]
+        def interface(piece_id)
+          return DEFAULT_INTERFACE unless PIECES[piece_id] && PIECES[piece_id][:interface]
+          PIECES[piece_id][:interface]
         end
 
-        def port(service, stroke_id)
-          return DEFAULT_PORT unless BINDINGS[service] && BINDINGS[service][stroke_id]
-          BINDINGS[service][stroke_id]
+        def port(piece_id, stroke_id)
+          return DEFAULT_PORT unless BINDINGS[piece_id] && BINDINGS[piece_id][stroke_id]
+          BINDINGS[piece_id][stroke_id]
         end
 
         LINE_IDS.each { |line_id|

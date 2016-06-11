@@ -235,7 +235,7 @@ end
 class ECell::Elements::Color
   def executable
     dump!(LOG_LINE)
-    dump!("Service: #{ECell::Run.identity} #{@data}")
+    dump!("Piece: #{ECell::Run.identity} #{@data}")
     _ = @data.delete(:args) || []
     dump!("args: #{_}")
     params = [@data[@data[:code].to_sym]]

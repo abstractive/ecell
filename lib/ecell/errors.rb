@@ -3,7 +3,7 @@ module ECell
   # any dynamic constant lookups
   class Error < StandardError
     class MissingBlock < ArgumentError; end
-    class ServiceNotReady < ECell::Error; end
+    class PieceNotReady < ECell::Error; end
     class CourierMissing < ECell::Error; end
     class InvalidResponse < ECell::Error; end
 

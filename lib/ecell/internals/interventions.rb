@@ -24,7 +24,7 @@ module ECell
         }
       end
 
-      def restart_service!
+      def restart_piece!
         console(tag: 'hard reset', message: "Intervention triggered.", highlight: true)
       end
 

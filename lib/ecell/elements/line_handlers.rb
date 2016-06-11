@@ -55,9 +55,9 @@ class ECell::Elements::Line
     unless object.is_a?(String)
       data = ECell::Elements::Color[object]
       rpc = data.to? && data.to
-      #de This is an RPC, and this service made the call
+      #de This is an RPC, and this piece made the call
       #de therefore it is waiting for the answer.
-      if rpc && data.id?(@service)
+      if rpc && data.id?(@piece_id)
         waiting = data.uuid
         waiter = :"#{(data.code == :call) ? :answer : :reply}_condition"
       end

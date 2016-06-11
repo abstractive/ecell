@@ -73,7 +73,7 @@ module ECell
         return unless ECell::Run.online?
         @automaton = Automaton.new
         begin
-          @service ||= options.fetch(:service, ECell::Run.identity)
+          @piece_id ||= options.fetch(:piece_id, ECell::Run.identity)
           @ready = Queue.new
           @port, @interface = nil, nil
           @line_id = line if line.is_a? Symbol
@@ -82,7 +82,7 @@ module ECell
           fail "Invalid line ID: #{@line_id} (#{@line_id.class.name})" unless LINE_IDS.include? @line_id
           fail "Missing line socket." unless @socket
           #benzrf TODO: "conduit"?
-          fail "Missing conduit service." unless @service
+          fail "Missing conduit piece." unless @piece_id
           @mode ||= options.fetch(:mode, nil)
           @endpoint ||= options.fetch(:endpoint, nil)
           fail ECell::Error::Line::MissingMode unless @mode
@@ -94,18 +94,18 @@ module ECell
             fail "Missing line endpoint." unless @endpoint
             @socket.linger = ECell::Constants::LINGER
           end
-          @socket.identity = @service
+          @socket.identity = @piece_id
           defer { transition(:initialized) }
           debug(message: "Initialized.", reporter: self.class) if DEBUG_DEEP
           async.provision! if @endpoint && options[:provision]
         rescue => ex
-          caught(ex, "Line initialization failure: #{@service}/#{@line_id}")
+          caught(ex, "Line initialization failure: #{@piece_id}/#{@line_id}")
           transition :disrupted
         end
       end
 
       def handle
-        "#{@line_id}@#{@service}"
+        "#{@line_id}@#{@piece_id}"
       end
 
       def connect=(endpoint)
@@ -181,7 +181,7 @@ module ECell
       #de Grab a system assigned port.
       def endpoint!
         @endpoint ||= if binding?
-          BINDINGS[@service][@line_id] if BINDINGS[@service] and BINDINGS[@service][@line_id]
+          BINDINGS[@piece_id][@line_id] if BINDINGS[@piece_id] and BINDINGS[@piece_id][@line_id]
         end
         return if @endpoint.is_a? String
         if @endpoint.is_a? Hash
@@ -190,8 +190,8 @@ module ECell
         end
         #de TODO: May need to distinguish between interfaces per line.
         #de       For instance, if there are different network interfaces on the same machine.
-        @interface ||= ECell::Internals::Conduit.interface(@service)
-        @port ||= ECell::Internals::Conduit.port(@service, @line_id)
+        @interface ||= ECell::Internals::Conduit.interface(@piece_id)
+        @port ||= ECell::Internals::Conduit.port(@piece_id, @line_id)
         @endpoint = available_socket
       rescue Errno::EADDRINUSE
         wait_for_port
