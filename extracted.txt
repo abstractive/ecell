@@ -25,3 +25,4 @@ unextracted/lib/ef/pack/conduit/sockets/operative.rb
 unextracted/lib/ef/pack/actor.rb
 unextracted/lib/ef/pack/capacity.rb
 unextracted/lib/ef/pack/capacity/spool.rb
+unextracted/lib/ef/pack/capacity/operative.rb
