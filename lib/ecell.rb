@@ -1,5 +1,6 @@
 require 'celluloid/current'
 require 'ecell/constants'
+require 'ecell/spool'
 
 module ECell
   include ECell::Constants
@@ -18,7 +19,18 @@ module ECell
   end
 
   class << self
+    def sync(actor)
+      Celluloid::Actor[actor]
+    end
+
+    def supervise(config)
+      sync(:service).supervise(config)
+    end
+
+    ECell.supervise(as: :spool, type: ECell::Spool)
+
     def async(actor)
+      #benzrf TODO: possible race condition here?
       if Celluloid::Actor[actor]
         Celluloid::Actor[actor].async rescue nil
       else
@@ -27,14 +39,6 @@ module ECell
     end
 
     alias_method :[], :async
-
-    def sync(actor)
-      Celluloid::Actor[actor]
-    end
-
-    def supervise(config)
-      sync(:service).supervise(config)
-    end
   end
 end
 

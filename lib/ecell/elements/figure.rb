@@ -50,10 +50,7 @@ end
 #benzrf TODO: migrate these; also, find a better place for the requires
 if false
 require 'ecell/base/shapes/logger'
-require 'ecell/base/shapes/spool'
 #de require 'set'
-
-ECell::Supervise(as: :spool, type: ECell::Base::Shapes::Spool)
 
 #benzrf TODO: find grammatically-more-suited names for some of these
 require 'ecell/base/shapes/presence'
