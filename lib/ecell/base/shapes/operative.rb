@@ -1,11 +1,10 @@
-require 'ecell/extensions'
+require 'ecell/elements/figure'
+require 'ecell/run'
 
 module ECell
   module Base
     module Shapes
-      module Operative
-        include ECell::Extensions
-
+      class Operative < ECell::Elements::Figure
         def coordinator_pull_root(piece_id,line_id=:coordinator_pull)
           "tcp://#{PIECES[piece_id][:interface]}:#{BINDINGS[piece_id][line_id]}"
         end
@@ -26,9 +25,11 @@ module ECell
             #de TODO: Check vitals, then answer.
             report!(rpc, :yes)
           else
-            #benzrf TODO: should this be `Operations` instead?
-            if defined?(self.class::Operation) && self.class::Operation.method_defined?(rpc.call)
-              report!(rpc, :ok, returns: send(*rpc.executable))
+            subj = ECell::Run.subject
+            owner = subj.class.method_defined?(rpc.call) &&
+              subj.class.instance_method(rpc.call).owner
+            if owner == subj.class::Operations
+              report!(rpc, :ok, returns: subj.send(*rpc.executable))
             else
               error!(:method_missing)
             end
