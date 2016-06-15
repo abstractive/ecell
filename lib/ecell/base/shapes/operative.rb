@@ -7,7 +7,7 @@ module ECell
         include ECell::Extensions
 
         def coordinator_pull_root(piece_id,line_id=:coordinator_pull)
-          "tcp://#{PIECES[piece_id][:interface]}:#{BINDINGS[piece_id][line_id]}"  
+          "tcp://#{PIECES[piece_id][:interface]}:#{BINDINGS[piece_id][line_id]}"
         end
 
         def connect_coordinator_output!

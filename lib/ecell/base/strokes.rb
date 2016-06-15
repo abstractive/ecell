@@ -94,6 +94,7 @@ module ECell
           end
         end
       end
+
       module Answering
         class Router < ECell::Elements::Line
           def initialize(options={})
