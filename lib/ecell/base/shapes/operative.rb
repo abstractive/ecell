@@ -5,18 +5,20 @@ module ECell
   module Base
     module Shapes
       class Operative < ECell::Elements::Figure
-        def coordinator_pull_root(piece_id,line_id=:coordinator_pull)
+        def coordinator_pull_root(line_id=:coordinator_pull)
+          #benzrf TODO: figure out proper coordinator-identification logic
+          piece_id = SERVICES[ECell::Run.identity][:leader] || DEFAULT_LEADER
           "tcp://#{PIECES[piece_id][:interface]}:#{BINDINGS[piece_id][line_id]}"
         end
 
         def connect_coordinator_output!
-          operative_push.connect = coordinator_pull_root(@leader)
+          operative_push.connect = coordinator_pull_root()
           operative_push.online! if operative_push.engaged?
           symbol!(:touched_work)
         end
 
         def coordinator_input!(type)
-          coordinator_pull_root(@leader, :"coordinator_#{type}_push")
+          coordinator_pull_root(:"coordinator_#{type}_push")
         end
 
         def on_operation(rpc)
