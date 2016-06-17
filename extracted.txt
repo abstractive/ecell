@@ -8,8 +8,6 @@ unextracted/lib/ef/pack/conduit.rb
 unextracted/lib/ef/pack/interventions.rb
 unextracted/lib/ef/pack/conduit/data/types.rb
 unextracted/lib/ef/pack/conduit/data/base.rb
-unextracted/lib/ef/pack/capacity/calling/routing.rb
-unextracted/lib/ef/pack/capacity/assertion/routing.rb
 unextracted/lib/ef/pack/conduit/automaton.rb
 unextracted/lib/ef/pack/conduit/channel.rb
 unextracted/lib/ef/pack/conduit/data/rpc.rb
@@ -25,4 +23,3 @@ unextracted/lib/ef/pack/conduit/sockets/operative.rb
 unextracted/lib/ef/pack/actor.rb
 unextracted/lib/ef/pack/capacity.rb
 unextracted/lib/ef/pack/capacity/spool.rb
-unextracted/lib/ef/pack/capacity/operative.rb
