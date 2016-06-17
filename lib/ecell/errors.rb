@@ -13,7 +13,7 @@ module ECell
       class MissingCourier < ECell::Error; end
     end
 
-    module Assertion
+    module Instruction
       class Duplicate < ECell::Error; end
       class Incomplete < ECell::Error; end
       class RouterMissing < ECell::Error; end

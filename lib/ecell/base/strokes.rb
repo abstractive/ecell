@@ -3,7 +3,7 @@ require 'ecell/elements/line'
 module ECell
   module Base
     module Strokes
-      module Presence
+      module Awareness
         class Publish < ECell::Elements::Line
           def initialize(options={})
             @socket = Socket::Pub.new
@@ -34,7 +34,7 @@ module ECell
         end
       end
 
-      module Assertion
+      module Management
         class Router < ECell::Elements::Line
           def initialize(options={})
             @socket = Socket::Router.new
@@ -93,10 +93,8 @@ module ECell
             super(self, options)
           end
         end
-      end
-
-      module Answering
-        class Router < ECell::Elements::Line
+        #benzrf TODO: better namespacing for strokes - this is the answering router
+        class Router2 < ECell::Elements::Line
           def initialize(options={})
             @socket = Socket::Router.new
             super(self, options)
@@ -104,7 +102,8 @@ module ECell
         end
       end
 
-      module Coordinator
+      module Distribution
+        # these are for Distribution::Process
         class Pull < ECell::Elements::Line
           def initialize(options={})
             @socket = Socket::Pull.new
@@ -117,16 +116,14 @@ module ECell
             super(self, options)
           end
         end
-      end
-
-      module Operative
-        class Pull < ECell::Elements::Line
+        # these are for Distribution::Distribute
+        class Pull2 < ECell::Elements::Line
           def initialize(options={})
             @socket = Socket::Pull.new
             super(self, options)
           end
         end
-        class Push < ECell::Elements::Line
+        class Push2 < ECell::Elements::Line
           def initialize(options={})
             @socket = Socket::Push.new
             super(self, options)

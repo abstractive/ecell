@@ -29,11 +29,11 @@ module ECell
     ]
 
     COLOR_FORMS = [
-      :presence,
-      :assertion,
+      :announcement,
+      :instruction,
       :call,
       :error,
-      :operation,
+      :task,
       :log
     ] + RETURN_FORMS
 
@@ -75,14 +75,14 @@ module ECell
       wait_events_cycle: 3,
       wait_tasks_cycle: 3,
       calling_timeout: 4,
-      assertion_timeout: 4,
+      instruction_timeout: 4,
       reprovision_line: 3,
       allow_transition: 1.26,
       ping: 5,
       check: 20,
       report: 45,
       heartbeat: 7,
-      presence_announce: 1,
+      presence: 1,
       second_chance: 3,
       third_chance: 5,
       restarting: 9,
@@ -126,24 +126,24 @@ module ECell
       :logging_push,
       :logging_pull,
 
-      :assertion_request,
-      :assertion_reply,
-      :assertion_router,
-      :assertion_dealer,
-      :assertion_publish,
-      :assertion_subscribe,
+      :management_request,
+      :management_reply,
+      :management_router,
+      :management_dealer,
+      :management_publish,
+      :management_subscribe,
 
-      :presence_publish,
-      :presence_subscribe,
+      :awareness_publish,
+      :awareness_subscribe,
 
       :calling_request,
       :calling_reply,
       :calling_router,
-      :answering_router,
+      :calling_router2,
 
-      :coordinator_pull,
-      :operative_push,
-      :operative_pull
+      :distribution_push,
+      :distribution_pull,
+      :distribution_pull2,
     ]
 
     PIECES = {
@@ -179,7 +179,7 @@ module ECell
       }
     }
 
-    #de Uses port 0 binding for everything except the presence lines...
+    #de Uses port 0 binding for everything except the awareness lines...
     #de unless a port is set.
 
     WEBSTACK = {
@@ -196,24 +196,24 @@ module ECell
 
     BINDINGS = {
       monitor: {
-        presence_subscribe: monitor_base,
+        awareness_subscribe: monitor_base,
         logging_pull: monitor_base += 1,
-        assertion_router: monitor_base += 1,
-        assertion_publish: monitor_base += 1,
-        answering_router: monitor_base += 1,
+        management_router: monitor_base += 1,
+        management_publish: monitor_base += 1,
+        calling_router2: monitor_base += 1,
         calling_router: monitor_base += 1
       },
       process: {
-        presence_subscribe: process_base,
+        awareness_subscribe: process_base,
         logging_pull: process_base += 1,
-        coordinator_pull: process_base += 1,
-        coordinator_tasks_push: process_base += 1,
-        coordinator_events_push: process_base += 1,
-        assertion_router: process_base += 1,
-        assertion_publish: process_base += 1,
+        distribution_pull2: process_base += 1,
+        distribution_tasks_push2: process_base += 1,
+        distribution_events_push2: process_base += 1,
+        management_router: process_base += 1,
+        management_publish: process_base += 1,
       },
-      #de monitor: { presence_subscribe: 'monitor.presence', },
-      #de process: { presence_subscribe: 'process.presence' },
+      #de monitor: { awareness_subscribe: 'monitor.awareness', },
+      #de process: { awareness_subscribe: 'process.awareness' },
       webstack: { http_server: WEBSTACK[:port] }
     }
 
@@ -232,10 +232,10 @@ module ECell
       got_member: '+'.freeze,
       got_leader: '='.freeze,
       got_logging: '\\'.freeze,
-      got_assertion: '$'.freeze,
-      got_presencing: '/'.freeze,
-      present_heartbeat: '^'.freeze,
-      present_announcement: '*'.freeze,
+      got_instruction: '$'.freeze,
+      got_announcing: '/'.freeze,
+      announcing_heartbeat: '^'.freeze,
+      announcing_present: '*'.freeze,
       touched_work: '`'.freeze,
     }
 
