@@ -25,6 +25,7 @@ module ECell
           handler = Module.new
           handler.define_singleton_method(:[]) { |value| new(value) }
           handler.define_singleton_method(:new) { |value, extras={}|
+            #benzrf TODO: s/`code`/`form`/g
             Color.new(extras.merge({code: form, form => value}))
           }
           Color.const_set(form_cap, handler)

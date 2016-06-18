@@ -33,6 +33,7 @@ module ECell
         return
       end
 
+      #benzrf TODO: these are already given thru Extensions
       LINE_IDS.each { |line_id|
         define_method(:"#{line_id}?") { @sockets[line_id] && @sockets[line_id].online }
         define_method(line_id) { |options={}| @sockets[line_id] || raise(ECell::Error::Line::Uninitialized) }
@@ -42,6 +43,11 @@ module ECell
         @sockets[line_id] = super
       rescue => ex
         raise exception(ex, "Line Supervision Exception")
+      end
+
+      def leader
+        #benzrf TODO: figure out proper coordinator-identification logic
+        PIECES[ECell::Run.identity][:leader] || DEFAULT_LEADER
       end
     end
   end

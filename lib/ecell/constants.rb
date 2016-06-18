@@ -235,7 +235,7 @@ module ECell
       got_instruction: '$'.freeze,
       got_announcing: '/'.freeze,
       announcing_heartbeat: '^'.freeze,
-      announcing_present: '*'.freeze,
+      announcing_presence: '*'.freeze,
       touched_work: '`'.freeze,
     }
 
