@@ -27,3 +27,4 @@ unextracted/lib/ef/pack/capacity/presence.rb
 unextracted/lib/ef/pack/capacity/assertion.rb
 unextracted/lib/ef/pack/capacity/assertion/handlers.rb
 unextracted/lib/ef/pack/capacity/assertion/routing.rb
+unextracted/lib/ef/pack/capacity/vitality.rb
