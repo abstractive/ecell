@@ -74,9 +74,6 @@ module ECell
                 reply = management_router << rpc
               end
               if rpc[:async]
-                #benzrf TODO: this does not necessarily actually make the call
-                # properly async - ZMQ semantics cause issues
-                # (actually in this case it works, but for `Calling`...)
                 abandon(rpc.uuid)
                 return reply!(rpc, :async)
               end

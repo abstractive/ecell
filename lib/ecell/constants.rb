@@ -80,7 +80,7 @@ module ECell
       wait_transmission: 3,
       wait_events_cycle: 3,
       wait_tasks_cycle: 3,
-      calling_timeout: 4,
+      call_timeout: 4,
       instruction_timeout: 4,
       reprovision_line: 3,
       allow_transition: 1.26,

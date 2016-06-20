@@ -6,7 +6,7 @@ class ECell::Elements::Color
   def executable
     dump!(LOG_LINE)
     dump!("Piece: #{ECell::Run.identity} #{@data}")
-    _ = @data.delete(:args) || []
+    _ = @data.fetch(:args, [])
     dump!("args: #{_}")
     params = [@data[@data[:code].to_sym]]
     if _.is_a?(Array)

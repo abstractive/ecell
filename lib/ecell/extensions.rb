@@ -14,6 +14,8 @@ module ECell
         #benzrf TODO: when a file uses one of these delegators, make sure
         # that it also requires the file to which the delegator delegates
 
+        #benzrf TODO: remove unnecessary delegators
+
         object.def_delegators :"ECell::Elements::Color",
           :exception!,
           *COLOR_FORMS.map { |fo| :"#{fo}!" }
@@ -47,8 +49,7 @@ module ECell
 
         object.def_delegators :"ECell.sync(:calling)",
           :answer_condition,
-          :petition!,
-          :courier!,
+          :place_call!,
           :answering!
       end
     end
