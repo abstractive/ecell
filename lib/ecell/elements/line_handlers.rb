@@ -57,9 +57,9 @@ class ECell::Elements::Line
       rpc = data.to? && data.to
       #de This is an RPC, and this piece made the call
       #de therefore it is waiting for the answer.
-      if rpc && data.id?(@piece_id)
+      if rpc && data.id?(@piece_id) && return_form = RETURNS[data.code]
         waiting = data.uuid
-        waiter = :"#{(data.code == :call) ? :answer : :reply}_condition"
+        waiter = :"#{return_form}_condition"
       end
       mode, data = :sent, data.packed
     end

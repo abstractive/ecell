@@ -37,6 +37,12 @@ module ECell
       :log
     ] + RETURN_FORMS
 
+    RETURNS = {
+      call: :answer,
+      instruction: :reply,
+      task: :report,
+    }
+
 
     CONSOLE_TIME_FORMAT = '%T.%L' #de This is a fairly globalized format.
 

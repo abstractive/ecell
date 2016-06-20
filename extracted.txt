@@ -24,3 +24,6 @@ unextracted/lib/ef/pack/actor.rb
 unextracted/lib/ef/pack/capacity.rb
 unextracted/lib/ef/pack/capacity/spool.rb
 unextracted/lib/ef/pack/capacity/presence.rb
+unextracted/lib/ef/pack/capacity/assertion.rb
+unextracted/lib/ef/pack/capacity/assertion/handlers.rb
+unextracted/lib/ef/pack/capacity/assertion/routing.rb
