@@ -39,3 +39,5 @@ unextracted/lib/ef/pack/capacity/logging/methods.rb
 unextracted/lib/ef/pack/capacity/logging.rb
 unextracted/lib/ef/pack/capacity/logging/handlers.rb
 unextracted/lib/ef/pack/capacity/logging/storage/database.rb
+unextracted/lib/ef/pack/capacity/database.rb
+unextracted/lib/ef/pack/capacity/database/mysql.rb
