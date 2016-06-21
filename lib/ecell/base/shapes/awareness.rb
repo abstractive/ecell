@@ -15,12 +15,6 @@ module ECell
         module Notice
           include ECell::Extensions
 
-          def welcome!(member)
-            return false if ECell::Run.identity == member
-            debug("Welcome #{member.to_s.green.bold}!")
-            true
-          end
-
           def on_announcement(data)
             missing = []
             missing << "piece id" unless data.id?

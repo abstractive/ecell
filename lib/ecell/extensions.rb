@@ -42,7 +42,8 @@ module ECell
         object.def_delegators :"ECell.sync(:management)",
           :reply_condition,
           :instruct!,
-          :replying!
+          :replying!,
+          :welcome!
 
         object.def_delegators :"ECell.async(:vitality)",
           :heartbeat!
