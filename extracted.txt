@@ -33,3 +33,9 @@ unextracted/lib/ef/pack/capacity/calling/petitioner.rb
 unextracted/lib/ef/pack/capacity/calling/respondent.rb
 unextracted/lib/ef/pack/capacity/calling/courier.rb
 unextracted/lib/ef/pack/capacity/calling/routing.rb
+unextracted/lib/ef/pack/capacity/logging/entry.rb
+unextracted/lib/ef/pack/capacity/logging/storage/file.rb
+unextracted/lib/ef/pack/capacity/logging/methods.rb
+unextracted/lib/ef/pack/capacity/logging.rb
+unextracted/lib/ef/pack/capacity/logging/handlers.rb
+unextracted/lib/ef/pack/capacity/logging/storage/database.rb

@@ -19,6 +19,24 @@ module ECell
       def subject
         nil
       end
+
+      def dump
+        io = @dump || STDERR
+        if block_given?
+          yield io
+          return io.flush
+        end
+        io
+      end
+
+      def output
+        io = @output || STDOUT
+        if block_given?
+          yield(io)
+          return io.flush
+        end
+        io
+      end
     end
   end
 end

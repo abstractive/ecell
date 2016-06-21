@@ -53,27 +53,3 @@ module ECell
   end
 end
 
-#benzrf TODO: migrate these; also, find a better place for the requires
-if false
-require 'ecell/base/shapes/logger'
-#de require 'set'
-
-#benzrf TODO: find grammatically-more-suited names for some of these
-require 'ecell/base/shapes/presence'
-require 'ecell/base/shapes/asserter'
-require 'ecell/base/shapes/caller'
-require 'ecell/base/shapes/operative'
-require 'ecell/base/shapes/vitality'
-require 'ecell/base/shapes/database'
-
-#de TODO: Only necessary for pure Leader services, not even Managers.
-ECell::Base::Shapes::Logger::STORAGE = case ECell::Constants::LOG_STORAGE
-                                       when :file
-                                         ECell::Base::Shapes::Logger::Storage::File
-                                       when :database
-                                         ECell::Base::Shapes::Logger::Storage::Database
-                                       else
-                                         raise "No log storage mode specified."
-                                       end
-end
-

@@ -1,8 +1,8 @@
 require 'celluloid/current'
 require 'ecell/elements/figure'
 require 'ecell/run'
-require 'ecell/errors'
 require 'ecell/extensions'
+require 'ecell/errors'
 
 module ECell
   module Base
