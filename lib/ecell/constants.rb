@@ -156,7 +156,7 @@ module ECell
 =begin
     hostmaster: {
       interface: DEFAULT_INTERFACE,
-      roles: [:admin]
+      designs: [:admin]
     },
 =end
       monitor: {

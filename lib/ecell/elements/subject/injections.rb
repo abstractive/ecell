@@ -48,10 +48,10 @@ module ECell
       end
 
       #de Setup as dynamic/reflexive in case different kinds of emitter are needed in the future.
-      def emitter!(line_id, piece_id=nil, method)
+      def emitter!(line_id, figure_id=nil, method)
         debug("Triggering emitter, #{method}@#{line_id}.") if DEBUG_INJECTIONS
-        receiver = piece_id ? ECell.sync(piece_id) : Celluloid::Actor.current
-        ECell.sync(line_id).async(:emitter, piece_id, method)
+        receiver = figure_id ? ECell.sync(figure_id) : Celluloid::Actor.current
+        ECell.sync(line_id).async(:emitter, figure_id, method)
       rescue => ex
         caught(ex,"Failure in emitter: #{method}@#{line_id}.")
       end
@@ -117,10 +117,10 @@ module ECell
         current.select { |entity| !exclude.include?(entity) }
       end
 
-      def injections_for(roles)
+      def injections_for(designs)
         combined = {}
-        roles, disabled = expand_injections(roles)
-        roles.each { |injections|
+        designs, disabled = expand_injections(designs)
+        designs.each { |injections|
           INJECTION_LAYERS.each { |layer|
             if injections[layer].is_a?(Hash)
               if !combined.key?(layer)
@@ -151,11 +151,11 @@ module ECell
         combined
       end
 
-      def expand_injections(roles)
+      def expand_injections(designs)
         injections, disabled = [], {}
-        roles.each { |r|
+        designs.each { |r|
           r = r::Injections unless r.is_a?(Hash)
-          embedded = r[:roles] || r[:merge]
+          embedded = r[:designs] || r[:merge]
           if embedded.is_a?(Array)
             injections += embedded.map { |e| e.is_a?(Hash) ? e : e::Injections }
           end
