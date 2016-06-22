@@ -42,3 +42,4 @@ unextracted/lib/ef/pack/capacity/logging/storage/database.rb
 unextracted/lib/ef/pack/capacity/database.rb
 unextracted/lib/ef/pack/capacity/database/mysql.rb
 unextracted/lib/ef/pack/capacity/operative.rb
+unextracted/lib/ef/pack/automaton.rb
