@@ -2,6 +2,7 @@ require 'forwardable'
 require 'celluloid/current'
 require 'ecell/constants'
 
+#benzrf TODO: should this be in `Internals`?
 module ECell
   module Extensions
     class << self

@@ -1,11 +1,8 @@
-require 'ecell/extensions'
+require 'ecell/internals/actor'
 
-#benzrf TODO: find a better place for this
 module ECell
-  module Internals
-    module Interventions
-      include ECell::Extensions
-
+  module Elements
+    class Subject < ECell::Internals::Actor
       def system_check!
         console(tag: 'system check', message: "Intervention triggered.", highlight: true)
         threads = Thread.list.inject({}) { |l,t| l[t.object_id] = t.status; l }

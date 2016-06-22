@@ -31,10 +31,10 @@ module ECell
       end
 
       def async(method=nil, *args)
-        return super unless method
+        return super() unless method
         symbol!(:marked)
         ECell::Logger.debug("Verbosely: #{method} @ #{caller[0]}") if DEBUG_DEEP
-        super.verbosely!(method, *args)
+        super().verbosely!(method, *args)
       end
 
       def initialize_line(line_id, options)

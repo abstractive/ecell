@@ -51,7 +51,7 @@ module ECell
       def emitter!(line_id, figure_id=nil, method)
         debug("Triggering emitter, #{method}@#{line_id}.") if DEBUG_INJECTIONS
         receiver = figure_id ? ECell.sync(figure_id) : Celluloid::Actor.current
-        ECell.sync(line_id).async(:emitter, figure_id, method)
+        ECell.sync(line_id).async(:emitter, receiver, method)
       rescue => ex
         caught(ex,"Failure in emitter: #{method}@#{line_id}.")
       end

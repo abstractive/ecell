@@ -40,7 +40,7 @@ module ECell
             begin
               unless ping?(id)
                 oversaw!(id)
-                member_attach(id)
+                member_attach(data)
               else
                 return unless DEBUG_DEEP
                 debug(message: "Piece already attached (#{id}) and still alive. " +
