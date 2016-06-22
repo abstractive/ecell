@@ -14,7 +14,7 @@ module ECell
 
           def initialize(config={})
             #de This actually activates the storage mechanism by asking, am I default leader?
-            @enabled = config[:service] == DEFAULT_LEADER
+            @enabled = config[:piece_id] == DEFAULT_LEADER
             execute {
               #de @db = ECell::Base::Shapes::Database::MySQL.new({}) #de Create connection to database.
             }
@@ -48,8 +48,8 @@ module ECell
 
           private
 
-          #de The logger and log storage capacities exist in many forms, so don't actually store unless this is an enabled case:
-          #de This ought to really only be if the service instantiating this log storage actor is the default leader.
+          #de The logger and log storage shapes exist in many forms, so don't actually store unless this is an enabled case:
+          #de This ought to really only be if the piece instantiating this log storage actor is the default leader.
 
           def execute
             if @enabled

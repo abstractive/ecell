@@ -17,7 +17,7 @@ module ECell
           debug(message: "Initialized", reporter: self.class) if DEBUG_DEEP
         end
 
-        #de TODO: Only necessary for pure Leader services, not even Managers.
+        #de TODO: Only necessary for pure Leader pieces, not even Managers.
         STORAGE = case ECell::Constants::LOG_STORAGE
         when :file
           require 'ecell/base/shapes/logging/file'
