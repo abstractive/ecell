@@ -1,7 +1,7 @@
 module ECell
   module Constants
     DEFAULT_LEADER    = :monitor
-    DEFAULT_COURIER   = DEFAULT_LEADER
+    DEFAULT_SWITCH    = DEFAULT_LEADER
 
     DEBUG             = true
     DEBUG_DEEP        = false
@@ -161,7 +161,7 @@ module ECell
 =end
       monitor: {
         interface: DEFAULT_INTERFACE,
-        designs: [:leader, :courier],
+        designs: [:leader, :switch],
         followers: [:process, :webstack]
       },
       process: {

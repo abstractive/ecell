@@ -22,12 +22,12 @@ module ECell
             "tcp://#{PIECES[piece_id][:interface]}:#{BINDINGS[piece_id][:calling_router]}"
           end
 
-          def attach_courier_incoming!
+          def attach_switch_incoming!
             calling_reply.connect = calling_root(leader)
             calling_reply.online! if calling_reply.engaged?
             symbol!(:got_instruction)
           rescue => ex
-            caught(ex, "Trouble attaching courier.")
+            caught(ex, "Trouble attaching switch.")
             sleep INTERVALS[:retry_attach]
             retry
           end
@@ -71,7 +71,7 @@ module ECell
 
           def from_caller(rpc)
             console({
-              reporter: 'Courier',
+              reporter: 'Switch',
               message: "Call[#{rpc.id}/#{rpc.call}@#{rpc.to}]: #{rpc.uuid}",
               store: rpc,
                 quiet: true
@@ -85,14 +85,14 @@ module ECell
           def from_answerer(rpc)
             if rpc.success?
               console({
-                reporter: 'Courier',
+                reporter: 'Switch',
                 message: "Answer: #{rpc.id}/#{rpc.call}@#{rpc.to}]: #{rpc.answer}",
                 store: rpc,
                   quiet: true
               })
             else
               log_warn({
-                reporter: 'Courier',
+                reporter: 'Switch',
                 message: "Failure: #{rpc.id}/#{rpc.call}]: #{rpc.error}",
                 store: rpc,
                   quiet: true
@@ -116,12 +116,12 @@ module ECell
             "tcp://#{PIECES[piece_id][:interface]}:#{BINDINGS[piece_id][:calling_router2]}"
           end
 
-          def attach_courier_outgoing!
+          def attach_switch_outgoing!
             calling_request.connect = answering_root(leader)
             calling_request.online! if calling_request.engaged?
             symbol!(:got_instruction)
           rescue => ex
-            caught(ex, "Trouble attaching courier.")
+            caught(ex, "Trouble attaching switch.")
             sleep INTERVALS[:retry_attach]
             retry
           end
@@ -174,7 +174,7 @@ module ECell
 
             begin
               raise ECell::Error::PieceNotReady unless ECell::Run.subject.state?(:ready)
-              raise ECell::Error::Call::MissingCourier unless calling_request?
+              raise ECell::Error::Call::MissingSwitch unless calling_request?
               answer = calling_request << rpc
               if rpc.async
                 #benzrf TODO: this does not necessarily actually make the call

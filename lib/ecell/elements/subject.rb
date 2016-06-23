@@ -45,12 +45,12 @@ module ECell
       def provision!
         @actor_ids = []
         @injections = Injections.injections_for(@designs)
-        @shapes = @designs.inject([]) { |shapes, design|
+        @shapes = @designs.each_with_object([]) { |design, shapes|
           if defined? design::Methods
             self.class.send(:include, design::Methods)
           end
           if defined? design::Shapes
-            shapes += design::Shapes
+            shapes.concat(design::Shapes)
           else
             debug("No shapes defined for #{design}.")
           end

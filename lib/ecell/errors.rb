@@ -4,13 +4,13 @@ module ECell
   class Error < StandardError
     class MissingBlock < ArgumentError; end
     class PieceNotReady < ECell::Error; end
-    class CourierMissing < ECell::Error; end
+    class SwitchMissing < ECell::Error; end
     class InvalidResponse < ECell::Error; end
 
     module Call
       class Duplicate < ECell::Error; end
       class Incomplete < ECell::Error; end
-      class MissingCourier < ECell::Error; end
+      class MissingSwitch < ECell::Error; end
     end
 
     module Instruction
