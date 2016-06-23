@@ -51,3 +51,4 @@ unextracted/lib/ef/pack/roles/member.rb
 unextracted/lib/ef/pack/roles/courier.rb
 unextracted/lib/ef/pack/roles/petitioner.rb
 unextracted/lib/ef/pack/roles/respondent.rb
+unextracted/lib/ef/pack/roles/manager.rb
