@@ -16,31 +16,31 @@ module ECell
           @waiting = []
         end
 
-        def member_count
+        def follower_count
           @pieces.length
         end
 
-        def member_map(&block)
+        def follower_map(&block)
           raise ECell::Error::MissingBlock unless block
           @pieces.keys.map { |id| block.call(id) }
         end
 
-        def member?(id)
+        def follower?(id)
           @pieces.key?(id.to_sym)
         end
 
-        def members?
-          debug("Need: #{PIECES[ECell::Run.identity][:members]} ... Have: #{@pieces.keys}") if DEBUG_DEEP
-          PIECES[ECell::Run.identity][:members].each { |id| return false unless member?(id) }
+        def followers?
+          debug("Need: #{PIECES[ECell::Run.identity][:followers]} ... Have: #{@pieces.keys}") if DEBUG_DEEP
+          PIECES[ECell::Run.identity][:followers].each { |id| return false unless follower?(id) }
           true
         end
 
-        def member_attach(data)
-          if member?(id = data.id)
+        def follower_attach(data)
+          if follower?(id = data.id)
             begin
               unless ping?(id)
                 oversaw!(id)
-                member_attach(data)
+                follower_attach(data)
               else
                 return unless DEBUG_DEEP
                 debug(message: "Piece already attached (#{id}) and still alive. " +
@@ -61,7 +61,7 @@ module ECell
               else
                 @waiting.delete(id)
                 oversee! rpc.id
-                symbol!(:got_member)
+                symbol!(:got_follower)
                 ECell.instruct_broadcast.welcome!(rpc.id)
                 ECell::Run.subject.event!(:attaching, rpc)
               end

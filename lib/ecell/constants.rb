@@ -162,25 +162,25 @@ module ECell
       monitor: {
         interface: DEFAULT_INTERFACE,
         designs: [:leader, :courier],
-        members: [:process, :webstack]
+        followers: [:process, :webstack]
       },
       process: {
         interface: DEFAULT_INTERFACE,
         designs: [:manager, :respondent],
-        members: [:tasks, :events]
+        followers: [:tasks, :events]
       },
       webstack: {
         interface: DEFAULT_INTERFACE,
-        designs: [:member, :petitioner]
+        designs: [:follower, :petitioner]
       },
       events: {
         interface: DEFAULT_INTERFACE,
-        designs: [:member],
+        designs: [:follower],
         leader: :process
       },
       tasks: {
         interface: DEFAULT_INTERFACE,
-        designs: [:member],
+        designs: [:follower],
         leader: :process
       }
     }
@@ -235,7 +235,7 @@ module ECell
       sent_log: '<'.freeze,
       sent_pong: '&'.freeze,
       got_pong: '@'.freeze,
-      got_member: '+'.freeze,
+      got_follower: '+'.freeze,
       got_leader: '='.freeze,
       got_logging: '\\'.freeze,
       got_instruction: '$'.freeze,

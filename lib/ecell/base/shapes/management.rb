@@ -15,9 +15,9 @@ module ECell
           debug(message: "Initialized", reporter: self.class) if DEBUG_DEEP
         end
 
-        def welcome!(member)
-          return false if ECell::Run.identity == member
-          debug("Welcome #{member.to_s.green.bold}!")
+        def welcome!(follower)
+          return false if ECell::Run.identity == follower
+          debug("Welcome #{follower.to_s.green.bold}!")
           true
         end
 

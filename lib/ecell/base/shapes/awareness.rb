@@ -22,9 +22,9 @@ module ECell
             raise "No #{missing.join(' or ')}." unless missing.empty?
             case data.announcement
             when :presence
-              ECell.async(:vitality).member_attach(data)
+              ECell.async(:vitality).follower_attach(data)
             when :heartbeat
-              ECell.async(:vitality).heartbeat!(data.id) if ECell.sync(:vitality).member?(data.id)
+              ECell.async(:vitality).heartbeat!(data.id) if ECell.sync(:vitality).follower?(data.id)
             else
               debug("on_announcement[#{data.announcement}]: #{data}", reporter: self.class) if DEBUG_INJECTIONS
             end

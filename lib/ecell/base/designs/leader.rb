@@ -65,11 +65,11 @@ module ECell
           include ECell::Extensions
 
           def ready_together!
-            transition(ECell.sync(:vitality).members? ? :ready : :waiting) #de unless state?(:active)
+            transition(ECell.sync(:vitality).followers? ? :ready : :waiting) #de unless state?(:active)
           end
 
           def state_together?(at)
-            states = ECell.sync(:vitality).member_map { |id|
+            states = ECell.sync(:vitality).follower_map { |id|
               Celluloid::Future.new {
                 begin
                   rpc = ECell.instruct_sync(id).state
@@ -83,7 +83,7 @@ module ECell
             states = states.map(&:value)
             at_state = states.compact.count { |s| s.is_a?(Symbol) && state?(at, s) }
             debug("states: #{states} :: at_state: #{at_state}")
-            at_state == ECell.sync(:vitality).member_count
+            at_state == ECell.sync(:vitality).follower_count
           end
 
           def state_together!(states)
