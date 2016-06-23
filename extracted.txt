@@ -46,3 +46,4 @@ unextracted/lib/ef/pack/automaton.rb
 unextracted/lib/ef/pack/injections.rb
 unextracted/lib/ef/pack/defaults.rb
 unextracted/lib/ef/pack/service.rb
+unextracted/lib/ef/pack/roles/leader.rb
