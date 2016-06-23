@@ -6,6 +6,7 @@ module ECell
     class PieceNotReady < ECell::Error; end
     class SwitchMissing < ECell::Error; end
     class InvalidResponse < ECell::Error; end
+    class MissingEmitter < ECell::Error; end
 
     module Call
       class Duplicate < ECell::Error; end
