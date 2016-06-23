@@ -34,6 +34,8 @@ module ECell
       end
 
       #benzrf TODO: these are already given thru Extensions
+      # however... in `Logging`, at least, we can't *use* Extensions, or the
+      # logging delegators will override the methods that they delegate to. Hmm.
       LINE_IDS.each { |line_id|
         define_method(:"#{line_id}?") { @sockets[line_id] && @sockets[line_id].online }
         define_method(line_id) { |options={}| @sockets[line_id] || raise(ECell::Error::Line::Uninitialized) }

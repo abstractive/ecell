@@ -2,7 +2,7 @@ require 'json'
 require 'colorize'
 require 'celluloid/current'
 require 'ecell/elements/figure'
-require 'ecell/extensions'
+require 'ecell/constants'
 
 #benzrf TODO: clean up the bizarre dependency hacks
 # between this and files in `logging/`
@@ -55,7 +55,7 @@ module ECell
         # there doesn't actually need to be
 
         module Document
-          include ECell::Extensions
+          include ECell::Constants
 
           def logging_root(piece_id)
             "tcp://#{PIECES[piece_id][:interface]}:#{BINDINGS[piece_id][:logging_pull]}"
