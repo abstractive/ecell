@@ -174,7 +174,7 @@ module ECell
       end
 
       def wait_for_port
-        print!("Waiting for #{@interface}:#{@port}} to be available: ")
+        print!("Waiting for #{@interface}:#{@port} to be available: ")
         ECell::Run.wait_for_port(@interface, @port)
       end
 

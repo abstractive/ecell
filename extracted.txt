@@ -56,3 +56,4 @@ unextracted/lib/ef/pack/roles/operative.rb
 unextracted/lib/ef/pack/roles/coordinator.rb
 unextracted/lib/ef/pack/roles/admin.rb
 unextracted/lib/ef/pack/roles.rb
+unextracted/lib/ef/pack/availability.rb
