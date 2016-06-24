@@ -58,3 +58,5 @@ unextracted/lib/ef/pack/roles/admin.rb
 unextracted/lib/ef/pack/roles.rb
 unextracted/lib/ef/pack/availability.rb
 unextracted/lib/ef/service.rb
+unextracted/lib/ef/service/monitor.rb
+unextracted/lib/ef/service/hostmaster.rb
