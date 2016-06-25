@@ -72,3 +72,9 @@ unextracted/lib/ef/service/webstack/routes.rb
 unextracted/lib/ef/service/webstack/handler.rb
 unextracted/lib/ef/service/webstack/automata.rb
 unextracted/lib/ef/service/webstack/rpc.rb
+unextracted/lib/ef/service/tasks.rb
+unextracted/lib/ef/service/events.rb
+unextracted/lib/ef/service/tasks/automata.rb
+unextracted/lib/ef/service/events/automata.rb
+unextracted/lib/ef/service/tasks/operations/demonstrate.rb
+unextracted/lib/ef/service/events/operations/demonstrate.rb
