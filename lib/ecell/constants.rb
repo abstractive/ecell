@@ -107,6 +107,7 @@ module ECell
     }
 
     PIECE_STATES = [
+      :provisioning,
       :start,
       :attaching,
       :ready,

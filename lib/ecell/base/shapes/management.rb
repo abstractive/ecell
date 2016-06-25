@@ -2,6 +2,7 @@ require 'celluloid/current'
 require 'ecell/elements/figure'
 require 'ecell/run'
 require 'ecell/extensions'
+require 'ecell/constants'
 require 'ecell/errors'
 
 module ECell
@@ -109,7 +110,7 @@ module ECell
         end
 
         module Cooperate
-          include ECell::Extensions
+          include ECell::Constants
 
           def attached?
             @attached

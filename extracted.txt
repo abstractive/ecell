@@ -78,3 +78,12 @@ unextracted/lib/ef/service/tasks/automata.rb
 unextracted/lib/ef/service/events/automata.rb
 unextracted/lib/ef/service/tasks/operations/demonstrate.rb
 unextracted/lib/ef/service/events/operations/demonstrate.rb
+unextracted/lib/ef/service/process.rb
+unextracted/lib/ef/service/process/constants.rb
+unextracted/lib/ef/service/process/status.rb
+unextracted/lib/ef/service/process/cycle/automaton.rb
+unextracted/lib/ef/service/process/cycle/tasks.rb
+unextracted/lib/ef/service/process/cycle/events.rb
+unextracted/lib/ef/service/process/rpc.rb
+unextracted/lib/ef/service/process/automata.rb
+unextracted/lib/ef/service/process/hygeine.rb
