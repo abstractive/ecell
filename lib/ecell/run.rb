@@ -118,7 +118,7 @@ module ECell
           console("Code reloading activated.")
         end
         if DEBUG_RESOURCES
-          require "abstractive/esto"
+          require 'abstractive/esto'
           Abstractive::Esto.start!({
             monitors: [
               :threads_and_memory_and_uptime

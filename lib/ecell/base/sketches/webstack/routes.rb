@@ -67,7 +67,7 @@ class ECell::Base::Sketches::Webstack::Routes < Sinatra::Base
       ECell.call_sync(:process).get_list(params[:type], :indiscriminate_demonstration) { |rpc|
         if rpc.success?
           ECell.sync(:ClientRegistry).clients_announce!("List of mock #{params[:type]}:")
-          rpc[:"#{params[:type]}"].each { |item|
+          rpc.returns[:"#{params[:type]}"].each { |item|
             output = item.inject([]) { |string,(key, value)| string << "#{key}:#{value}"}
             ECell.sync(:ClientRegistry).clients_announce!("#{output.join(', ')}.")
           }
