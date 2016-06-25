@@ -60,3 +60,15 @@ unextracted/lib/ef/pack/availability.rb
 unextracted/lib/ef/service.rb
 unextracted/lib/ef/service/monitor.rb
 unextracted/lib/ef/service/hostmaster.rb
+unextracted/lib/ef/service/webstack.rb
+unextracted/lib/ef/service/webstack/extensions.rb
+unextracted/lib/ef/service/webstack/client_registry.rb
+unextracted/lib/ef/service/webstack/puma.rb
+unextracted/lib/ef/service/webstack/web_socket.rb
+unextracted/lib/ef/service/webstack/web_socket/emitters.rb
+unextracted/lib/ef/service/webstack/web_socket/mixins.rb
+unextracted/lib/ef/service/webstack/web_server.rb
+unextracted/lib/ef/service/webstack/routes.rb
+unextracted/lib/ef/service/webstack/handler.rb
+unextracted/lib/ef/service/webstack/automata.rb
+unextracted/lib/ef/service/webstack/rpc.rb

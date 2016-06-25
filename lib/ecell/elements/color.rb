@@ -236,10 +236,11 @@ require 'ecell/elements/color_rpc'
 
 #benzrf TODO: figure out where this should go
 if false and ECell::Run.identity?(:webstack)
-  ECell::Figures.call_sync(:process).restful_trigger(rpc: {message: "RPC #{Time.now.iso8601}"}) { |rpc|
+  require 'time'
+  ECell::Figures.call_sync(:process).web_trigger(rpc: {message: "RPC #{Time.now.iso8601}"}) { |rpc|
       if rpc.success?
         ECell.sync(:ClientRegistry).clients_announce!("#{rpc.id}[#{rpc.code}] #{rpc.message}.")
-        ECell.async(:logging).debug("Ran restful_trigger.", store: rpc, quiet: true)
+        ECell.async(:logging).debug("Ran web_trigger.", store: rpc, quiet: true)
       else
         message = if rpc.message?
           "#{rpc.id}[#{rpc.error}] #{rpc.message}."
@@ -253,6 +254,6 @@ if false and ECell::Run.identity?(:webstack)
       response = rpc
     }
 
-  ECell::Logger.dump! ECell::Figures.call_async(:process).restful_trigger(rpc: {message: "RPC.async #{Time.now.iso8601}"})
+  ECell::Logger.dump! ECell::Figures.call_async(:process).web_trigger(rpc: {message: "RPC.async #{Time.now.iso8601}"})
 end
 

@@ -1,0 +1,43 @@
+<html>
+  <head>
+    <title>ECell: RPC.</title>
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <script type="text/javascript">
+    function lookDown() {
+      alert("Be sure to make a websocket connection via the console below first...\n\nTriggering now.");
+    }
+    function triggerRPC() {
+      lookDown()
+      XHR('/trigger')
+    }
+    function getList(type) {
+      lookDown()
+      XHR("/list/"+type)
+    }
+    function XHR(uri) {
+      var ajax = new XMLHttpRequest();
+      ajax.onreadystatechange = function() {
+        if (ajax.readyState == XMLHttpRequest.DONE ) {
+           if(ajax.status == 200){
+            alert("The Webstack service says:\n\n" + ajax.responseText)
+           } else {
+            alert('There was an error.')
+           }
+        }
+      }
+      ajax.open("GET", uri, true);
+      ajax.send();
+    }
+    </script>
+  </head>
+  <body class='toolbar'>
+    <div class="right">
+      <a href="/" target="_top">&laquo; Back to Root</a>
+    </div>
+    <a href="#" class='trigger' onClick="triggerRPC();">Trigger an RPC</a>
+    <a href="#" onClick="getList('tasks');">Task List</a>
+    <a href="#" onClick="getList('events');">Event List</a>
+    <span>Make sure to make a websocket connection via the console below first.</span>
+  </body>
+</html>
+

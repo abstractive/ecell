@@ -7,8 +7,8 @@ module ECell
         Shapes = [
           {
             as: :calling,
-            faces: [:answer],
             type: ECell::Base::Shapes::Calling,
+            faces: [:answer],
             strokes: {calling_reply: {mode: :connecting}}
           }
         ]
