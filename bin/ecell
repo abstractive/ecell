@@ -1,0 +1,160 @@
+#!/bin/bash
+
+cd `export ECELL="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../"; echo $ECELL`
+
+TAG="ECell"
+MARK="$TAG[$1]"
+
+if [ $# -eq 1 ]
+then
+  case "$1" in
+  "shutdown"|"stop")
+    echo "$TAG stopping."
+    ./bin/ecell tasks stop > /dev/null &
+    ./bin/ecell events stop > /dev/null &
+    ./bin/ecell webstack stop > /dev/null &
+    sleep 1.26
+    ./bin/ecell process stop > /dev/null &
+    sleep 1.26
+    ./bin/ecell monitor stop > /dev/null
+    exit 0
+    ;;
+  "killall")
+    ./bin/ecell tasks kill
+    ./bin/ecell events kill
+    ./bin/ecell webstack kill
+    ./bin/ecell process kill
+    ./bin/ecell monitor kill
+    exit 0
+    ;;
+  "check")
+    ps -A -o pid,cmd | grep jruby | grep "bin/start_piece" | grep -v grep
+    exit 0
+    ;;
+  "restart")
+    printf "$TAG restarting."
+    ./bin/ecell shutdown > /dev/null
+    printf "\n"
+    ./bin/ecell start
+    exit 0
+    ;;
+  "reset")
+    ./bin/ecell tasks kill
+    ./bin/ecell events kill
+    ./bin/ecell webstack kill
+    sleep 1.26
+    ./bin/ecell process kill
+    ./bin/ecell monitor kill
+    sleep 1.26
+    ./bin/ecell start
+    exit 0
+    ;;
+  "start")
+    if bundle exec ruby bin/wait_available.rb $1
+    then
+      ./bin/scripts/start.sh monitor
+      sleep 2
+      ./bin/scripts/start.sh webstack
+      ./bin/scripts/start.sh process
+      sleep 2
+      ./bin/scripts/start.sh events
+      ./bin/scripts/start.sh tasks
+      exit 0
+    fi
+    exit 1
+    ;;
+    #de "terminals")
+    #de terminator -l ecell.errors &
+    #de terminator -l ecell.consoles &
+    #de ;;
+  "run")
+    if bundle exec ruby bin/wait_available.rb $1 >> logs/$1-errors.log
+    then
+      ./bin/scripts/run.sh monitor
+      sleep 2
+      ./bin/scripts/run.sh webstack
+      ./bin/scripts/run.sh process
+      sleep 2
+      ./bin/scripts/run.sh events
+      ./bin/scripts/run.sh tasks
+      exit 0
+    fi
+    exit 1
+    ;;
+  "try")
+    ./bin/ecell restart &
+    sleep 1
+    echo -e "\nTrying for 90 seconds."
+    sleep 90
+    echo "$TAG Shutting them down."
+    ./bin/ecell stop
+    exit 0
+    ;;
+  "sync")
+    git pull
+    bundle update
+    exit 0
+    ;;
+  "update")
+    bundle update
+    exit 0
+    ;;
+  "pull")
+    git pull
+    exit 0
+    ;;
+  *)
+    if [[ $1 == *"/"* ]]
+    then
+      IFS='/' read -ra COMMANDS <<< "$1"
+      echo "$TAG Executing chain of commands: ${COMMANDS[@]}"
+      for command in "${COMMANDS[@]}"; do
+          ./bin/ecell $command
+      done
+    else
+      echo "$TAG Invalid command: $1"
+      exit 1
+    fi
+    ;;
+  esac
+fi
+
+if ! ./bin/scripts/piece.sh $1 $2
+then
+  exit 1
+fi
+
+case "$2" in
+"pry")
+  echo "$MARK starting..."
+  ./bin/scripts/start.sh $1 pry
+  ;;
+"run")
+  echo "$MARK starting..."
+  ./bin/scripts/start.sh $1
+  ;;
+"start")
+  ./bin/scripts/start.sh $1
+  echo "$MARK started."
+  ./bin/scripts/watch.sh $1 $2
+  ;;
+"restart")
+  ./bin/scripts/restart.sh $1
+  echo "$MARK restarted."
+  ;;
+"stop")
+  ./bin/scripts/stop.sh $1 >> logs/$1-errors.log
+  ;;
+"kill")
+  ./bin/scripts/kill.sh $1
+  ;;
+"console"|"errors")
+  echo "$MARK $2:"
+  ./bin/scripts/watch.sh $1 $2 2> /dev/null
+  ;;
+"flush")
+  echo "" > "$ECELL/logs/$1-console.log"
+  echo "" > "$ECELL/logs/$1-errors.log"
+  echo "ECell $1 logs emptied."
+  ;;
+esac
