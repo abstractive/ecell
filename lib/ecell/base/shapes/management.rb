@@ -4,6 +4,7 @@ require 'ecell/run'
 require 'ecell/extensions'
 require 'ecell/constants'
 require 'ecell/errors'
+require 'ecell/internals/actor'
 
 module ECell
   module Base
@@ -14,12 +15,6 @@ module ECell
           super(options)
           @replies = {}
           debug(message: "Initialized", reporter: self.class) if DEBUG_DEEP
-        end
-
-        def welcome!(follower)
-          return false if ECell::Run.identity == follower
-          debug("Welcome #{follower.to_s.green.bold}!")
-          true
         end
 
         module Manage
@@ -188,6 +183,16 @@ module ECell
             exception!(ex)
           end
         end
+      end
+    end
+  end
+
+  module Elements
+    class Subject < ECell::Internals::Actor
+      def welcome!(follower)
+        return false if ECell::Run.identity == follower
+        debug("Welcome #{follower.to_s.green.bold}!")
+        true
       end
     end
   end

@@ -2,6 +2,7 @@ require 'celluloid/current'
 require 'timeout'
 require 'ecell/elements/color'
 require 'ecell/run'
+require 'ecell'
 
 require 'ecell/elements/line'
 
@@ -57,7 +58,8 @@ class ECell::Elements::Line
       rpc = data.to? && data.to
       #de This is an RPC, and this piece made the call
       #de therefore it is waiting for the answer.
-      if rpc && data.id?(@piece_id) && return_form = RETURNS[data.code]
+      if rpc && data.id?(@piece_id) && condition = RETURNS[data.code]
+        figure_id, return_form = condition
         waiting = data.uuid
         waiter = :"#{return_form}_condition"
       end
@@ -71,7 +73,7 @@ class ECell::Elements::Line
       end
       symbol!(mode)
     }
-    return send(waiter, waiting) if waiting
+    return ECell.sync(figure_id).send(waiter, waiting) if waiting
     data
   rescue Timeout::Error
     symbol!(:timeout)

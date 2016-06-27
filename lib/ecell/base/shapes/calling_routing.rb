@@ -1,4 +1,5 @@
 require 'ecell/extensions'
+require 'ecell'
 require 'ecell/internals'
 require 'ecell/run'
 
@@ -16,7 +17,7 @@ module ECell
 
     def method_missing(method, *args, &block)
       dump!("Routing call to #{method}@#{@piece_id} with args: #{args.dup}}") #de if DEBUG_DEEP
-      place_call! call!(method, {to: @piece_id, callback: block, async: @async, args: args})
+      ECell.sync(:calling).place_call! call!(method, {to: @piece_id, callback: block, async: @async, args: args})
     end
   end
 

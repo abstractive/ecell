@@ -38,9 +38,9 @@ module ECell
     ] + RETURN_FORMS
 
     RETURNS = {
-      call: :answer,
-      instruction: :reply,
-      task: :report,
+      call: [:calling, :answer],
+      instruction: [:management, :reply],
+      task: [:distribution, :report],
     }
 
 

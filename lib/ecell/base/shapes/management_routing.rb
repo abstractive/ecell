@@ -1,4 +1,5 @@
 require 'ecell/extensions'
+require 'ecell'
 require 'ecell/internals'
 require 'ecell/run'
 
@@ -15,7 +16,7 @@ module ECell
 
     def method_missing(method, *args, &block)
       debug("Routing instruction to #{method}@#{@options[:to]} w/ args: #{args}") if DEBUG_DEEP
-      instruct! instruction!(method, @options.merge(callback: block, args: args))
+      ECell.sync(:management).instruct! instruction!(method, @options.merge(callback: block, args: args))
     end
   end
 

@@ -39,20 +39,6 @@ module ECell
 
         object.def_delegators :"ECell::Internals::Conduit",
           *LINE_IDS.inject([]) { |c,d| c << :"#{d}?"; c << d; c }
-
-        object.def_delegators :"ECell.sync(:management)",
-          :reply_condition,
-          :instruct!,
-          :replying!,
-          :welcome!
-
-        object.def_delegators :"ECell.async(:vitality)",
-          :heartbeat!
-
-        object.def_delegators :"ECell.sync(:calling)",
-          :answer_condition,
-          :place_call!,
-          :answering!
       end
     end
 
