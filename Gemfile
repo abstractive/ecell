@@ -8,12 +8,6 @@ gem 'celluloid-zmq'
 
 gem 'celluloid-task-pooledfiber'
 
-platforms :rbx do
-  gem 'rubysl-socket',
-    github: 'abstractive/rubysl-socket',
-    branch: 'phyre'
-end
-
 gem 'abstractive',
     github: 'abstractive/abstractive',
     branch: 'master'
@@ -35,4 +29,3 @@ gem 'colorize'
 gem 'sinatra'
 gem 'puma'
 gem 'websocket_parser'
-

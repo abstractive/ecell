@@ -3,14 +3,7 @@ require 'socket'
 class Ef::Service
   class << self
 
-    case RUBY_ENGINE
-    when "rbx"
-      rubysl_lib = File.join(Gem::Specification.find_by_name("rubysl-socket").full_gem_path, "lib/rubysl/socket")
-      load File.join(rubysl_lib, "/socket.rb")
-      load File.join(rubysl_lib, "/addrinfo.rb")
-    when "jruby"
-      require 'socket'      
-    end
+    require 'socket' if RUBY_ENGINE == 'jruby'
 
     def interface
       SERVICES[@identity][:interface]
