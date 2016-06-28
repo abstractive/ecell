@@ -58,7 +58,7 @@ module ECell
         end
         @packed = @data.is_a?(String)
         @data = unpacked!
-        @data[:id] ||= ECell::Run.identity
+        @data[:id] ||= ECell::Run.piece_id
         #de @data[:timestamp] ||= Time.now.to_f
         @data[:uuid] ||= uuid!
       rescue => ex
@@ -235,7 +235,7 @@ end
 require 'ecell/elements/color_rpc'
 
 #benzrf TODO: figure out where this should go
-if false and ECell::Run.identity?(:webstack)
+if false and ECell::Run.piece_id?(:webstack)
   require 'time'
   ECell::Figures.call_sync(:process).web_trigger(rpc: {message: "RPC #{Time.now.iso8601}"}) { |rpc|
       if rpc.success?

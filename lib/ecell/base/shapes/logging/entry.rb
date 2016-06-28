@@ -43,7 +43,7 @@ class ECell::Base::Shapes::Logging::Entry
     @dump ||= options.fetch(:dump, nil)
     @timer = options.fetch(:timer, nil)
     @declare = options.fetch(:declare, DEFAULTS[:log_declare])
-    @piece_id = options.fetch(:piece_id, ECell::Run.identity)
+    @piece_id = options.fetch(:piece_id, ECell::Run.piece_id)
     #de @storage = options.fetch(:storage, ECell.sync(:storage))
     #de TODO: Store IP address?
 
@@ -81,7 +81,7 @@ class ECell::Base::Shapes::Logging::Entry
   end
 
   def me?
-    @piece_id == ECell::Run.identity
+    @piece_id == ECell::Run.piece_id
   end
 
   def method_missing(var, *args)

@@ -5,7 +5,7 @@ require 'ecell/elements/color'
 class ECell::Elements::Color
   def executable
     dump!(LOG_LINE)
-    dump!("Piece: #{ECell::Run.identity} #{@data}")
+    dump!("Piece: #{ECell::Run.piece_id} #{@data}")
     _ = @data.fetch(:args, [])
     dump!("args: #{_}")
     params = [@data[@data[:code].to_sym]]
@@ -40,7 +40,7 @@ class ECell::Elements::Color
     RETURN_FORMS.each { |form|
       define_method(:"#{form}!") { |rpc, value, add={}|
         rpc.to = rpc.id
-        rpc.id = ECell::Run.identity
+        rpc.id = ECell::Run.piece_id
         if value == :error
           rpc.error = add[:type] || :unknown
           rpc.code = :error

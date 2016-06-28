@@ -17,22 +17,22 @@ module ECell
 
       def_delegators "ECell::Logger", *LOG_LEVELS, :exception, :caught, :console, :print!, :symbol!, :dump!
 
-      attr_reader :identity, :pid
+      attr_reader :piece_id, :pid
       attr_writer :online
 
       def online?;              @online === true        end
-      def identity?(piece_id);  @identity == piece_id   end
+      def piece_id?(piece_id);  @piece_id == piece_id   end
 
       def configuration
         {
-          piece_id: @identity,
-          leader: PIECES[@identity][:leader] || DEFAULT_LEADER
+          piece_id: @piece_id,
+          leader: PIECES[@piece_id][:leader] || DEFAULT_LEADER
         }
       end
 
       def run!(sketch, piece_id)
         @online = true
-        @identity = piece_id
+        @piece_id = piece_id
         @pry = CODE_PRYING && ARGV[1] == 'pry'
         select_output!
         code_reloading! if CODE_RELOADING
@@ -58,7 +58,7 @@ module ECell
       end
 
       def subject
-        ECell.sync(@identity)
+        ECell.sync(@piece_id)
       end
 
       def pid!(piece_id) #de TODO: Check for Windows compatibility.
@@ -143,8 +143,8 @@ module ECell
       end
 
       def select_output!
-        log = File.expand_path("../../../logs/#{@identity}-console.log", __FILE__)
-        dump = File.expand_path("../../../logs/#{@identity}-errors.log", __FILE__)
+        log = File.expand_path("../../../logs/#{@piece_id}-console.log", __FILE__)
+        dump = File.expand_path("../../../logs/#{@piece_id}-errors.log", __FILE__)
         @output = File.open(log, "a")
         @dump = File.open(dump, "a")
         if DEBUG_DEEP
@@ -162,7 +162,7 @@ module ECell
         @dump = nil
         @online = false
         waited = ECell::Internals::Timer.begin
-        ECell.sync(@identity).transition(:shutdown)
+        ECell.sync(@piece_id).transition(:shutdown)
         #de TODO: Revisit this and continue looking for suspended tasks who error out.
         Celluloid.logger = ::Logger.new("/dev/null")
         sleep 0.126
@@ -193,12 +193,12 @@ module ECell
       end
 
       def interface
-        PIECES[identity][:interface]
+        PIECES[piece_id][:interface]
       end
 
       def check_port_availability
-        if BINDINGS[identity]
-          BINDINGS[identity].each { |line_id, port|
+        if BINDINGS[piece_id]
+          BINDINGS[piece_id].each { |line_id, port|
             unless port_available?(interface, port)
               begin
                 waited = ECell::Internals::Timer.begin

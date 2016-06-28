@@ -25,20 +25,20 @@ end
 waiting = false
 
 
-PIECES.each { |identity,options|
-  if BINDINGS[identity]
-    BINDINGS[identity].each { |line, port|
+PIECES.each { |piece_id,options|
+  if BINDINGS[piece_id]
+    BINDINGS[piece_id].each { |line, port|
       waited = ECell::Internals::Timer.begin
       begin
-        unless ECell::Run.port_available?(PIECES[identity][:interface], port)
+        unless ECell::Run.port_available?(PIECES[piece_id][:interface], port)
           unless waiting
             puts "Checking if ports are available for all pieces..."
             waiting = true
           end
           print ">> "
-          print "#{line}@#{identity} needs:".ljust(40)
-          print "#{PIECES[identity][:interface]}:#{port} ".ljust(20)
-          ECell::Run.wait_for_port(PIECES[identity][:interface], port)
+          print "#{line}@#{piece_id} needs:".ljust(40)
+          print "#{PIECES[piece_id][:interface]}:#{port} ".ljust(20)
+          ECell::Run.wait_for_port(PIECES[piece_id][:interface], port)
           print "Available: took #{"%0.4f" % (waited.stop)} seconds to free up."
           print "\n"
         end

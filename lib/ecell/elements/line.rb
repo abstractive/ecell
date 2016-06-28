@@ -24,7 +24,7 @@ module ECell
 
       extend Forwardable
       def_delegators :@automaton, :transition
-      def_delegators :@socket, :identity
+      def_delegators :@socket, :piece_id
 
       attr_reader :port, :interface, :endpoint, :online, :engaged, :ready, :line_id
 
@@ -73,7 +73,7 @@ module ECell
         return unless ECell::Run.online?
         @automaton = Automaton.new
         begin
-          @piece_id ||= options.fetch(:piece_id, ECell::Run.identity)
+          @piece_id ||= options.fetch(:piece_id, ECell::Run.piece_id)
           @ready = Queue.new
           @port, @interface = nil, nil
           @line_id = line if line.is_a? Symbol

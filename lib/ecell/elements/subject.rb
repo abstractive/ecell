@@ -16,8 +16,8 @@ module ECell
 
       def initialize(configuration={})
         return unless ECell::Run.online?
-        @identity = configuration.fetch(:piece_id)
-        fail "No identity provided." unless @identity
+        @piece_id = configuration.fetch(:piece_id)
+        fail "No piece_id provided." unless @piece_id
         @leader = configuration.fetch(:leader)
         fail "No leader provided." unless @leader
         @online = true
@@ -84,7 +84,7 @@ module ECell
         @line_ids.uniq!
       end
 
-      def line!(line_id, options, figure_id=@identity)
+      def line!(line_id, options, figure_id=@piece_id)
         ECell.sync(figure_id).initialize_line(line_id, options)
         @actor_ids << name
         @actors.push(name)

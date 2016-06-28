@@ -191,7 +191,7 @@ module ECell
   module Elements
     class Subject < ECell::Internals::Actor
       def welcome!(follower)
-        return false if ECell::Run.identity == follower
+        return false if ECell::Run.piece_id == follower
         debug("Welcome #{follower.to_s.green.bold}!")
         true
       end

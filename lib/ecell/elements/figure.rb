@@ -49,7 +49,7 @@ module ECell
 
       def leader
         #benzrf TODO: figure out proper coordinator-identification logic
-        PIECES[ECell::Run.identity][:leader] || DEFAULT_LEADER
+        PIECES[ECell::Run.piece_id][:leader] || DEFAULT_LEADER
       end
     end
   end
