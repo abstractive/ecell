@@ -48,8 +48,7 @@ module ECell
       end
 
       def leader
-        #benzrf TODO: figure out proper coordinator-identification logic
-        PIECES[ECell::Run.piece_id][:leader] || DEFAULT_LEADER
+        configuration[:leader]
       end
     end
   end

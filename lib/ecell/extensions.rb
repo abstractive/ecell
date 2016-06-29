@@ -17,6 +17,9 @@ module ECell
 
         #benzrf TODO: remove unnecessary delegators
 
+        object.def_delegators :"ECell::Run",
+          :configuration
+
         object.def_delegators :"ECell::Elements::Color",
           :exception!,
           *COLOR_FORMS.map { |fo| :"#{fo}!" }

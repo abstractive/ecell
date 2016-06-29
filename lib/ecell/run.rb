@@ -17,22 +17,18 @@ module ECell
 
       def_delegators "ECell::Logger", *LOG_LEVELS, :exception, :caught, :console, :print!, :symbol!, :dump!
 
-      attr_reader :piece_id, :pid
+      attr_reader :piece_id, :pid, :configuration
       attr_writer :online
 
       def online?;              @online === true        end
       def piece_id?(piece_id);  @piece_id == piece_id   end
 
-      def configuration
-        {
-          piece_id: @piece_id,
-          leader: PIECES[@piece_id][:leader] || DEFAULT_LEADER
-        }
-      end
-
-      def run!(sketch, piece_id)
+      def run!(sketch, configuration)
+        @configuration = configuration
         @online = true
-        @piece_id = piece_id
+        @piece_id = configuration.fetch(:piece_id)
+        fail "No piece_id provided." unless @piece_id
+        configuration[:leader] = PIECES[@piece_id][:leader] || DEFAULT_LEADER
         @pry = CODE_PRYING && ARGV[1] == 'pry'
         select_output!
         code_reloading! if CODE_RELOADING

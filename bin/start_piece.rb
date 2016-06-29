@@ -31,5 +31,5 @@ else
 end
 
 require "ecell/base/sketches/#{piece_id}"
-ECell::Run.run! ECell::Base::Sketches.const_get(piece_id.capitalize), piece_id.to_sym
+ECell::Run.run! ECell::Base::Sketches.const_get(piece_id.capitalize), piece_id: piece_id.to_sym
 
