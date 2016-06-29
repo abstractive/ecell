@@ -81,7 +81,7 @@ module ECell
               }
             }
             states = states.map(&:value)
-            at_state = states.compact.count { |s| s.is_a?(Symbol) && state?(at, s) }
+            at_state = states.compact.count { |s| s.is_a?(Symbol) && at == s }
             debug("states: #{states} :: at_state: #{at_state}")
             at_state == ECell.sync(:vitality).follower_count
           end

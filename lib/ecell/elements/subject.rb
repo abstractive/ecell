@@ -34,7 +34,7 @@ module ECell
       end
 
       def state?(state, current=nil)
-        current ||= state
+        current ||= self.state
         return true if (PIECE_STATES.index(current) >= PIECE_STATES.index(state)) &&
                        (PIECE_STATES.index(current) < PIECE_STATES.index(:stalled))
         return true if (PIECE_STATES.index(current) >= PIECE_STATES.index(state)) &&

@@ -68,7 +68,8 @@ module ECell
             callback = rpc.delete(:callback)
 
             begin
-              raise ECell::Error::PieceNotReady unless ECell::Run.subject.state?(:attaching)
+              #benzrf TODO: fix the messed-up state-based logic
+              # raise ECell::Error::PieceNotReady unless ECell::Run.subject.state?(:attaching)
               raise ECell::Error::Management::RouterMissing unless management_router?
               if rpc[:broadcast]
                 management_publish << rpc
