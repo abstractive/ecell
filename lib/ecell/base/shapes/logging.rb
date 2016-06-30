@@ -58,7 +58,7 @@ module ECell
           include ECell::Constants
 
           def logging_root(piece_id)
-            "tcp://#{PIECES[piece_id][:interface]}:#{BINDINGS[piece_id][:logging_pull]}"
+            "tcp://#{bindings[piece_id][:interface]}:#{bindings[piece_id][:logging_pull]}"
           end
 
           def connect_logging!

@@ -12,7 +12,7 @@ module ECell
           finalizer :shutdown
 
           def initialize(config={})
-            @enabled = config[:piece_id] == DEFAULT_LEADER
+            @enabled = config[:piece_id] == configuration[:leader]
             execute {
               tag = mark("FINISH", :after)
               @console = File.open(LOG_FILE[:console], "a")

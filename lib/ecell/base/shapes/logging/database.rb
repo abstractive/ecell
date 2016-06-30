@@ -14,7 +14,9 @@ module ECell
 
           def initialize(config={})
             #de This actually activates the storage mechanism by asking, am I default leader?
-            @enabled = config[:piece_id] == DEFAULT_LEADER
+            #benzrf TODO: actually it now just checks "am I my own leader?"
+            # not sure if that's correct behavior
+            @enabled = config[:piece_id] == configuration[:leader]
             execute {
               #de @db = ECell::Base::Shapes::Database::MySQL.new({}) #de Create connection to database.
             }

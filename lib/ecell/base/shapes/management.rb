@@ -114,8 +114,8 @@ module ECell
 
           def management_root(piece_id)
             [
-              "tcp://#{PIECES[piece_id][:interface]}:#{BINDINGS[piece_id][:management_router]}",
-              "tcp://#{PIECES[piece_id][:interface]}:#{BINDINGS[piece_id][:management_publish]}"
+              "tcp://#{bindings[piece_id][:interface]}:#{bindings[piece_id][:management_router]}",
+              "tcp://#{bindings[piece_id][:interface]}:#{bindings[piece_id][:management_publish]}"
             ]
           end
 

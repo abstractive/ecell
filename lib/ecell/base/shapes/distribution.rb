@@ -14,7 +14,7 @@ module ECell
           include ECell::Extensions
 
           def distribution_root(piece_id, line_id=:distribution_pull2)
-            "tcp://#{PIECES[piece_id][:interface]}:#{BINDINGS[piece_id][line_id]}"
+            "tcp://#{bindings[piece_id][:interface]}:#{bindings[piece_id][line_id]}"
           end
 
           def distribution_input!(type)

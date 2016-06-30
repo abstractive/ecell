@@ -57,7 +57,7 @@ module ECell
             caught(ex, "Failure in on_system emitter.", reporter: self.class)
           end
 
-          def authority!(id=DEFAULT_LEADER)
+          def authority!(id=configuration[:leader])
             @allowed ||= []
             caught(ex, "Admin authority given to #{id}", reporter: self.class)
             @allowed << id

@@ -18,7 +18,8 @@ module ECell
         #benzrf TODO: remove unnecessary delegators
 
         object.def_delegators :"ECell::Run",
-          :configuration
+          :configuration,
+          :bindings
 
         object.def_delegators :"ECell::Elements::Color",
           :exception!,

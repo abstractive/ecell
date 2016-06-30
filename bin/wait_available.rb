@@ -1,12 +1,8 @@
 #!/usr/bin/env ruby
 
 $LOAD_PATH.push(File.expand_path("../../lib", __FILE__))
-
-require 'ecell/constants'
 require 'ecell/internals/timer'
 require 'ecell/run'
-
-include ECell::Constants
 
 @success = false
 deconstructor = ->{
@@ -24,29 +20,29 @@ end
 
 waiting = false
 
+require_relative 'demo_mesh_configuration'
 
-PIECES.each { |piece_id,options|
-  if BINDINGS[piece_id]
-    BINDINGS[piece_id].each { |line, port|
-      waited = ECell::Internals::Timer.begin
-      begin
-        unless ECell::Run.port_available?(PIECES[piece_id][:interface], port)
-          unless waiting
-            puts "Checking if ports are available for all pieces..."
-            waiting = true
-          end
-          print ">> "
-          print "#{line}@#{piece_id} needs:".ljust(40)
-          print "#{PIECES[piece_id][:interface]}:#{port} ".ljust(20)
-          ECell::Run.wait_for_port(PIECES[piece_id][:interface], port)
-          print "Available: took #{"%0.4f" % (waited.stop)} seconds to free up."
-          print "\n"
+DEMO_MESH_BINDINGS.each { |piece_id,options|
+  options.each { |line, port|
+    next if line == :interface
+    waited = ECell::Internals::Timer.begin
+    begin
+      unless ECell::Run.port_available?(options[:interface], port)
+        unless waiting
+          puts "Checking if ports are available for all pieces..."
+          waiting = true
         end
-        @success = true
-      ensure
-        waited.stop && waited = nil
+        print ">> "
+        print "#{line}@#{piece_id} needs:".ljust(40)
+        print "#{options[:interface]}:#{port} ".ljust(20)
+        ECell::Run.wait_for_port(options[:interface], port)
+        print "Available: took #{"%0.4f" % (waited.stop)} seconds to free up."
+        print "\n"
       end
-    }
-  end
+      @success = true
+    ensure
+      waited.stop && waited = nil
+    end
+  }
 }
 

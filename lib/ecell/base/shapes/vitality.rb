@@ -30,8 +30,8 @@ module ECell
         end
 
         def followers?
-          debug("Need: #{PIECES[ECell::Run.piece_id][:followers]} ... Have: #{@pieces.keys}") if DEBUG_DEEP
-          PIECES[ECell::Run.piece_id][:followers].each { |id| return false unless follower?(id) }
+          debug("Need: #{configuration[:followers]} ... Have: #{@pieces.keys}") if DEBUG_DEEP
+          configuration[:followers].each { |id| return false unless follower?(id) }
           true
         end
 

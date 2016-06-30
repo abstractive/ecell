@@ -28,7 +28,6 @@ module ECell
         @online = true
         @piece_id = configuration.fetch(:piece_id)
         fail "No piece_id provided." unless @piece_id
-        configuration[:leader] = PIECES[@piece_id][:leader] || DEFAULT_LEADER
         @pry = CODE_PRYING && ARGV[1] == 'pry'
         select_output!
         code_reloading! if CODE_RELOADING
@@ -188,13 +187,18 @@ module ECell
         io
       end
 
+      def bindings
+        configuration[:bindings]
+      end
+
       def interface
-        PIECES[piece_id][:interface]
+        configuration[:bindings][piece_id][:interface]
       end
 
       def check_port_availability
-        if BINDINGS[piece_id]
-          BINDINGS[piece_id].each { |line_id, port|
+        if bindings[piece_id]
+          bindings[piece_id].each { |line_id, port|
+            next if line_id == :interface
             unless port_available?(interface, port)
               begin
                 waited = ECell::Internals::Timer.begin

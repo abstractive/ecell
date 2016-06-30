@@ -181,7 +181,7 @@ module ECell
       #de Grab a system assigned port.
       def endpoint!
         @endpoint ||= if binding?
-          BINDINGS[@piece_id][@line_id] if BINDINGS[@piece_id] and BINDINGS[@piece_id][@line_id]
+          bindings[@piece_id][@line_id] if bindings[@piece_id] and bindings[@piece_id][@line_id]
         end
         return if @endpoint.is_a? String
         if @endpoint.is_a? Hash

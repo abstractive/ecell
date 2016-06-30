@@ -1,8 +1,5 @@
 module ECell
   module Constants
-    DEFAULT_LEADER    = :monitor
-    DEFAULT_SWITCH    = DEFAULT_LEADER
-
     DEBUG             = true
     DEBUG_DEEP        = false
     DEBUG_AUTOMATA    = false
@@ -154,76 +151,8 @@ module ECell
       :distribution_pull2,
     ]
 
-    PIECES = {
-=begin
-    hostmaster: {
-      interface: DEFAULT_INTERFACE,
-      designs: [:admin]
-    },
-=end
-      monitor: {
-        interface: DEFAULT_INTERFACE,
-        designs: [:leader, :switch],
-        followers: [:process, :webstack]
-      },
-      process: {
-        interface: DEFAULT_INTERFACE,
-        designs: [:manager, :respondent],
-        followers: [:tasks, :events]
-      },
-      webstack: {
-        interface: DEFAULT_INTERFACE,
-        designs: [:follower, :petitioner]
-      },
-      events: {
-        interface: DEFAULT_INTERFACE,
-        designs: [:follower],
-        leader: :process
-      },
-      tasks: {
-        interface: DEFAULT_INTERFACE,
-        designs: [:follower],
-        leader: :process
-      }
-    }
-
     #de Uses port 0 binding for everything except the awareness lines...
     #de unless a port is set.
-
-    WEBSTACK = {
-      host: '0.0.0.0',
-      port: 4567,
-      threads: {
-        min: 0,
-        max: 16
-      }
-    }
-
-    monitor_base = 7000
-    process_base = 9000
-
-    BINDINGS = {
-      monitor: {
-        awareness_subscribe: monitor_base,
-        logging_pull: monitor_base += 1,
-        management_router: monitor_base += 1,
-        management_publish: monitor_base += 1,
-        calling_router2: monitor_base += 1,
-        calling_router: monitor_base += 1
-      },
-      process: {
-        awareness_subscribe: process_base,
-        logging_pull: process_base += 1,
-        distribution_pull2: process_base += 1,
-        distribution_tasks_push2: process_base += 1,
-        distribution_events_push2: process_base += 1,
-        management_router: process_base += 1,
-        management_publish: process_base += 1,
-      },
-      #de monitor: { awareness_subscribe: 'monitor.awareness', },
-      #de process: { awareness_subscribe: 'process.awareness' },
-      webstack: { http_server: WEBSTACK[:port] }
-    }
 
     LOG_LINE = "< -- = --- = ---- = ----- = ------ = ---+--- = ------ = ----- = ---- = --- = -- > "
 

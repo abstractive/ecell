@@ -13,13 +13,11 @@ module ECell
         include ECell::Extensions
 
         def interface(piece_id)
-          return DEFAULT_INTERFACE unless PIECES[piece_id] && PIECES[piece_id][:interface]
-          PIECES[piece_id][:interface]
+          bindings[piece_id] && bindings[piece_id][:interface] || DEFAULT_INTERFACE
         end
 
         def port(piece_id, stroke_id)
-          return DEFAULT_PORT unless BINDINGS[piece_id] && BINDINGS[piece_id][stroke_id]
-          BINDINGS[piece_id][stroke_id]
+          bindings[piece_id] && bindings[piece_id][stroke_id] || DEFAULT_PORT
         end
 
         LINE_IDS.each { |line_id|

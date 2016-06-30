@@ -13,9 +13,18 @@ require 'ecell/base/sketches/webstack'
 class ECell::Base::Sketches::Webstack::Handler < ECell::Internals::Actor
   finalizer :stop!
 
+  WEBSTACK = {
+    host: '0.0.0.0',
+    threads: {
+      min: 0,
+      max: 16
+    }
+  }
+
   def initialize(options={})
     return unless ECell::Run.online?
     options = WEBSTACK.merge(options)
+    options[:port] ||= bindings[ECell::Run.piece_id][:http_server]
     @rack ||= Rack::Builder.new do
       use ECell::Base::Sketches::Webstack::WebServer
       map( '/') {

@@ -19,7 +19,7 @@ module ECell
           include ECell::Extensions
 
           def calling_root(piece_id)
-            "tcp://#{PIECES[piece_id][:interface]}:#{BINDINGS[piece_id][:calling_router]}"
+            "tcp://#{bindings[piece_id][:interface]}:#{bindings[piece_id][:calling_router]}"
           end
 
           def attach_switch_incoming!
@@ -113,7 +113,7 @@ module ECell
           include ECell::Extensions
 
           def answering_root(piece_id)
-            "tcp://#{PIECES[piece_id][:interface]}:#{BINDINGS[piece_id][:calling_router2]}"
+            "tcp://#{bindings[piece_id][:interface]}:#{bindings[piece_id][:calling_router2]}"
           end
 
           def attach_switch_outgoing!
