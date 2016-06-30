@@ -6,6 +6,10 @@ module ECell
   module Base
     module Shapes
       class Distribution < ECell::Elements::Figure
+        lines :distribution_push,
+              :distribution_pull,
+              :distribution_pull2
+
         module Distribute
           #benzrf TODO: figure out Distribute
         end

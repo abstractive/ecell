@@ -40,7 +40,8 @@ module ECell
       def initialize_line(line_id, options)
         return unless ECell::Run.online?
         unless options[:stroke]
-          stroke_shape, stroke_pattern = line_id.to_s.split("_").map{|w| w.capitalize}
+          stroke_parts = line_id.to_s.split("_").map{|w| w.capitalize}
+          stroke_shape, stroke_pattern = stroke_parts.first, stroke_parts.last
           stroke = ECell::Autoload::Strokes.const_get(stroke_shape).const_get(stroke_pattern)
         else
           stroke = options[:stroke]

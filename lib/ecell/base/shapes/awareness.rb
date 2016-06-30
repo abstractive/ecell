@@ -8,6 +8,9 @@ module ECell
   module Base
     module Shapes
       class Awareness < ECell::Elements::Figure
+        lines :awareness_publish,
+              :awareness_subscribe,
+
         def awareness_root(piece_id)
           "tcp://#{bindings[piece_id][:interface]}:#{bindings[piece_id][:awareness_subscribe]}"
         end

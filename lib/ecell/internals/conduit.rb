@@ -20,23 +20,34 @@ module ECell
           bindings[piece_id] && bindings[piece_id][stroke_id] || DEFAULT_PORT
         end
 
-        LINE_IDS.each { |line_id|
-          define_method("#{line_id}?") {
-            begin
-              ECell.sync(line_id) && ECell.sync(line_id).online
-            rescue => ex
-              caught(ex, "Trouble checking line: #{line_id}")
-              false
-            end
+        def online?(line_id)
+          begin
+            ECell.sync(line_id) && ECell.sync(line_id).online
+          rescue => ex
+            caught(ex, "Trouble checking line: #{line_id}")
+            false
+          end
+        end
+
+        def line_ids
+          @line_ids ||= []
+        end
+
+        def register_line_id(line_id)
+          return if line_ids.include? line_id
+          line_ids << line_id
+          define_method(:"#{line_id}?") {
+            Conduit.online?(line_id)
           }
           define_method(line_id) {
             ECell.sync(line_id)
           }
-        }
+          module_function :"#{line_id}?", line_id
+        end
 
         def running_line_ids(&block)
-          LINE_IDS.inject([]) { |l,line_id|
-            l << line_id if send(:"#{line_id}?")
+          line_ids.inject([]) { |l,line_id|
+            l << line_id if online?(line_id)
             l
           }
         end

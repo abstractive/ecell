@@ -10,6 +10,13 @@ module ECell
   module Base
     module Shapes
       class Management < ECell::Elements::Figure
+        lines :management_request,
+              :management_reply,
+              :management_router,
+              :management_dealer,
+              :management_publish,
+              :management_subscribe
+
         def initialize(options)
           return unless ECell::Run.online?
           super(options)

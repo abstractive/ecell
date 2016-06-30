@@ -79,7 +79,6 @@ module ECell
           @line_id = line if line.is_a? Symbol
           @line_id ||= line.class.name.split("::")[-2,2].join("_")
           @line_id = @line_id.downcase.to_sym if @line_id.is_a? String and !@line_id.empty?
-          fail "Invalid line ID: #{@line_id} (#{@line_id.class.name})" unless LINE_IDS.include? @line_id
           fail "Missing line socket." unless @socket
           #benzrf TODO: "conduit"?
           fail "Missing conduit piece." unless @piece_id

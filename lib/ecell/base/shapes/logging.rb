@@ -11,6 +11,9 @@ module ECell
   module Base
     module Shapes
       class Logging < ECell::Elements::Figure
+        lines :logging_push,
+              :logging_pull
+
         def initialize(options)
           super(options)
           @storage = ECell.sync(:logging_storage)

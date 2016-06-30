@@ -126,31 +126,6 @@ module ECell
     MAX_PIECE_FAILURES = 5
     MAX_PIECE_TIMEOUTS = 3
 
-    # also used as Stroke ids
-    LINE_IDS = [
-      :logging_push,
-      :logging_pull,
-
-      :management_request,
-      :management_reply,
-      :management_router,
-      :management_dealer,
-      :management_publish,
-      :management_subscribe,
-
-      :awareness_publish,
-      :awareness_subscribe,
-
-      :calling_request,
-      :calling_reply,
-      :calling_router,
-      :calling_router2,
-
-      :distribution_push,
-      :distribution_pull,
-      :distribution_pull2,
-    ]
-
     #de Uses port 0 binding for everything except the awareness lines...
     #de unless a port is set.
 

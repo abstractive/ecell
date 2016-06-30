@@ -1,5 +1,6 @@
 require 'forwardable'
 require 'ecell/internals/actor'
+require 'ecell/internals/conduit'
 require 'ecell/run'
 require 'ecell/elements/subject/automaton'
 require 'ecell'
@@ -11,6 +12,8 @@ module ECell
   module Elements
     class Subject < ECell::Internals::Actor
       extend Forwardable
+      include ECell::Internals::Conduit
+
       def_delegators :@automaton, :state, :transition
       attr_reader :configuration
 

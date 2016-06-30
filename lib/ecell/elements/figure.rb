@@ -1,5 +1,6 @@
 require 'ecell/internals/actor'
 require 'ecell/extensions'
+require 'ecell/internals/conduit'
 require 'ecell/run'
 require 'ecell/errors'
 require 'ecell'
@@ -9,6 +10,7 @@ module ECell
   module Elements
     class Figure < ECell::Internals::Actor
       include ECell::Extensions
+      include ECell::Internals::Conduit
 
       def initialize(options)
         @options = options
@@ -33,14 +35,6 @@ module ECell
         return
       end
 
-      #benzrf TODO: these are already given thru Extensions
-      # however... in `Logging`, at least, we can't *use* Extensions, or the
-      # logging delegators will override the methods that they delegate to. Hmm.
-      LINE_IDS.each { |line_id|
-        define_method(:"#{line_id}?") { @sockets[line_id] && @sockets[line_id].online }
-        define_method(line_id) { |options={}| @sockets[line_id] || raise(ECell::Error::Line::Uninitialized) }
-      }
-
       def initialize_line(line_id, options)
         @sockets[line_id] = super
       rescue => ex
@@ -49,6 +43,11 @@ module ECell
 
       def leader
         configuration[:leader]
+      end
+
+      #benzrf TODO: probably improve on this
+      def self.lines(*line_ids)
+        line_ids.each {|line_id| ECell::Internals::Conduit.register_line_id(line_id)}
       end
     end
   end

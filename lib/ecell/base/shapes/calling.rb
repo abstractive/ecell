@@ -8,6 +8,11 @@ module ECell
   module Base
     module Shapes
       class Calling < ECell::Elements::Figure
+        lines :calling_request,
+              :calling_reply,
+              :calling_router,
+              :calling_router2
+
         def initialize(options)
           return unless ECell::Run.online?
           super(options)

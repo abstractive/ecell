@@ -40,9 +40,6 @@ module ECell
           :exception,
           :mark!,
           :dump!
-
-        object.def_delegators :"ECell::Internals::Conduit",
-          *LINE_IDS.inject([]) { |c,d| c << :"#{d}?"; c << d; c }
       end
     end
 
