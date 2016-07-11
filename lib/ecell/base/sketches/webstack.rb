@@ -30,11 +30,11 @@ module ECell
             message = rpc.delete(:message)
             timestamp = rpc.delete(:timestamp)
             tag = rpc.delete(:tag)
-            return error!(:missing_message) unless message
+            return new_data.error(:missing_message) unless message
             message = "[#{tag}] #{message}" if tag
             message += " #{Time.at(timestamp)}" if timestamp
             clients_announce!("#{rpc.id}#{message}", rpc.topic)
-            answer!(rpc, :ok)
+            new_return.answer(rpc, :ok)
           end
 
           def welcome!(member)

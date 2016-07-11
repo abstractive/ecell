@@ -85,18 +85,18 @@ module ECell
               end
               if rpc[:async]
                 abandon(rpc.uuid)
-                return reply!(rpc, :async)
+                return new_return.reply(rpc, :async)
               end
               if reply.respond_to?(:wait)
                 @timeout = after(INTERVALS[:instruction_timeout]) {
                   debug("TIMEOUT! #{rpc.uuid}") if DEBUG_RPCS
-                  replying!(rpc.uuid, reply!(rpc, :error, type: :timeout))
+                  replying!(rpc.uuid, new_return.reply(rpc, :error, type: :timeout))
                 }
                 debug("Waiting for a reply.") if DEBUG_RPCS
                 reply = reply.wait
                 @timeout.cancel
               else
-                reply = reply!(rpc, :error, type: :conditionless)
+                reply = new_return.reply(rpc, :error, type: :conditionless)
               end
             rescue => ex
               caught(ex, "Problem instructing: #{rpc.instruction}@#{rpc.to}")
@@ -139,18 +139,16 @@ module ECell
             return management_dealer << case rpc.instruction
             when :ping!
               symbol!(:sent_pong)
-              reply!(rpc, :pong)
+              new_return.reply(rpc, :pong)
             when :attach!
-              reply!(rpc, :ok)
               if @attached
                 log_warn("Already attached.")
-                reply!(rpc, :ok)
               else
                 symbol!(:got_leader)
                 @attached = true
                 subj.async(:event!, :attaching, rpc)
-                reply!(rpc, :ok)
               end
+              new_return.reply(rpc, :ok)
             else
               debug(tag: :instruction, message:"#{rpc.instruction}, args: #{rpc[:args]}", highlight: true) #de if DEBUG_DEEP
               symbol!(:got_instruction)
@@ -160,30 +158,30 @@ module ECell
                   if rpc.args?
                     if rpc.args.is_a?(Array)
                       if rpc.args.any? && arity == 0
-                        reply!(rpc, :error, type: :arity_mismatch)
+                        new_return.reply(rpc, :error, type: :arity_mismatch)
                       elsif rpc.args.length == arity || arity < 0
-                        reply!(rpc, :result, returns: subj.send(rpc.instruction, *rpc.args))
+                        new_return.reply(rpc, :result, returns: subj.send(rpc.instruction, *rpc.args))
                       else
-                        reply!(rpc, :error, type: :unknown_arity_error)
+                        new_return.reply(rpc, :error, type: :unknown_arity_error)
                       end
                     else
                       if arity == 1
-                        reply!(rpc, :result, returns: subj.send(rpc.instruction, rpc.args))
+                        new_return.reply(rpc, :result, returns: subj.send(rpc.instruction, rpc.args))
                       else
-                        reply!(rpc, :error, type: :arity_mismatch)
+                        new_return.reply(rpc, :error, type: :arity_mismatch)
                       end
                     end
                   elsif !rpc.args? && arity <= 0
-                    reply!(rpc, :result, returns: send(rpc.instruction))
+                    new_return.reply(rpc, :result, returns: send(rpc.instruction))
                   else
-                    reply!(rpc, :error, type: :unknown_error)
+                    new_return.reply(rpc, :error, type: :unknown_error)
                   end
                 rescue => ex
-                  reply!(rpc, :exception, exception: ex)
+                  new_return.reply(rpc, :exception, exception: ex)
                 end
               else
                 debug(message: "Unknown Instruction: #{rpc.instruction}", banner: true)
-                reply!(rpc, :error, type: :unknown_instruction)
+                new_return.reply(rpc, :error, type: :unknown_instruction)
               end
             end
           rescue => ex

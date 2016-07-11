@@ -77,7 +77,7 @@ class ECell::Elements::Line
     data
   rescue Timeout::Error
     symbol!(:timeout)
-    error!(:timeout)
+    new_data.error(:timeout)
   rescue IOError
   rescue => ex
     caught(ex, "Transmission error in #{mode} mode.")

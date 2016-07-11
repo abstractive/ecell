@@ -36,9 +36,9 @@ class ECell::Elements::Color
     [:exception, ex, "Error in executable parser."]
   end
 
-  class << self
-    RETURN_FORMS.each { |form|
-      define_method(:"#{form}!") { |rpc, value, add={}|
+  module ReturnInstantiator
+    class << self
+      def method_missing(form, rpc, value, add={})
         rpc.to = rpc.id
         rpc.id = ECell::Run.piece_id
         if value == :error
@@ -51,8 +51,8 @@ class ECell::Elements::Color
         rpc[form] = value
         rpc.merge!(add) if add.any?
         rpc
-      }
-    }
+      end
+    end
   end
 end
 

@@ -47,7 +47,7 @@ class ECell::Base::Sketches::Webstack::Routes < Sinatra::Base
         response = rpc
       }
     rescue => ex
-      response = ECell::Elements::Color.exception!(ex)
+      response = ECell::Elements::Color::Instantiator.error(:exception, exception: ex)
     end
     unless response.success?
       if response[:exception]
@@ -85,7 +85,7 @@ class ECell::Base::Sketches::Webstack::Routes < Sinatra::Base
         response = rpc
       }
     rescue => ex
-      response = ECell::Elements::Color.exception!(ex)
+      response = ECell::Elements::Color::Instantiator.error(:exception, exception: ex)
     end
     unless response.success?
       if response[:exception]

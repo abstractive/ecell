@@ -47,7 +47,7 @@ module ECell
             console(message: "Message from #{rpc.id}: #{rpc.message}", banner: true, store: rpc.delete(:data), quiet: true)
 
             #de TODO: Execute events and tasks jobs.
-            answer!(rpc, :ok, message: "This is the process piece responding to web_trigger.")
+            new_return.answer(rpc, :ok, message: "This is the process piece responding to web_trigger.")
           end
 
           def check_in!

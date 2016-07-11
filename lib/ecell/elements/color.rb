@@ -11,34 +11,23 @@ module ECell
       class << self
         include ECell::Constants
 
-        #benzrf TODO: revise the mostly-unnecessary dynamic module stuff here
-        COLOR_FORMS.each { |form|
-          next if RETURN_FORMS.include?(form)
-          form_cap = form.to_s.capitalize.to_sym
-          define_method(:"#{form}!") { |value, data={}|
-            ECell.async(:logging).debug({
-              message: "Color object... #{form_cap}: #{value}",
-              report: self.class
-            }) if DEBUG_DEEP
-            const_get(form_cap).new(value, data)
-          }
-          handler = Module.new
-          handler.define_singleton_method(:[]) { |value| new(value) }
-          handler.define_singleton_method(:new) { |value, extras={}|
-            #benzrf TODO: s/`code`/`form`/g
-            Color.new(extras.merge({code: form, form => value}))
-          }
-          Color.const_set(form_cap, handler)
-        }
-
         def [](data)
           new(data)
         end
         def []=(socket,data)
           socket << new(data).packed
         end
-        def exception!(ex)
-          error!(:exception, exception: ex)
+      end
+
+      module Instantiator
+        class << self
+          def method_missing(form, value, data={})
+            ECell.async(:logging).debug({
+              message: "Color object... #{form_cap}: #{value}",
+              report: self.class
+            }) if ECell::Constants::DEBUG_DEEP
+            Color.new(data.merge({code: form, form => value}))
+          end
         end
       end
 

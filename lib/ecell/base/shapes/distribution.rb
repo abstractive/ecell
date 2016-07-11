@@ -35,15 +35,15 @@ module ECell
             distribution_push << case rpc.work
             when :ready?
               #de TODO: Check vitals, then answer.
-              report!(rpc, :yes)
+              new_return.report(rpc, :yes)
             else
               subj = ECell::Run.subject
               owner = subj.class.method_defined?(rpc.call) &&
                 subj.class.instance_method(rpc.call).owner
               if owner == subj.class::Operations
-                report!(rpc, :ok, returns: subj.send(*rpc.executable))
+                new_return.report(rpc, :ok, returns: subj.send(*rpc.executable))
               else
-                error!(:method_missing)
+                new_data.error(:method_missing)
               end
             end
           end

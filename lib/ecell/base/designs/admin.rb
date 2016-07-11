@@ -52,7 +52,7 @@ module ECell
               debug(message: "Delegating to #{id}", reporter: self.class)
               authority!(data.id)
             end
-            management_reply << reply!(:ok)
+            management_reply << new_return.reply(:ok)
           rescue => ex
             caught(ex, "Failure in on_system emitter.", reporter: self.class)
           end

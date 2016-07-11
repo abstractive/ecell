@@ -47,27 +47,27 @@ module ECell
                 subj.send(*rpc.executable)
               rescue ArgumentError => ex
                 exception(ex, "Trouble with call: incorrect arguments: #{ex.message}")
-                failure!(rpc, :incorrect_arity, exception: ex)
+                new_return.failure(rpc, :incorrect_arity, exception: ex)
               rescue => ex
                 exception!(ex, "Trouble executing #{rpc.call}")
               end
             else
-              error!(:method_missing, to: rpc.id, uuid: rpc.uuid, call: rpc.call)
+              new_data.error(:method_missing, to: rpc.id, uuid: rpc.uuid, call: rpc.call)
             end
             if answer.is_a?(Symbol)
-              answer = answer!(rpc, answer)
+              answer = new_return.answer(rpc, answer)
             elsif answer.is_a?(ECell::Elements::Color)
               dump!("Already an RPC: #{answer}")
             elsif answer
-              answer = answer!(rpc, :ok, returns: answer)
+              answer = new_return.answer(rpc, :ok, returns: answer)
             else
-              answer = answer!(rpc, :empty)
+              answer = new_return.answer(rpc, :empty)
             end
             dump!("answering: #{answer}")
             calling_reply << answer
           rescue => ex
             exception(ex, "Trouble on_call.")
-            calling_reply << reply!(rpc, :error, exception: ex)
+            calling_reply << new_return.reply(rpc, :error, exception: ex)
           end
         end
 
@@ -191,13 +191,13 @@ module ECell
               if answer.respond_to?(:wait)
                 @timeout = after(INTERVALS[:call_timeout]) {
                   debug("TIMEOUT! #{rpc.uuid}") if DEBUG_RPCS
-                  answering!(rpc.uuid, answer!(rpc, :error, type: :timeout))
+                  answering!(rpc.uuid, new_return.answer(rpc, :error, type: :timeout))
                 }
                 debug("Waiting for an answer.") #de if DEBUG_RPCS
                 answer = answer.wait
                 @timeout.cancel
               else
-                answer = answer!(rpc, :error, type: :conditionless)
+                answer = new_return.answer(rpc, :error, type: :conditionless)
               end
             rescue => ex
               caught(ex, "Problem calling: #{rpc.call}@#{rpc.to}")

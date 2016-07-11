@@ -5,6 +5,18 @@ require 'ecell/constants'
 #benzrf TODO: should this be in `Internals`?
 module ECell
   module Extensions
+    def new_data
+      ECell::Elements::Color::Instantiator
+    end
+
+    def new_return
+      ECell::Elements::Color::ReturnInstantiator
+    end
+
+    def exception!(ex)
+      new_data.error(:exception, exception: ex)
+    end
+
     class << self
       include ECell::Constants
 
@@ -20,10 +32,6 @@ module ECell
         object.def_delegators :"ECell::Run",
           :configuration,
           :bindings
-
-        object.def_delegators :"ECell::Elements::Color",
-          :exception!,
-          *COLOR_FORMS.map { |fo| :"#{fo}!" }
 
         object.def_delegators :"ECell.async(:logging)",
           :caught,

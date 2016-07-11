@@ -51,14 +51,14 @@ module ECell
             @heartbeating.cancel rescue nil
             debug(message: "Heartbeating.", reporter: self.class, banner: true) if DEBUG_DEEP
             symbol!(:announcing_heartbeat)
-            awareness_publish << announcement!(:heartbeat)
+            awareness_publish << new_data.announcement(:heartbeat)
             @heartbeating = after(INTERVALS[:heartbeat]-INTERVALS[:margin]) { announce_heartbeat! }
           end
 
           def announce_presence!
             @presencing.cancel rescue nil
             return if ECell.sync(:management).attached?
-            awareness_publish << announcement!(:presence)
+            awareness_publish << new_data.announcement(:presence)
             symbol!(:announcing_presence)
             @presencing = after(INTERVALS[:presence]) { announce_presence! }
           rescue => ex

@@ -6,7 +6,7 @@ module ECell
       include ECell::Extensions
 
       def method_missing(method, data={}, &block)
-        error!(:shutdown)
+        new_data.error(:shutdown)
       end
     end
   end

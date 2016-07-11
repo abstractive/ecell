@@ -16,7 +16,7 @@ module ECell
 
     def method_missing(method, *args, &block)
       debug("Routing instruction to #{method}@#{@options[:to]} w/ args: #{args}") if DEBUG_DEEP
-      ECell.sync(:management).instruct! instruction!(method, @options.merge(callback: block, args: args))
+      ECell.sync(:management).instruct! new_data.instruction(method, @options.merge(callback: block, args: args))
     end
   end
 
