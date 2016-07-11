@@ -27,7 +27,7 @@ module ECell
     end
 
     module Logging
-      class MalformedLogEntry < ECell::Error; end
+      class MalformedEntry < ECell::Error; end
     end
   end
 end
