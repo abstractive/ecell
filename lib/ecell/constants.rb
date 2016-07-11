@@ -52,6 +52,7 @@ module ECell
       :error
     ]
 
+    #benzrf TODO: unhardcode this
     LOG_FILE = {
       console: File.expand_path("../../logs/console.log", __FILE__),
       errors: File.expand_path("../../logs/error.log", __FILE__)
