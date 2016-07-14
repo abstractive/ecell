@@ -5,6 +5,9 @@ require 'ecell/constants'
 require 'ecell/extensions'
 require 'ecell/run'
 
+#benzrf TODO: maybe make a custom factory instead of mutating global state
+MessagePack::DefaultFactory.register_type(0x00, Symbol)
+
 module ECell
   module Elements
     class Color
@@ -55,7 +58,7 @@ module ECell
         @data = {error: :corrupted, code: :error, exception: ex}
       end
 
-      ([:id, :code] + COLOR_FORMS).each { |key|
+      [:id, :code].each { |key|
         define_method(:"#{key}?") { |val=nil| !@data[key].nil? && (val.nil? || send(key) == val) }
         define_method(:"#{key}=") { |value| @data[key] = static_value(value) }
         define_method(key) { @data[key] && static_value(@data[key]) }
@@ -99,6 +102,7 @@ module ECell
         "ECell::Elements::Color <#{export}>"
       end
 
+      #benzrf TODO: This is probably hardcoding that we don't want
       PROCESSED_EXPORTS = [:exception, :store]
       FILTERED_EXPORTS = [:async, :broadcast]
 
@@ -209,7 +213,7 @@ module ECell
         raise "Color entity is corrupted." unless @data.is_a?(Hash)
         if "#{method}".end_with?('?')
           key = "#{method}".sub("?",'').to_sym
-          return !@data[key].nil? && (args.empty? || @data[key] == args.first)
+          return !@data[key].nil? && (args.empty? || send(key) == args.first)
         elsif "#{method}".end_with?('=')
           key = "#{method}".sub("=",'').to_sym
           return @data[key] = args.first
