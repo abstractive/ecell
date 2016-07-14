@@ -8,7 +8,7 @@ class ECell::Elements::Color
     dump!("Piece: #{ECell::Run.piece_id} #{@data}")
     _ = @data.fetch(:args, [])
     dump!("args: #{_}")
-    params = [@data[@data[:code].to_sym]]
+    params = [@data[@data[:form].to_sym]]
     if _.is_a?(Array)
       if _.any?
        dump!("Array has something in it.")
@@ -43,11 +43,11 @@ class ECell::Elements::Color
         rpc.id = ECell::Run.piece_id
         if value == :error
           rpc.error = add[:type] || :unknown
-          rpc.code = :error
+          rpc.form = :error
         else
           rpc[form] = value
         end
-        rpc[:code] = form
+        rpc[:form] = form
         rpc[form] = value
         rpc.merge!(add) if add.any?
         rpc

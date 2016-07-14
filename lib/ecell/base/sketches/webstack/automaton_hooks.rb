@@ -30,7 +30,7 @@ class ECell::Base::Sketches::Webstack < ECell::Elements::Subject
 
     ECell.call_sync(:process).web_trigger(rpc: {message: "RPC IN WEBSTACK #{Time.now.iso8601}"}) { |rpc|
         if rpc.success?
-          ECell.sync(:ClientRegistry).clients_announce!("#{rpc.id}[#{rpc.code}] #{rpc.message}.")
+          ECell.sync(:ClientRegistry).clients_announce!("#{rpc.id}[#{rpc.form}] #{rpc.message}.")
           ECell.async(:logging).debug("Ran web_trigger.", store: rpc, quiet: true)
         else
           message = if rpc.message?

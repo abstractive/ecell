@@ -58,7 +58,7 @@ class ECell::Elements::Line
       rpc = data.to? && data.to
       #de This is an RPC, and this piece made the call
       #de therefore it is waiting for the answer.
-      if rpc && data.id?(@piece_id) && condition = RETURNS[data.code]
+      if rpc && data.id?(@piece_id) && condition = RETURNS[data.form]
         figure_id, return_form = condition
         waiting = data.uuid
         waiter = :"#{return_form}_condition"

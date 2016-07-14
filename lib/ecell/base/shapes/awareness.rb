@@ -21,7 +21,7 @@ module ECell
           def on_announcement(data)
             missing = []
             missing << "piece id" unless data.id?
-            missing << "color form" unless data.code?
+            missing << "color form" unless data.form?
             raise "No #{missing.join(' or ')}." unless missing.empty?
             case data.announcement
             when :presence

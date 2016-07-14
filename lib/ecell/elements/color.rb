@@ -29,7 +29,7 @@ module ECell
               message: "Color object... #{form_cap}: #{value}",
               report: self.class
             }) if ECell::Constants::DEBUG_DEEP
-            Color.new(data.merge({code: form, form => value}))
+            Color.new(data.merge({form: form, form => value}))
           end
         end
       end
@@ -55,10 +55,10 @@ module ECell
         @data[:uuid] ||= uuid!
       rescue => ex
         caught(ex, "Failure instantiating Color")
-        @data = {error: :corrupted, code: :error, exception: ex}
+        @data = {error: :corrupted, form: :error, exception: ex}
       end
 
-      [:id, :code].each { |key|
+      [:id, :form].each { |key|
         define_method(:"#{key}?") { |val=nil| !@data[key].nil? && (val.nil? || send(key) == val) }
         define_method(:"#{key}=") { |value| @data[key] = static_value(value) }
         define_method(key) { @data[key] && static_value(@data[key]) }
@@ -232,7 +232,7 @@ if false and ECell::Run.piece_id?(:webstack)
   require 'time'
   ECell::Figures.call_sync(:process).web_trigger(rpc: {message: "RPC #{Time.now.iso8601}"}) { |rpc|
       if rpc.success?
-        ECell.sync(:ClientRegistry).clients_announce!("#{rpc.id}[#{rpc.code}] #{rpc.message}.")
+        ECell.sync(:ClientRegistry).clients_announce!("#{rpc.id}[#{rpc.form}] #{rpc.message}.")
         ECell.async(:logging).debug("Ran web_trigger.", store: rpc, quiet: true)
       else
         message = if rpc.message?
