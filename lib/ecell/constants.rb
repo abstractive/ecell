@@ -17,23 +17,6 @@ module ECell
     CODE_RELOADING    = false
     CODE_PRYING       = true
 
-    #benzrf TODO: replace with color names
-    RETURN_FORMS = [
-      :answer,
-      :reply,
-      :report,
-      :failure
-    ]
-
-    COLOR_FORMS = [
-      :announcement,
-      :instruction,
-      :call,
-      :error,
-      :task,
-      :log
-    ] + RETURN_FORMS
-
     RETURNS = {
       call: [:calling, :answer],
       instruction: [:management, :reply],
