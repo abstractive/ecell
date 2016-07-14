@@ -227,26 +227,3 @@ end
 
 require 'ecell/elements/color_rpc'
 
-#benzrf TODO: figure out where this should go
-if false and ECell::Run.piece_id?(:webstack)
-  require 'time'
-  ECell::Figures.call_sync(:process).web_trigger(rpc: {message: "RPC #{Time.now.iso8601}"}) { |rpc|
-      if rpc.success?
-        ECell.sync(:ClientRegistry).clients_announce!("#{rpc.id}[#{rpc.form}] #{rpc.message}.")
-        ECell.async(:logging).debug("Ran web_trigger.", store: rpc, quiet: true)
-      else
-        message = if rpc.message?
-          "#{rpc.id}[#{rpc.error}] #{rpc.message}."
-        elsif rpc[:exception]
-          "#{rpc.id}[#{rpc[:exception][:type]}] #{rpc[:exception][:message]}."
-        else
-          "There was an unknown error. Sorry about that."
-        end
-        ECell.sync(:ClientRegistry).clients_announce!(message)
-      end
-      response = rpc
-    }
-
-  ECell::Logger.dump! ECell::Figures.call_async(:process).web_trigger(rpc: {message: "RPC.async #{Time.now.iso8601}"})
-end
-
