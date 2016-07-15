@@ -2,9 +2,12 @@ require 'forwardable'
 require 'celluloid/current'
 require 'ecell/constants'
 
-#benzrf TODO: should this be in `Internals`?
 module ECell
+  # `Extensions` is included in many of ECell's classes and modules.
+  # It provides certain widely-used shortcuts and conveniences.
   module Extensions
+    #benzrf TODO: should this be in `Internals`?
+
     def new_data
       ECell::Elements::Color::Instantiator
     end

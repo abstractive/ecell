@@ -1,12 +1,12 @@
 require 'ecell/base/shapes/distribution'
 require 'ecell/errors'
 
-#benzrf TODO: split this into `Distributor` and `Collector` (or `Collator`)
-
 module ECell
   module Base
     module Designs
       module Coordinator
+        #benzrf TODO: split this into `Distributor` and `Collector` (or `Collator`)
+
         Shapes = [
           {
             as: :distribution,

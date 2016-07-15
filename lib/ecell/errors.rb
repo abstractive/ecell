@@ -1,6 +1,4 @@
 module ECell
-  #benzrf TODO: figure out if this reorganization breaks
-  # any dynamic constant lookups
   class Error < StandardError
     class MissingBlock < ArgumentError; end
     class PieceNotReady < ECell::Error; end

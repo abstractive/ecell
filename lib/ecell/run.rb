@@ -10,6 +10,9 @@ require 'ecell/internals/timer'
 # dependencies.
 
 module ECell
+  # `ECell::Run` plays two roles: It provides the functionality for taking
+  # Sketches and running them, and it's used to access process-global Piece
+  # state.
   module Run
     class << self
       extend Forwardable
