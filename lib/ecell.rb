@@ -1,6 +1,6 @@
 require 'celluloid/current'
 require 'ecell/constants'
-require 'ecell/spool'
+require 'ecell/internals/spool'
 
 module ECell
   include ECell::Constants
@@ -27,7 +27,7 @@ module ECell
       sync(:service).supervise(config)
     end
 
-    ECell.supervise(as: :spool, type: ECell::Spool)
+    ECell.supervise(as: :spool, type: ECell::Internals::Spool)
 
     def async(actor)
       #benzrf TODO: possible race condition here?
