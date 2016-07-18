@@ -12,6 +12,16 @@ require 'ecell/elements/color'
 
 module ECell
   module Elements
+    # A Line is an abstract link between Pieces. An instance of this class
+    # functions as a high-level interface to one end of such a link, and
+    # may also be referred to as a Line.
+    #
+    # Instances of {Line} are governed by an {Line::Automaton FSM}.
+    #
+    # {Line} serves only as a base class and should not be instantiated
+    # directly. Subclasses of {Line} are called "Strokes".
+    #
+    # There is not currently any real naming convention for Strokes.
     class Line
       include Celluloid::ZMQ
       include ECell::Internals::Conduit

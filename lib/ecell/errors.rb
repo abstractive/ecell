@@ -2,7 +2,6 @@ module ECell
   class Error < StandardError
     class MissingBlock < ArgumentError; end
     class PieceNotReady < ECell::Error; end
-    class SwitchMissing < ECell::Error; end
     class InvalidResponse < ECell::Error; end
     class MissingEmitter < ECell::Error; end
 

@@ -3,7 +3,7 @@ require 'celluloid/current'
 require 'ecell/constants'
 
 module ECell
-  # `Extensions` is included in many of ECell's classes and modules.
+  # {Extensions} is included in many of ECell's classes and modules.
   # It provides certain widely-used shortcuts and conveniences.
   module Extensions
     #benzrf TODO: should this be in `Internals`?

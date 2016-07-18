@@ -36,6 +36,7 @@ class ECell::Elements::Color
     [:exception, ex, "Error in executable parser."]
   end
 
+  # @see ReturnInstantiator.method_missing
   module ReturnInstantiator
     class << self
       def method_missing(form, rpc, value, add={})

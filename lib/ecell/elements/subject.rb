@@ -10,6 +10,18 @@ require 'ecell/elements/subject/injections'
 
 module ECell
   module Elements
+    # A Subject is the leading actor within a Piece. Each Piece has a Subject,
+    # which will generally contain the high-level business logic unique to the
+    # Piece. This is the base class that every Subject is an instance of.
+    #
+    # A Subject will also contain certain Piece-wide information and state,
+    # including an {Subject::Automaton FSM} governing the Piece.
+    #
+    # Subclasses of {Subject} are called "Sketches". A Sketch functions as a
+    # complete specification of a Piece; as such, it may include some
+    # information not strictly related to the Subjects instantiated from it.
+    #
+    # The current naming convention is that Sketch names should be nouns.
     class Subject < ECell::Internals::Actor
       extend Forwardable
       include ECell::Internals::Conduit

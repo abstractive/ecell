@@ -10,6 +10,13 @@ MessagePack::DefaultFactory.register_type(0x00, Symbol)
 
 module ECell
   module Elements
+    # {Color} objects are a bit like fancy Hashes. They're used all over ECell
+    # as generic data objects.
+    #
+    # Each {Color} object should be tagged with a symbol indicating its
+    # "form". This symbol should also be a valid key in the object.
+    #
+    # The current naming convention is that form names should be nouns.
     class Color
       class << self
         include ECell::Constants
@@ -22,6 +29,7 @@ module ECell
         end
       end
 
+      # @see Instantiator.method_missing
       module Instantiator
         class << self
           def method_missing(form, value, data={})

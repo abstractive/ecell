@@ -6,6 +6,7 @@ require 'ecell'
 module ECell
   module Elements
     class Subject < ECell::Internals::Actor
+      # The class of FSMs governing instances of {Subject}.
       class Automaton < ECell::Internals::BaseAutomaton
         default_state :initializing
 

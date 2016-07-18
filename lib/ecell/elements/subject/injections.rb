@@ -100,6 +100,7 @@ module ECell
         false
       end
 
+      # Helper methods for processing Designs.
       module Injections
         class << self
           include ECell::Extensions

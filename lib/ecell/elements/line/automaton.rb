@@ -4,6 +4,7 @@ require 'ecell/run'
 module ECell
   module Elements
     class Line
+      # The class of FSMs governing instances of {Line}.
       class Automaton < ECell::Internals::BaseAutomaton
         default_state :offline
 
