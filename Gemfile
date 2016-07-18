@@ -29,3 +29,5 @@ gem 'colorize'
 gem 'sinatra'
 gem 'puma'
 gem 'websocket_parser'
+
+gem 'rspec', group: :test
