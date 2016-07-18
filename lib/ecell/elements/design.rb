@@ -43,9 +43,15 @@ module ECell
         }
       ]
 
+      # {Injections} is a hash specifying several things, including:
+      # * TODO
       Injections = {}
+      # {Disabled} will optionally indicate injections to disable that might
+      # otherwise be present from other Designs.
       Disabled = {}
 
+      # If the {Methods} module exists in a Design, it will be included into
+      # any Sketches that use the design.
       module Methods
       end
     end
