@@ -7,7 +7,7 @@ module ECell
     class Spool
       include Celluloid
       def initialize
-        # ECell::Logger.debug("Initialized Spooling Backlogger") if DEBUG_DEEP
+        # ECell::Internals::Logger.debug("Initialized Spooling Backlogger") if DEBUG_DEEP
         @backlog = {}
         @timers = {}
       end
@@ -56,12 +56,13 @@ module ECell
         def each(&block)
           @commands.each(&block)
         end
+
         # rescue => ex
-        # raise ECell::Logger.exception(ex, "Backlog Exception")
+        # raise ECell::Internals::Logger.exception(ex, "Backlog Exception")
       end
 
       # rescue => ex
-      # raise ECell::Logger.exception(ex, "Spool Exception")
+      # raise ECell::Internals::Logger.exception(ex, "Spool Exception")
     end
   end
 end

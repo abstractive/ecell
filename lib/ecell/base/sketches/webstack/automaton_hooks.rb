@@ -45,7 +45,7 @@ class ECell::Base::Sketches::Webstack < ECell::Elements::Subject
         response = rpc
       }
 
-    ECell::Logger.dump! ECell.call_async(:process).web_trigger(rpc: {message: "RPC.async #{Time.now.iso8601}"})
+    ECell::Internals::Logger.dump! ECell.call_async(:process).web_trigger(rpc: {message: "RPC.async #{Time.now.iso8601}"})
   end
 end
 

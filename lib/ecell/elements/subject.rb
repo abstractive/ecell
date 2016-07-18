@@ -102,7 +102,6 @@ module ECell
       def line!(line_id, options, figure_id=@piece_id)
         ECell.sync(figure_id).initialize_line(line_id, options)
         @actor_ids << name
-        @actors.push(name)
       rescue => ex
       end
 

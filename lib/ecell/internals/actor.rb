@@ -1,5 +1,6 @@
 require 'celluloid/current'
 require 'ecell/extensions'
+require 'ecell/internals/logger'
 require 'ecell/run'
 require 'ecell/autoload'
 require 'ecell'
@@ -33,7 +34,7 @@ module ECell
       def async(method=nil, *args)
         return super() unless method
         symbol!(:marked)
-        ECell::Logger.debug("Verbosely: #{method} @ #{caller[0]}") if DEBUG_DEEP
+        ECell::Internals::Logger.debug("Verbosely: #{method} @ #{caller[0]}") if DEBUG_DEEP
         super().verbosely!(method, *args)
       end
 

@@ -1,12 +1,23 @@
+require 'celluloid/current'
 require 'forwardable'
 require 'celluloid/current'
 require 'ecell/constants'
+require 'ecell/internals/logger'
 
 module ECell
   # {Extensions} is included in many of ECell's classes and modules.
   # It provides certain widely-used shortcuts and conveniences.
   module Extensions
     #benzrf TODO: should this be in `Internals`?
+
+    def logging
+      #benzrf TODO: possible race condition here?
+      if Celluloid::Actor[:logging]
+        Celluloid::Actor[:logging].async
+      else
+        ECell::Internals::Logger
+      end
+    end
 
     def new_data
       ECell::Elements::Color::Instantiator
@@ -36,7 +47,7 @@ module ECell
           :configuration,
           :bindings
 
-        object.def_delegators :"ECell.async(:logging)",
+        object.def_delegators :"logging",
           :caught,
           :console,
           :print!,
@@ -47,7 +58,7 @@ module ECell
           *LOG_LEVELS.map { |l| :"log_#{l}" },
           :warning
 
-        object.def_delegators :"ECell::Logger",
+        object.def_delegators :"ECell::Internals::Logger",
           :exception,
           :mark!,
           :dump!

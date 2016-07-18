@@ -128,7 +128,7 @@ module ECell
             end
           }
         end
-        shutdown += @actors.compact.uniq.map { |actor|
+        shutdown += @actor_ids.compact.uniq.map { |actor|
           begin
             if actor && ECell.sync(actor)
               if ECell.sync(actor).respond_to?(:transition)

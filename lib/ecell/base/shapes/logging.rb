@@ -2,6 +2,7 @@ require 'json'
 require 'colorize'
 require 'celluloid/current'
 require 'ecell/elements/figure'
+require 'ecell/internals/logger'
 require 'ecell/constants'
 
 #benzrf TODO: clean up the bizarre dependency hacks
@@ -13,6 +14,8 @@ module ECell
       class Logging < ECell::Elements::Figure
         lines :logging_push,
               :logging_pull
+
+        include ECell::Internals::Logger
 
         def initialize(options)
           super(options)
@@ -32,12 +35,6 @@ module ECell
           raise "No valid log storage mode specified."
         end
 
-        require 'ecell/base/shapes/logging/methods'
-
-        ECell::Logger = self
-
-        require 'ecell/base/shapes/logging/entry'
-
         def log(options)
           entry = log_entry(options)
           unless entry.local?
@@ -49,17 +46,15 @@ module ECell
           display(entry)
           save(entry)
         rescue Celluloid::TaskTerminated
-          ECell::Logger.log(options)
+          ECell::Internals::Logger.log(options)
         rescue => ex
-          ECell::Logger.caught(ex, "Failure to log a #{options.class.name} on the instance level:", store: options)
+          ECell::Internals::Logger.caught(ex, "Failure to log a #{options.class.name} on the instance level:", store: options)
         end
 
         #benzrf there would be a `Collate`, but it turns out
         # there doesn't actually need to be
 
         module Document
-          include ECell::Constants
-
           def logging_root(piece_id)
             "tcp://#{bindings[piece_id][:interface]}:#{bindings[piece_id][:logging_pull]}"
           end

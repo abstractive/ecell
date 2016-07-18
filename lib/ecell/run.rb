@@ -2,6 +2,7 @@ require 'forwardable'
 require 'socket'
 require 'celluloid/current'
 require 'ecell/constants'
+require 'ecell/internals/logger'
 require 'ecell'
 require 'ecell/internals/timer'
 
@@ -18,7 +19,7 @@ module ECell
       extend Forwardable
       include ECell::Constants
 
-      def_delegators "ECell::Logger", *LOG_LEVELS, :exception, :caught, :console, :print!, :symbol!, :dump!
+      def_delegators "ECell::Internals::Logger", *LOG_LEVELS, :exception, :caught, :console, :print!, :symbol!, :dump!
 
       attr_reader :piece_id, :pid, :configuration
       attr_writer :online
