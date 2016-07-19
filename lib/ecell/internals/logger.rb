@@ -1,3 +1,4 @@
+require 'colorize'
 require 'ecell/constants'
 require 'ecell/run'
 require 'ecell/errors'
