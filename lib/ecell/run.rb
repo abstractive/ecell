@@ -79,7 +79,7 @@ module ECell
             debug: DEBUG_RELOADING,
             announcing: false,
             logger: ECell.async(:logging), #benzrf TODO: this is bad if it grabs the spool (also done below)
-            root: File.expand_path("../", __FILE__),
+            root: File.expand_path("../../", __FILE__),
             autostart: false,
             after_reload: Proc.new { |file|
               if DEBUG_DEEP
@@ -141,8 +141,9 @@ module ECell
       end
 
       def select_output!
-        log = File.expand_path("../../../logs/#{@piece_id}-console.log", __FILE__)
-        dump = File.expand_path("../../../logs/#{@piece_id}-errors.log", __FILE__)
+        dir = configuration[:log_dir] || DEFAULT_LOG_DIR
+        log = File.join(dir, "#{@piece_id}-console.log")
+        dump = File.join(dir, "#{@piece_id}-errors.log")
         @output = File.open(log, "a")
         @dump = File.open(dump, "a")
         if DEBUG_DEEP

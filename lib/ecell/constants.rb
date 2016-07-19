@@ -35,11 +35,7 @@ module ECell
       :error
     ]
 
-    #benzrf TODO: unhardcode this
-    LOG_FILE = {
-      console: File.expand_path("../../logs/console.log", __FILE__),
-      errors: File.expand_path("../../logs/error.log", __FILE__)
-    }
+    DEFAULT_LOG_DIR = File.expand_path("../../../logs", __FILE__)
 
     INJECTION_LAYERS = [
       :emitters,

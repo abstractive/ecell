@@ -15,8 +15,9 @@ module ECell
             @enabled = config[:piece_id] == configuration[:leader]
             execute {
               tag = mark("FINISH", :after)
-              @console = File.open(LOG_FILE[:console], "a")
-              @errors = File.open(LOG_FILE[:errors], "a")
+              dir = configuration[:log_dir] || DEFAULT_LOG_DIR
+              @console = File.open(File.join(dir, "console.log"), "a")
+              @errors = File.open(File.join(dir, "errors.log"), "a")
               console(tag)
               errors(tag)
             }
