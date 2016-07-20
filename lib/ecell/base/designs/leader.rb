@@ -97,10 +97,11 @@ module ECell
             if state_together?(states[:at])
               if ECell.instruct_broadcast.transition(states[:to]).reply?(:async)
                 sleep INTERVALS[:allow_transition]
-                if state_together?(states[:at])
+                if state_together?(states[:to])
                   reset_state_together!(states)
                   debug("Everyone moved to #{states[:to]}.", highlight: true)
-                  transition(states[:to])
+                  #benzrf TODO: figure out the correct logic for managers
+                  transition(states[:to]) if configuration[:piece_id] == configuration[:leader]
                 else
 
                 end

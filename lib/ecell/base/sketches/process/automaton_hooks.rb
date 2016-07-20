@@ -21,9 +21,13 @@ class ECell::Base::Sketches::Process < ECell::Elements::Subject
     }
   end
 
+  def execute_cycles
+    @cycles.each { |cycle, automaton| automaton.transition(:executing) }
+  end
+
   def at_running
     super {
-      @cycles.each { |cycle, automaton| automaton.transition(:executing) }
+      async.execute_cycles
       at_exit { @check_process.cancel rescue nil }
       @check_process = every(INTERVALS[:report]) {
         tasks = 0 #de ECell.call_sync(:tasks).count
