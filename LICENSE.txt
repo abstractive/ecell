@@ -1,0 +1,4 @@
+Copyright (c) 2015-2016 Donovan Keme, Energy One Limited
+Copyright (c) 2016 Ben, Celluloid Framework Corporation
+
+TODO: INSERT LICENSE CHOSEN
