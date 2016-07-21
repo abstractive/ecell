@@ -38,7 +38,7 @@ module ECell
             ]
           },
           events: {
-            attaching: [
+            attached_to_leader: [
               :follower_ready!
             ]
           },

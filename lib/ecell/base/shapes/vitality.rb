@@ -63,7 +63,7 @@ module ECell
                 oversee! rpc.id
                 symbol!(:got_follower)
                 ECell.instruct_broadcast.welcome!(rpc.id)
-                ECell::Run.subject.event!(:attaching, rpc)
+                ECell::Run.subject.event!(:attached_to_follower, rpc)
               end
             }
           end

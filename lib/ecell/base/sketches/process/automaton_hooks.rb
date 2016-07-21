@@ -22,7 +22,9 @@ class ECell::Base::Sketches::Process < ECell::Elements::Subject
   end
 
   def execute_cycles
-    @cycles.each { |cycle, automaton| automaton.transition(:executing) }
+    defer {
+      @cycles.each { |cycle, automaton| automaton.transition(:executing) }
+    }
   end
 
   def at_running

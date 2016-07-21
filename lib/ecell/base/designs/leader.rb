@@ -55,7 +55,7 @@ module ECell
             ]
           },
           events: {
-            attaching: [
+            attached_to_follower: [
               :ready_together!
             ]
           }

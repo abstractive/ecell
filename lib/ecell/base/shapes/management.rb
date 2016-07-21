@@ -146,7 +146,7 @@ module ECell
               else
                 symbol!(:got_leader)
                 @attached = true
-                subj.async(:event!, :attaching, rpc)
+                subj.async(:event!, :attached_to_leader, rpc)
               end
               new_return.reply(rpc, :ok)
             else
