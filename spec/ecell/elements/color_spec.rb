@@ -1,7 +1,8 @@
 require 'ecell/elements/color'
 
 RSpec.describe ECell::Elements::Color do
-  let(:data) {ECell::Elements::Color::Instantiator.thing(:foo, {type: :metasyntactic_variable})}
+  let(:instantiator) {ECell::Elements::Color::Instantiator[:test_piece]}
+  let(:data) {instantiator.thing(:foo, {type: :metasyntactic_variable})}
 
   it "has basic accessor methods" do
     expect(data.form).to be :thing
@@ -25,11 +26,12 @@ RSpec.describe ECell::Elements::Color do
   end
 
   describe ECell::Elements::Color::ReturnInstantiator do
-    let(:call) {ECell::Elements::Color::Instantiator.call(:bar, to: :some_piece, async: false, args: [1, "hello"])}
+    let(:call) {instantiator.call(:bar, to: :some_piece, async: false, args: [1, "hello"])}
 
     it "can create return objects" do
       received = ECell::Elements::Color[call.packed]
-      answer = ECell::Elements::Color::ReturnInstantiator.answer(received, :ok, returns: [2, "goodbye"])
+      return_instantiator = ECell::Elements::Color::ReturnInstantiator[:test_piece]
+      answer = return_instantiator.answer(received, :ok, returns: [2, "goodbye"])
       expect(answer).to be received #benzrf TODO: seems wrong
       expect(answer.form).to be :answer
       expect(answer.returns).to eq([2, "goodbye"])
