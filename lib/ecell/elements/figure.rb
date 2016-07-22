@@ -26,8 +26,8 @@ module ECell
     # "Faces".
     #
     # The current naming convention is that Shape names should be nouns
-    # describing the # multi-Piece functionality they provide, and Face names
-    # should be verbs # describing the actions that they allow a Figure to
+    # describing the multi-Piece functionality they provide, and Face names
+    # should be verbs describing the actions that they allow a Figure to
     # perform.
     class Figure < ECell::Internals::Actor
       include ECell::Extensions
