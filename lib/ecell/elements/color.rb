@@ -3,7 +3,6 @@ require 'msgpack'
 require 'ecell'
 require 'ecell/constants'
 require 'ecell/extensions'
-require 'ecell/run'
 
 #benzrf TODO: maybe make a custom factory instead of mutating global state
 MessagePack::DefaultFactory.register_type(0x00, Symbol)
@@ -29,16 +28,24 @@ module ECell
         end
       end
 
-      # @see Instantiator.method_missing
-      module Instantiator
-        class << self
-          def method_missing(form, value, data={})
-            ECell.async(:logging).debug({
-              message: "Color object... #{form_cap}: #{value}",
-              report: self.class
-            }) if ECell::Constants::DEBUG_DEEP
-            Color.new(data.merge({form: form, form => value}))
-          end
+      # @see Instantiator#method_missing
+      class Instantiator
+        def initialize(piece_id)
+          @piece_id = piece_id
+        end
+
+        def method_missing(form, value, data={})
+          ECell::Extensions.logging.debug({
+            message: "Color object... #{form_cap}: #{value}",
+            report: self.class
+          }) if ECell::Constants::DEBUG_DEEP
+          Color.new(data.merge({id: @piece_id, form: form, form => value}))
+        end
+
+        @instantiators = {}
+
+        def self.[](piece_id)
+          @instantiators[piece_id] ||= new(piece_id)
         end
       end
 
@@ -58,7 +65,6 @@ module ECell
         end
         @packed = @data.is_a?(String)
         @data = unpacked!
-        @data[:id] ||= ECell::Run.piece_id
         #de @data[:timestamp] ||= Time.now.to_f
         @data[:uuid] ||= uuid!
       rescue => ex

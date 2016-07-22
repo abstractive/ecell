@@ -1,11 +1,9 @@
-require 'ecell/run'
-
 require 'ecell/elements/color'
 
 class ECell::Elements::Color
   def executable
     dump!(LOG_LINE)
-    dump!("Piece: #{ECell::Run.piece_id} #{@data}")
+    dump!("#{@data}")
     _ = @data.fetch(:args, [])
     dump!("args: #{_}")
     params = [@data[@data[:form].to_sym]]
@@ -36,24 +34,24 @@ class ECell::Elements::Color
     [:exception, ex, "Error in executable parser."]
   end
 
-  # @see ReturnInstantiator.method_missing
-  module ReturnInstantiator
-    class << self
-      def method_missing(form, rpc, value, add={})
-        rpc.to = rpc.id
-        rpc.id = ECell::Run.piece_id
-        if value == :error
-          rpc.error = add[:type] || :unknown
-          rpc.form = :error
-        else
-          rpc[form] = value
-        end
-        rpc[:form] = form
+  # @see ReturnInstantiator#method_missing
+  class ReturnInstantiator < Instantiator
+    def method_missing(form, rpc, value, add={})
+      rpc.to = rpc.id
+      rpc.id = @piece_id
+      if value == :error
+        rpc.error = add[:type] || :unknown
+        rpc.form = :error
+      else
         rpc[form] = value
-        rpc.merge!(add) if add.any?
-        rpc
       end
+      rpc[:form] = form
+      rpc[form] = value
+      rpc.merge!(add) if add.any?
+      rpc
     end
+
+    @instantiators = {}
   end
 end
 

@@ -20,11 +20,11 @@ module ECell
     end
 
     def new_data
-      ECell::Elements::Color::Instantiator
+      ECell::Elements::Color::Instantiator[configuration[:piece_id]]
     end
 
     def new_return
-      ECell::Elements::Color::ReturnInstantiator
+      ECell::Elements::Color::ReturnInstantiator[configuration[:piece_id]]
     end
 
     def exception!(ex)
