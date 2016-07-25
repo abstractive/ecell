@@ -5,6 +5,17 @@ module ECell
   module Elements
     class Line
       # The class of FSMs governing instances of {Line}.
+      #
+      # ### States
+      #
+      # | State | Can transition to | Information |
+      # | ----- | ----------------- | ----------- |
+      # | `offline` | `initialized`, `disrupted`, `shutdown` | The initial state. Lines automatically transition to `initialized` next if nothing goes wrong. If something does, they transition to `disrupted`.
+      # | `initialized` | `provisioned`, `disrupted`, `shutdown` | Lines stay here until they're provisioned (instructed to bind or connect).
+      # | `provisioned` | `offline`, `online`, `disrupted`, `shutdown` | The Line transitions to this state if it successfully finishes provisioning. (If it fails, it goes back to `offline`.) The Line designates itself as ready once it transitions to this state.
+      # | `online` | `offline`, `disrupted`, `shutdown` | `online` is not currently used.
+      # | `disrupted` | `offline`, `shutdown`, `provisioned` | If a Line transitions to `disrupted`, it will wait for a short period and thenretry provisioning.
+      # | `shutdown` | `offline` | Figures will transition their Lines to `shutdown` when they themselves are shutting down. When a Line transitions to `shutdown`, it will clean up after itself and then automatically transition to `offline`.
       class Automaton < ECell::Internals::BaseAutomaton
         default_state :offline
 
@@ -35,7 +46,7 @@ module ECell
           actor.provision! if ECell::Run.online?
         }
 
-        state(:shutdown) {
+        state(:shutdown, to: [:offline]) {
           actor.shutdown!
         }
       end
