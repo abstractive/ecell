@@ -33,7 +33,7 @@ module ECell
       end
 
       extend Forwardable
-      def_delegators :@automaton, :transition
+      def_delegators :@automaton, :transition, :state
 
       attr_reader :port, :interface, :endpoint, :online, :engaged, :ready, :line_id
 
