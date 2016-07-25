@@ -1,3 +1,4 @@
+require 'json'
 require 'colorize'
 require 'ecell/constants'
 require 'ecell/errors'
