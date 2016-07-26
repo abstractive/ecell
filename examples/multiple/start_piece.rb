@@ -1,8 +1,10 @@
 #!/usr/bin/env ruby
 
-fail unless ARGV.length > 0
+fail unless ARGV.length > 2
 piece_id = ARGV[0].downcase
 
+require 'bundler/setup'
+Bundler.setup
 require 'celluloid/current'
 require 'ecell/constants'
 require 'ecell/run'
@@ -14,22 +16,16 @@ module Celluloid
   end
 end
 
-deconstructor = ->{
-  ECell::Run.shutdown
-}
+Signal.trap('INT') { ECell::Run.shutdown }
 
-case RUBY_ENGINE.to_sym
-when :rbx
-  Signal.trap("SIGINT") { deconstructor.call }
-when :jruby
-  at_exit { deconstructor.call }
-else
-  raise "Unsupported Ruby engine. Use Rubinius or jRuby."
-end
 
 require_relative 'demo_mesh_configuration'
-configuration = {piece_id: piece_id.to_sym, bindings: DEMO_MESH_BINDINGS}
-configuration.merge! DEMO_MESH_HIERARCHY[piece_id.to_sym]
+log_dir = File.expand_path("../logs", __FILE__)
+configuration = {
+  piece_id: piece_id.to_sym,
+  bindings: DEMO_MESH_BINDINGS(ARGV[1], ARGV[2]),
+  log_dir: log_dir
+}.merge(DEMO_MESH_HIERARCHY[piece_id.to_sym])
 
 require "ecell/base/sketches/#{piece_id}"
 ECell::Run.run! ECell::Base::Sketches.const_get(piece_id.capitalize), configuration

@@ -25,7 +25,7 @@ DEMO_MESH_BINDINGS = {
     management_publish: process_base += 1,
   },
   webstack: {
-    interface: default,
+    interface: '0.0.0.0',
     http_server: 4567
   }
 }

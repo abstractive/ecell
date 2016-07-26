@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-fail unless ARGV.length > 0 and ARGV[0].is_a?(String)
+fail unless ARGV.length > 0
 piece_id = ARGV[0].downcase
 
 require 'bundler/setup'
