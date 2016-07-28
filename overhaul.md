@@ -1,7 +1,12 @@
 - [x] Write event system.
 - [ ] Migrate injection functionality and methods defined in Designs into Figures.
+  - [ ] Emitters
+  - [ ] Relayers
+  - [ ] Events
+  - [ ] Executives
 - [ ] Migrate Subject FSM into Awareness/Management/Vitality Shapes.
-- [ ] Replace Subject entirely with new startup system.
+- [ ] Revise the purpose of and terminology for Subject.
 - [ ] Redesign moved APIs to better fit new usage.
+- [ ] Possibly move Line specifications from Designs to Shapes.
 - [ ] Possibly rewrite message-reply-waiting stuff.
 
