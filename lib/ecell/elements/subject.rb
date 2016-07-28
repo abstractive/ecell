@@ -38,6 +38,7 @@ module ECell
         @online = true
         @attached = false
         @executives = {}
+        @figure_ids = []
         @line_ids = []
         @shapes = []
         @configuration = configuration
@@ -84,6 +85,7 @@ module ECell
               #benzrf TODO: maybe replace the `type` key with a `shape` key?
               ECell.supervise(config)
               @actor_ids.unshift(config[:as])
+              @figure_ids << config[:as]
             end
 
             (config[:strokes] || {}).each { |line_id, o|
@@ -120,6 +122,12 @@ module ECell
             error("The #{handler} event handler has bad arity (#{arity} vs. 1 or 0) and was bypassed.")
           end
         }
+      end
+
+      def figure_event(event, data=nil)
+        @figure_ids.each do |figure_id|
+          ECell.async(figure_id).handle_event(event, data)
+        end
       end
 
       def design!(*designs)

@@ -66,6 +66,23 @@ module ECell
         configuration[:leader]
       end
 
+      def handle_event(event, data)
+        handler_id = :"on_#{event}"
+        self.singleton_class.ancestors.each do |anc|
+          next unless anc.method_defined?(handler_id)
+          handler = anc.instance_method(handler_id).bind(self)
+          arity = handler.arity
+          case arity
+          when 0
+            handler.call
+          when 1
+            handler.call(data)
+          else
+            error("A[n] #{event} event handler has bad arity (#{arity} vs. 1 or 0) and was bypassed.")
+          end
+        end
+      end
+
       #benzrf TODO: probably improve on this
       def self.lines(*line_ids)
         line_ids.each {|line_id| ECell::Internals::Conduit.register_line_id(line_id)}
