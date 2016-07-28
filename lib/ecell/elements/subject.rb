@@ -86,6 +86,7 @@ module ECell
               ECell.supervise(config)
               @actor_ids.unshift(config[:as])
               @figure_ids << config[:as]
+              @figure_ids.uniq!
             end
 
             (config[:strokes] || {}).each { |line_id, o|

@@ -68,9 +68,11 @@ module ECell
 
       def handle_event(event, data)
         handler_id = :"on_#{event}"
-        self.singleton_class.ancestors.each do |anc|
-          next unless anc.method_defined?(handler_id)
-          handler = anc.instance_method(handler_id).bind(self)
+        handlers = singleton_class.ancestors.map do |anc|
+          anc.instance_method(handler_id) if anc.method_defined?(handler_id)
+        end.compact.uniq(&:owner)
+        handlers.each do |handler|
+          handler = handler.bind(self)
           arity = handler.arity
           case arity
           when 0
