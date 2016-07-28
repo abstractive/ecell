@@ -11,9 +11,6 @@ module ECell
         PUBLIC_ROOT = File.expand_path("../../../../../public", __FILE__)
 
         def initialize(configuration={})
-          #benzrf TODO: fix infinite-recursion bug due to `Extensions`-defined
-          # methods overriding the things they delegate to. Until then,
-          # do *not* swap the order of `Answerer` and `Caller` below.
           design! ECell::Base::Designs::Follower,
                   ECell::Base::Designs::Answerer,
                   ECell::Base::Designs::Caller
