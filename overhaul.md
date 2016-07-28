@@ -1,6 +1,6 @@
 - [x] Write event system.
 - [ ] Migrate injection functionality and methods defined in Designs into Figures.
-  - [ ] Emitters
+  - [x] Emitters
   - [ ] Relayers
   - [ ] Events
   - [ ] Executives

@@ -17,12 +17,6 @@ module ECell
         ]
 
         Injections = {
-          emitters: {
-            starting: [
-              [:calling_router2, :calling, :from_caller],
-              [:calling_router, :calling, :from_answerer]
-            ]
-          }
         }
       end
     end

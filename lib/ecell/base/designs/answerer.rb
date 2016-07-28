@@ -14,11 +14,6 @@ module ECell
         ]
 
         Injections = {
-          emitters: {
-            ready: [
-              [:calling_reply, :calling, :on_call],
-            ]
-          },
           executive_sync: {
             attaching: [
               [:calling, :attach_switch_incoming!]

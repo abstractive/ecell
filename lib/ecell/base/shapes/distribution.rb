@@ -12,10 +12,18 @@ module ECell
 
         module Distribute
           #benzrf TODO: figure out Distribute
+
+          def on_at_active
+            emitter distribution_pull2, ECell::Run.subject, :on_report
+          end
         end
 
         module Process
           include ECell::Extensions
+
+          def on_at_active
+            emitter distribution_pull, :on_task
+          end
 
           def distribution_root(piece_id, line_id=:distribution_pull2)
             "tcp://#{bindings[piece_id][:interface]}:#{bindings[piece_id][line_id]}"

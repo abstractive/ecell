@@ -23,6 +23,10 @@ module ECell
         module Answer
           include ECell::Extensions
 
+          def on_at_ready
+            emitter calling_reply, :on_call
+          end
+
           def calling_root(piece_id)
             "tcp://#{bindings[piece_id][:interface]}:#{bindings[piece_id][:calling_router]}"
           end
@@ -74,6 +78,11 @@ module ECell
         module Switch
           include ECell::Extensions
 
+          def on_at_starting
+            emitter calling_router2, :from_caller
+            emitter calling_router, :from_answerer
+          end
+
           def from_caller(rpc)
             console({
               reporter: 'Switch',
@@ -116,6 +125,10 @@ module ECell
 
         module Call
           include ECell::Extensions
+
+          def on_at_ready
+            emitter calling_request, :on_answer
+          end
 
           def answering_root(piece_id)
             "tcp://#{bindings[piece_id][:interface]}:#{bindings[piece_id][:calling_router2]}"

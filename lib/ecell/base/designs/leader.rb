@@ -18,6 +18,7 @@ module ECell
           {
             as: :logging,
             type: ECell::Base::Shapes::Logging,
+            faces: [:collate],
             strokes: {logging_pull: {mode: :binding}}
           },
           {
@@ -46,13 +47,6 @@ module ECell
             active: [
               [:state_together!, [{to: :running, at: :active}]]
             ],
-          },
-          emitters: {
-            starting: [
-              [:logging_pull, :logging, :log],
-              [:awareness_subscribe, :awareness, :on_announcement],
-              [:management_router, :management, :on_reply]
-            ]
           },
           events: {
             attached_to_follower: [

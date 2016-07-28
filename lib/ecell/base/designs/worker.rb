@@ -20,11 +20,6 @@ module ECell
             starting: [
               [:distribution, :connect_distribution_output!]
             ]
-          },
-          emitter: {
-            active: [
-              [:distribution_pull, :distribution, :on_task]
-            ]
           }
         }
 

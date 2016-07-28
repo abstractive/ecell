@@ -44,6 +44,10 @@ module ECell
         }.map(&:value)
       end
 
+      def emitter(line, receiver=current_actor, method)
+        line.async.emitter(receiver, method)
+      end
+
       def relayer(from, to)
         debug(message: "Setting a relay from #{from}, to #{to}") if DEBUG_INJECTIONS
         if @sockets[to].ready?

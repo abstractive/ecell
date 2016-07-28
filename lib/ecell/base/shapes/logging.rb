@@ -51,8 +51,11 @@ module ECell
           ECell::Internals::Logger.caught(ex, "Failure to log a #{options.class.name} on the instance level:", store: options)
         end
 
-        #benzrf there would be a `Collate`, but it turns out
-        # there doesn't actually need to be
+        module Collate
+          def on_at_starting
+            emitter logging_pull, :log
+          end
+        end
 
         module Document
           def logging_root(piece_id)

@@ -18,6 +18,10 @@ module ECell
         module Notice
           include ECell::Extensions
 
+          def on_at_starting
+            emitter awareness_subscribe, :on_announcement
+          end
+
           def on_announcement(data)
             missing = []
             missing << "piece id" unless data.id?

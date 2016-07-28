@@ -31,12 +31,6 @@ module ECell
         ]
 
         Injections = {
-          emitters: {
-            attaching: [
-              [:management_dealer, :management, :on_instruction],
-              [:management_subscribe, :management, :on_instruction]
-            ]
-          },
           events: {
             attached_to_leader: [
               :follower_ready!

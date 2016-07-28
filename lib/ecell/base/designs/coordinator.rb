@@ -18,11 +18,6 @@ module ECell
         ]
 
         Injections = {
-          emitter: {
-            active: [
-              [:distribution_pull2, :on_report]
-            ]
-          }
         }
 
         module Methods

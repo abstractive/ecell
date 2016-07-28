@@ -6,7 +6,7 @@ require 'ecell/extensions'
 module ECell
   module Elements
     class Subject < ECell::Internals::Actor
-      [:emitters, :relayers, :events].each { |layer|
+      [:relayers, :events].each { |layer|
         define_method(layer) { |branch=nil|
           debug("Access #{layer}#{(branch) ? " on branch #{branch}" : ""}.") if DEBUG_INJECTIONS
           @injections[layer] ||= {}
@@ -21,12 +21,6 @@ module ECell
           )
         }
       }
-
-      def emitter=(state, pair)
-        level = emitters(state)
-        #benzrf TODO: this is probably supposed to be <<
-        level += pair
-      end
 
       def executives(mode)
         @executives[mode] ||= (@injections[:"executive_#{mode}"] ||= {})
@@ -45,24 +39,6 @@ module ECell
             ECell.async(figure_id).relayer(line_ids.first, line_ids.last)
           }
         }
-      end
-
-      #de Setup as dynamic/reflexive in case different kinds of emitter are needed in the future.
-      def emitter!(line_id, figure_id=nil, method)
-        debug("Triggering emitter, #{method}@#{line_id}.") if DEBUG_INJECTIONS
-        receiver = figure_id ? ECell.sync(figure_id) : Celluloid::Actor.current
-        ECell.sync(line_id).async(:emitter, receiver, method)
-      rescue => ex
-        caught(ex,"Failure in emitter: #{method}@#{line_id}.")
-      end
-
-      def emitters!(level)
-        return unless emitters[level].is_a?(Array)
-        emitters[level].each { |args| emitter!(*args) }
-        true
-      rescue => ex
-        caught(ex, "Trouble setting emitters.")
-        false
       end
 
       def interpret_executive(exec)
