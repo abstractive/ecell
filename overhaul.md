@@ -1,7 +1,7 @@
 - [x] Write event system.
 - [ ] Migrate injection functionality and methods defined in Designs into Figures.
   - [x] Emitters
-  - [ ] Relayers
+  - [x] Relayers
   - [ ] Events
   - [ ] Executives
 - [ ] Migrate Subject FSM into Awareness/Management/Vitality Shapes.

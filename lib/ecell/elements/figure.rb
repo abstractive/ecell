@@ -50,9 +50,9 @@ module ECell
 
       def relayer(from, to)
         debug(message: "Setting a relay from #{from}, to #{to}") if DEBUG_INJECTIONS
-        if @sockets[to].ready?
-          @sockets[from].reader { |data|
-            @sockets[to] << data
+        if to.ready?
+          from.reader { |data|
+            to << data
           }
         end
       rescue => ex

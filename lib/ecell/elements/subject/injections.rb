@@ -6,7 +6,7 @@ require 'ecell/extensions'
 module ECell
   module Elements
     class Subject < ECell::Internals::Actor
-      [:relayers, :events].each { |layer|
+      [:events].each { |layer|
         define_method(layer) { |branch=nil|
           debug("Access #{layer}#{(branch) ? " on branch #{branch}" : ""}.") if DEBUG_INJECTIONS
           @injections[layer] ||= {}
@@ -26,19 +26,6 @@ module ECell
         @executives[mode] ||= (@injections[:"executive_#{mode}"] ||= {})
       rescue => ex
         caught(ex, "Trouble with executives[#{mode}]")
-      end
-
-      def relayers!
-        unless relayers?
-          debug("No relayers.", banner: true) if DEBUG_INJECTIONS
-          return
-        end
-        relayers.each { |figure_id, pairs|
-          pairs.each { |line_ids|
-            debug("Access relayers! #{figure_id} ... #{line_ids}") if DEBUG_INJECTIONS
-            ECell.async(figure_id).relayer(line_ids.first, line_ids.last)
-          }
-        }
       end
 
       def interpret_executive(exec)

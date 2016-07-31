@@ -7,7 +7,7 @@ module ECell
       module Manager
         leader_shapes = Leader::Shapes.map(&:dup)
         leader_shapes.reject! {|sh| sh[:as] == :logging_storage}
-        leader_shapes.find {|sh| sh[:as] == :logging}.delete(:faces)
+        leader_shapes.find {|sh| sh[:as] == :logging}[:faces] = [:relay]
         Shapes = leader_shapes + Follower::Shapes
 
         Disabled = {
@@ -23,12 +23,7 @@ module ECell
             Leader,
             Follower
           ],
-          scope: self,
-          relayers: {
-            logging: [
-              [:logging_pull, :logging_push]
-            ]
-          }
+          scope: self
         }
 
         module Methods

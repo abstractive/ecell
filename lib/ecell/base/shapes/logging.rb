@@ -68,6 +68,12 @@ module ECell
             symbol!(:got_logging)
           end
         end
+
+        module Relay
+          def on_at_attaching
+            async.relayer logging_pull, logging_push
+          end
+        end
       end
     end
   end
