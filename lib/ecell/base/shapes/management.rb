@@ -31,6 +31,11 @@ module ECell
             emitter management_router, :on_reply
           end
 
+          def on_attached_to_follower
+            next_state = ECell.sync(:vitality).followers? ? :ready : :waiting
+            ECell::Run.subject.transition(next_state) #de unless state?(:active)
+          end
+
           def reply_condition(uuid)
             if @replies.key?(uuid)
               raise ECell::Error::Instruction::Duplicate
@@ -124,6 +129,10 @@ module ECell
             emitter management_subscribe, :on_instruction
           end
 
+          def on_attached_to_leader
+            ECell::Run.subject.async(:transition, :ready) unless kind_of?(Manage)
+          end
+
           def attached?
             @attached
           end
@@ -155,7 +164,7 @@ module ECell
               else
                 symbol!(:got_leader)
                 @attached = true
-                subj.async(:event!, :attached_to_leader, rpc)
+                subj.async(:figure_event, :attached_to_leader, rpc)
               end
               new_return.reply(rpc, :ok)
             else

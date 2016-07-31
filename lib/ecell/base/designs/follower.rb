@@ -31,11 +31,6 @@ module ECell
         ]
 
         Injections = {
-          events: {
-            attached_to_leader: [
-              :follower_ready!
-            ]
-          },
           executive_sync: {
             starting: [
               [:logging, :connect_logging!],
@@ -50,12 +45,6 @@ module ECell
             ]
           }
         }
-
-        module Methods
-          def follower_ready!(data)
-            async(:transition, :ready)
-          end
-        end
       end
     end
   end

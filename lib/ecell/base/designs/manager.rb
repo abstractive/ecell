@@ -10,14 +10,6 @@ module ECell
         leader_shapes.find {|sh| sh[:as] == :logging}[:faces] = [:relay]
         Shapes = leader_shapes + Follower::Shapes
 
-        Disabled = {
-          events: {
-            attached_to_leader: [
-              :follower_ready!
-            ]
-          }
-        }
-
         Injections = {
           merge: [
             Leader,
@@ -28,7 +20,6 @@ module ECell
 
         module Methods
           include Leader::Methods
-          include Follower::Methods
         end
       end
     end

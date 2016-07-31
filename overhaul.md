@@ -2,7 +2,7 @@
 - [ ] Migrate injection functionality and methods defined in Designs into Figures.
   - [x] Emitters
   - [x] Relayers
-  - [ ] Events
+  - [x] Events
   - [ ] Executives
 - [ ] Migrate Subject FSM into Awareness/Management/Vitality Shapes.
 - [ ] Revise the purpose of and terminology for Subject.

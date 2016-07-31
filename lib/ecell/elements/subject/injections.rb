@@ -6,22 +6,6 @@ require 'ecell/extensions'
 module ECell
   module Elements
     class Subject < ECell::Internals::Actor
-      [:events].each { |layer|
-        define_method(layer) { |branch=nil|
-          debug("Access #{layer}#{(branch) ? " on branch #{branch}" : ""}.") if DEBUG_INJECTIONS
-          @injections[layer] ||= {}
-          return @injections[layer] unless branch
-          @injections[layer][branch] ||= []
-        }
-        define_method(:"#{layer}?") { |branch=nil|
-          return unless @injections[layer]
-          @injections[layer].is_a?(Hash) && (
-            branch.nil? ||
-            @injections[layer][branch].is_a?(Array)
-          )
-        }
-      }
-
       def executives(mode)
         @executives[mode] ||= (@injections[:"executive_#{mode}"] ||= {})
       rescue => ex

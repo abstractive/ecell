@@ -101,7 +101,6 @@ module ECell
       def at_ready
         executives!(:ready)
         yield if block_given?
-        event!(:ready)
         figure_event(:at_ready)
         async(:transition, :active)
       end
@@ -109,14 +108,12 @@ module ECell
       def at_active
         executives!(:active)
         yield if block_given?
-        event!(:active)
         figure_event(:at_active)
       end
 
       def at_running
         executives!(:running)
         yield if block_given?
-        event!(:running)
         figure_event(:at_running)
         debug(LOG_LINE, highlight: true, tag: :running)
       end
@@ -124,14 +121,12 @@ module ECell
       def at_stalled
         executives!(:stalled)
         yield if block_given?
-        event!(:stalled)
         figure_event(:at_stalled)
       end
 
       def at_waiting
         executives!(:waiting)
         yield if block_given?
-        event!(:waiting)
         figure_event(:at_waiting)
       end
 

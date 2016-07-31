@@ -108,23 +108,6 @@ module ECell
       rescue => ex
       end
 
-      def event!(event, data=nil)
-        #benzrf TODO: unify the logic here with interpret_executive
-        return unless events(event).any?
-        debug(banner: true, message: "Event: #{event}") if DEBUG_INJECTIONS && DEBUG_DEEP
-        events(event).each { |handler|
-          arity = method(handler).arity
-          case arity
-          when 0
-            send(handler)
-          when 1
-            send(handler, data)
-          else
-            error("The #{handler} event handler has bad arity (#{arity} vs. 1 or 0) and was bypassed.")
-          end
-        }
-      end
-
       def figure_event(event, data=nil)
         @figure_ids.each do |figure_id|
           ECell.async(figure_id).handle_event(event, data)

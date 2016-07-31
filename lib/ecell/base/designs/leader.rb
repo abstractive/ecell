@@ -47,20 +47,11 @@ module ECell
             active: [
               [:state_together!, [{to: :running, at: :active}]]
             ],
-          },
-          events: {
-            attached_to_follower: [
-              :ready_together!
-            ]
           }
         }
 
         module Methods
           include ECell::Extensions
-
-          def ready_together!
-            transition(ECell.sync(:vitality).followers? ? :ready : :waiting) #de unless state?(:active)
-          end
 
           def state_together?(at)
             states = ECell.sync(:vitality).follower_map { |id|

@@ -38,7 +38,6 @@ module ECell
     DEFAULT_LOG_DIR = File.expand_path("../../../logs", __FILE__)
 
     INJECTION_LAYERS = [
-      :events,
       :executive_sync,
       :executive_async
     ]
