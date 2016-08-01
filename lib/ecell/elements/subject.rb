@@ -37,7 +37,6 @@ module ECell
         fail "No leader provided." unless @leader
         @online = true
         @attached = false
-        @executives = {}
         @figure_ids = []
         @line_ids = []
         @shapes = []
@@ -109,9 +108,9 @@ module ECell
       end
 
       def figure_event(event, data=nil)
-        @figure_ids.each do |figure_id|
-          ECell.async(figure_id).handle_event(event, data)
-        end
+        @figure_ids.map do |figure_id|
+          ECell.sync(figure_id).future.handle_event(event, data)
+        end.map(&:value)
       end
 
       def design!(*designs)

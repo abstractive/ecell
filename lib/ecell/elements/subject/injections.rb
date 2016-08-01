@@ -6,47 +6,6 @@ require 'ecell/extensions'
 module ECell
   module Elements
     class Subject < ECell::Internals::Actor
-      def executives(mode)
-        @executives[mode] ||= (@injections[:"executive_#{mode}"] ||= {})
-      rescue => ex
-        caught(ex, "Trouble with executives[#{mode}]")
-      end
-
-      def interpret_executive(exec)
-        exec = [exec] unless exec.is_a? Array
-        case exec.map &:class
-        when [Symbol]
-          [self, exec[0], []]
-        when [Symbol, Array]
-          [self, exec[0], exec[1]]
-        when [Symbol, Symbol]
-          [ECell.sync(exec[0]), exec[1], []]
-        when [Symbol, Symbol, Array]
-          [ECell.sync(exec[0]), exec[1], exec[2]]
-        else
-          raise ArgumentError, "Executive entries must be a symbol only, "\
-            "or an array of [:symbol, :symbol (optional), args (optional)]"
-        end
-      end
-
-      def executives!(level)
-        debug("Access executives at level :#{level}.") if DEBUG_INJECTIONS
-        (executives(:sync)[level] || []).each { |exec|
-          receiver, method, args = interpret_executive(exec)
-          debug("Execute: #{[method, args]}@#{receiver}/#{level}|sync", highlight: true) if DEBUG_INJECTIONS
-          receiver.send(method, *args)
-        }
-        (executives(:async)[level] || []).each { |exec|
-          receiver, method, args = interpret_executive(exec)
-          debug("Execute: #{[method, args]}@#{receiver}/#{level}|async", highlight: true) if DEBUG_INJECTIONS
-          receiver.async(method, *args)
-        }
-        true
-      rescue => ex
-        caught(ex, "Trouble setting [#{level}] executive.")
-        false
-      end
-
       # Helper methods for processing Injections in Designs.
       module Injections
         class << self

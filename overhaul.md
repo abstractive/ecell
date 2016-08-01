@@ -3,7 +3,7 @@
   - [x] Emitters
   - [x] Relayers
   - [x] Events
-  - [ ] Executives
+  - [x] Executives
 - [ ] Migrate Subject FSM into Awareness/Management/Vitality Shapes.
 - [ ] Revise the purpose of and terminology for Subject.
 - [ ] Redesign moved APIs to better fit new usage.

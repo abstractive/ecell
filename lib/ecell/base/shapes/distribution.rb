@@ -25,6 +25,10 @@ module ECell
             emitter distribution_pull, :on_task
           end
 
+          def on_at_starting
+            connect_distribution_output!
+          end
+
           def distribution_root(piece_id, line_id=:distribution_pull2)
             "tcp://#{bindings[piece_id][:interface]}:#{bindings[piece_id][line_id]}"
           end

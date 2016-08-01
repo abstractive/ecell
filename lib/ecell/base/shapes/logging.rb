@@ -58,6 +58,10 @@ module ECell
         end
 
         module Document
+          def on_at_starting
+            connect_logging!
+          end
+
           def logging_root(piece_id)
             "tcp://#{bindings[piece_id][:interface]}:#{bindings[piece_id][:logging_pull]}"
           end

@@ -1,11 +1,10 @@
 require 'ecell/elements/figure'
-require 'ecell/internals/actor'
 
 module ECell
   module Base
     module Shapes
       class Logging < ECell::Elements::Figure
-        class Database < ECell::Internals::Actor
+        class Database < ECell::Elements::Figure
           require 'ecell/base/shapes/logging'
 
           #de For fully functioning storage class... see: Storage::File

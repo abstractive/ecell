@@ -6,7 +6,7 @@ module ECell
   module Base
     module Shapes
       class Logging < ECell::Elements::Figure
-        class File < ECell::Internals::Actor
+        class File < ECell::Elements::Figure
           require 'ecell/base/shapes/logging'
 
           finalizer :shutdown

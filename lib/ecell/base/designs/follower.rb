@@ -31,19 +31,6 @@ module ECell
         ]
 
         Injections = {
-          executive_sync: {
-            starting: [
-              [:logging, :connect_logging!],
-              [:awareness, :connect_awareness!],
-              [:management, :connect_management!]
-            ]
-          },
-          executive_async: {
-            attaching: [
-              [:awareness, :announce_presence!],
-              [:awareness, :announce_heartbeat!]
-            ]
-          }
         }
       end
     end

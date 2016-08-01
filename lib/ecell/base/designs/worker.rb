@@ -16,11 +16,6 @@ module ECell
         ]
 
         Injections = {
-          executive_sync: {
-            starting: [
-              [:distribution, :connect_distribution_output!]
-            ]
-          }
         }
 
         module Methods

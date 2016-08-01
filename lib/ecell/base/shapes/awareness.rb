@@ -43,6 +43,15 @@ module ECell
         module Announce
           include ECell::Extensions
 
+          def on_at_starting
+            connect_awareness!
+          end
+
+          def on_at_attaching
+            async.announce_presence!
+            async.announce_heartbeat!
+          end
+
           def connect_awareness!
             awareness_publish.connect = awareness_root(leader)
             awareness_publish.online! if awareness_publish.engaged?

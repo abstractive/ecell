@@ -27,6 +27,10 @@ module ECell
             emitter calling_reply, :on_call
           end
 
+          def on_at_attaching
+            attach_switch_incoming!
+          end
+
           def calling_root(piece_id)
             "tcp://#{bindings[piece_id][:interface]}:#{bindings[piece_id][:calling_router]}"
           end
@@ -128,6 +132,10 @@ module ECell
 
           def on_at_ready
             emitter calling_request, :on_answer
+          end
+
+          def on_at_starting
+            attach_switch_outgoing!
           end
 
           def answering_root(piece_id)

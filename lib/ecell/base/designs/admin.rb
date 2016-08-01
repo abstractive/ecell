@@ -29,11 +29,6 @@ module ECell
         ]
 
         Injections = {
-          executive_async: {
-            starting: [
-              :authority!
-            ]
-          }
         }
       end
     end

@@ -17,10 +17,6 @@ module ECell
           ],
           scope: self
         }
-
-        module Methods
-          include Leader::Methods
-        end
       end
     end
   end

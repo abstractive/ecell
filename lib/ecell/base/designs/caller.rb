@@ -14,11 +14,6 @@ module ECell
         ]
 
         Injections = {
-          executive_sync: {
-            attaching: [
-              [:calling, :attach_switch_outgoing!]
-            ]
-          }
         }
       end
     end

@@ -83,7 +83,6 @@ module ECell
       end
 
       def at_starting
-        executives!(:starting)
         yield if block_given?
         figure_event(:at_starting)
         every(INTERVALS[:announce_state]) {
@@ -93,45 +92,38 @@ module ECell
       end
 
       def at_attaching
-        executives!(:attaching)
         yield if block_given?
         figure_event(:at_attaching)
       end
 
       def at_ready
-        executives!(:ready)
         yield if block_given?
         figure_event(:at_ready)
         async(:transition, :active)
       end
 
       def at_active
-        executives!(:active)
         yield if block_given?
         figure_event(:at_active)
       end
 
       def at_running
-        executives!(:running)
         yield if block_given?
         figure_event(:at_running)
         debug(LOG_LINE, highlight: true, tag: :running)
       end
 
       def at_stalled
-        executives!(:stalled)
         yield if block_given?
         figure_event(:at_stalled)
       end
 
       def at_waiting
-        executives!(:waiting)
         yield if block_given?
         figure_event(:at_waiting)
       end
 
       def at_shutdown
-        executives!(:shutdown)
         shutdown = []
         if block_given?
           shutdown << future {
@@ -159,11 +151,9 @@ module ECell
       end
 
       def at_offline
-        executives!(:offline)
       end
 
       def at_restarting
-        executives!(:restart)
 =begin
     sleep INTERVALS[:restarting]
     #de TODO: Restart with clean actor.
