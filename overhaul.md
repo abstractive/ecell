@@ -4,9 +4,14 @@
   - [x] Relayers
   - [x] Events
   - [x] Executives
-- [ ] Migrate base Sketches to make better use of Shapes.
 - [ ] Migrate Subject FSM into Awareness/Management/Vitality Shapes.
+  - [ ] Do initial migration.
+  - [ ] Split into leader and follower FSMs.
 - [ ] Revise the purpose of and terminology for Subject.
+  - [ ] Migrate base Sketches to make better use of Shapes.
+  - [ ] Revise things like the RPC module to be arguments to the Calling figure.
+  - [ ] Remove leftover dependencies on Subject (e.g., in the Management automaton)
+  - [ ] Do actual revision.
 - [ ] Redesign moved APIs to better fit new usage.
 - [ ] Possibly move Line specifications from Designs to Shapes.
 - [ ] Possibly rewrite message-reply-waiting stuff.
