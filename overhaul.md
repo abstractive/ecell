@@ -4,6 +4,7 @@
   - [x] Relayers
   - [x] Events
   - [x] Executives
+- [ ] Migrate base Sketches to make better use of Shapes.
 - [ ] Migrate Subject FSM into Awareness/Management/Vitality Shapes.
 - [ ] Revise the purpose of and terminology for Subject.
 - [ ] Redesign moved APIs to better fit new usage.
