@@ -1,6 +1,8 @@
+require 'forwardable'
 require 'celluloid/current'
 require 'ecell/elements/figure'
 require 'ecell/run'
+require 'ecell/base/shapes/management/automaton'
 require 'ecell/extensions'
 require 'ecell/constants'
 require 'ecell/errors'
@@ -17,11 +19,36 @@ module ECell
               :management_publish,
               :management_subscribe
 
+        extend Forwardable
+        def_delegators :@automaton, :state, :transition
+
         def initialize(options)
           return unless ECell::Run.online?
           super(options)
           @replies = {}
+          @automaton = Automaton.new
           debug(message: "Initialized", reporter: self.class) if DEBUG_DEEP
+        end
+
+        STATES = [
+          :initializing,
+          :starting,
+          :attaching,
+          :ready,
+          :active,
+          :running,
+          :stalled,
+          :waiting,
+          :shutdown
+        ]
+
+        def state?(state, current=nil)
+          current ||= self.state
+          return true if (STATES.index(current) >= STATES.index(state)) &&
+                         (STATES.index(current) < STATES.index(:stalled))
+          return true if (STATES.index(current) >= STATES.index(state)) &&
+                         (STATES.index(current) >= STATES.index(:stalled))
+          false
         end
 
         module Manage
@@ -37,7 +64,7 @@ module ECell
 
           def on_attached_to_follower
             next_state = ECell.sync(:vitality).followers? ? :ready : :waiting
-            ECell::Run.subject.transition(next_state) #de unless state?(:active)
+            transition(next_state) #de unless state?(:active)
           end
 
           def state_together!(states)
@@ -55,7 +82,7 @@ module ECell
                   reset_state_together!(states)
                   debug("Everyone moved to #{states[:to]}.", highlight: true)
                   #benzrf TODO: figure out the correct logic for managers
-                  ECell::Run.subject.transition(states[:to]) if configuration[:piece_id] == configuration[:leader]
+                  transition(states[:to]) if configuration[:piece_id] == configuration[:leader]
                 else
 
                 end
@@ -147,7 +174,7 @@ module ECell
 
             begin
               #benzrf TODO: fix the messed-up state-based logic
-              # raise ECell::Error::PieceNotReady unless ECell::Run.subject.state?(:attaching)
+              # raise ECell::Error::PieceNotReady unless state?(:attaching)
               raise ECell::Error::Management::RouterMissing unless management_router?
               if rpc[:broadcast]
                 management_publish << rpc
@@ -196,7 +223,7 @@ module ECell
           end
 
           def on_attached_to_leader
-            ECell::Run.subject.async(:transition, :ready) unless kind_of?(Manage)
+            async(:transition, :ready) unless kind_of?(Manage)
           end
 
           def attached?

@@ -13,12 +13,12 @@ class ECell::Base::Sketches::Webstack::Routes < Sinatra::Base
   set :public_folder, ECell::Base::Sketches::Webstack::PUBLIC_ROOT
 
   get('/') {
-    break redirect('/loading') unless ECell::Run.subject.state?(:running)
+    break redirect('/loading') unless ECell.sync(:management).state?(:running)
     redirect("/index.html")
   }
 
   get('/rpc') {
-    break redirect('/loading') unless ECell::Run.subject.state?(:running)
+    break redirect('/loading') unless ECell.sync(:management).state?(:running)
     redirect("/rpc.html")
   }
 

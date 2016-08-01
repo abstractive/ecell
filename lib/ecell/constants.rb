@@ -74,21 +74,6 @@ module ECell
       max_threads: 90
     }
 
-    PIECE_STATES = [
-      :initializing,
-      :provisioning,
-      :starting,
-      :attaching,
-      :ready,
-      :active,
-      :running,
-      :stalled,
-      :waiting,
-      :shutdown,
-      :offline,
-      :restarting
-    ]
-
     #de Bindings & Interfaces could be loaded from a yml configuration file.
 
     DEFAULT_INTERFACE = "127.0.0.1"

@@ -5,7 +5,7 @@
   - [x] Events
   - [x] Executives
 - [ ] Migrate Subject FSM into Awareness/Management/Vitality Shapes.
-  - [ ] Do initial migration.
+  - [x] Do initial migration.
   - [ ] Split into leader and follower FSMs.
 - [ ] Revise the purpose of and terminology for Subject.
   - [ ] Migrate base Sketches to make better use of Shapes.

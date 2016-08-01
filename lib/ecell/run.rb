@@ -43,7 +43,7 @@ module ECell
           args: [configuration]
         })
 
-        ECell.async(piece_id).transition(:provisioning)
+        ECell.async(piece_id).startup
 
         watch! if DEBUG_RESOURCES || CODE_RELOADING
         begin
@@ -161,7 +161,7 @@ module ECell
         @dump = nil
         @online = false
         waited = ECell::Internals::Timer.begin
-        ECell.sync(@piece_id).transition(:shutdown)
+        ECell.async(@piece_id).shutdown
         #de TODO: Revisit this and continue looking for suspended tasks who error out.
         Celluloid.logger = ::Logger.new("/dev/null")
         sleep 0.126

@@ -199,7 +199,7 @@ module ECell
             callback = rpc.delete(:callback)
 
             begin
-              raise ECell::Error::PieceNotReady unless ECell::Run.subject.state?(:ready)
+              raise ECell::Error::PieceNotReady unless ECell.sync(:management).state?(:ready)
               raise ECell::Error::Call::MissingSwitch unless calling_request?
               answer = calling_request << rpc
               if rpc.async

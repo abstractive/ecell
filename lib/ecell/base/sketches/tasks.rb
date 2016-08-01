@@ -15,7 +15,7 @@ module ECell
           raise exception(ex, "Failure initializing.")
         end
 
-        def at_provisioning
+        def startup
           super {
             endpoint = ECell.sync(:distribution).distribution_input!(:tasks)
             line! :distribution_pull, mode: :connecting, endpoint: endpoint

@@ -2,7 +2,6 @@ require 'forwardable'
 require 'ecell/internals/actor'
 require 'ecell/internals/conduit'
 require 'ecell/run'
-require 'ecell/elements/subject/automaton'
 require 'ecell'
 
 require 'ecell/elements/subject/interventions'
@@ -13,9 +12,6 @@ module ECell
     # which will generally contain the high-level business logic unique to the
     # Piece. This is the base class that every Subject is an instance of.
     #
-    # A Subject will also contain certain Piece-wide information and state,
-    # including an {Subject::Automaton FSM} governing the Piece.
-    #
     # Subclasses of {Subject} are called "Sketches". A Sketch functions as a
     # complete specification of a Piece; as such, it may include some
     # information not strictly related to the Subjects instantiated from it.
@@ -25,7 +21,7 @@ module ECell
       extend Forwardable
       include ECell::Internals::Conduit
 
-      def_delegators :@automaton, :state, :transition
+      def_delegators :"ECell.sync(:management)", :state, :transition
       attr_reader :configuration
 
       def initialize(configuration={})
@@ -40,20 +36,20 @@ module ECell
         @line_ids = []
         @shapes = []
         @configuration = configuration
-        @automaton = Automaton.new
         #benzrf TODO: ECell::Run.path!(File.dirname(caller[0].split(':')[0])) if CODE_RELOADING
         debug(message: "Initialized", reporter: self.class, highlight: true) if DEBUG_PIECES && DEBUG_DEEP
       rescue => ex
         raise exception(ex, "Failure initializing.")
       end
 
-      def state?(state, current=nil)
-        current ||= self.state
-        return true if (PIECE_STATES.index(current) >= PIECE_STATES.index(state)) &&
-                       (PIECE_STATES.index(current) < PIECE_STATES.index(:stalled))
-        return true if (PIECE_STATES.index(current) >= PIECE_STATES.index(state)) &&
-                       (PIECE_STATES.index(current) >= PIECE_STATES.index(:stalled))
-        false
+      def startup
+        provision!
+        yield if block_given?
+        figure_event(:at_provisioning)
+        ECell.async(:management).transition(:starting)
+      rescue => ex
+        exception(ex, "Failure provisioning.")
+        ECell::Run.shutdown
       end
 
       def provision!
@@ -74,7 +70,6 @@ module ECell
               ECell.supervise(config)
               @actor_ids.unshift(config[:as])
               @figure_ids << config[:as]
-              @figure_ids.uniq!
             end
 
             (config[:strokes] || {}).each { |line_id, o|
@@ -88,6 +83,7 @@ module ECell
         caught(ex, "Trouble establishing designs.")
       ensure
         @line_ids.uniq!
+        @figure_ids.uniq!
       end
 
       def line!(line_id, options, figure_id=@piece_id)
@@ -105,7 +101,36 @@ module ECell
       def design!(*designs)
         @designs = designs
       end
+
+      def shutdown
+        shutdown = []
+        if block_given?
+          shutdown << future {
+            begin
+              yield
+            rescue
+              nil
+            end
+          }
+        end
+        shutdown += @actor_ids.compact.uniq.map { |actor|
+          begin
+            if actor && ECell.sync(actor)
+              if ECell.sync(actor).respond_to?(:transition)
+                ECell.sync(actor).transition(:shutdown)
+              else
+                ECell.sync(actor).future.shutdown
+              end
+            end
+          rescue
+            nil
+          end
+        }
+        shutdown.map { |s| s.value if s }
+      end
     end
   end
 end
+
+require 'ecell/elements/subject/automaton_hooks'
 
