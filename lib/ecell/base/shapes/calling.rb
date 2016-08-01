@@ -23,12 +23,9 @@ module ECell
         module Answer
           include ECell::Extensions
 
-          def on_at_ready
-            emitter calling_reply, :on_call
-          end
-
-          def on_at_attaching
+          def on_setting_up
             attach_switch_incoming!
+            emitter calling_reply, :on_call
           end
 
           def calling_root(piece_id)
@@ -82,7 +79,7 @@ module ECell
         module Switch
           include ECell::Extensions
 
-          def on_at_starting
+          def on_started
             emitter calling_router2, :from_caller
             emitter calling_router, :from_answerer
           end
@@ -130,11 +127,11 @@ module ECell
         module Call
           include ECell::Extensions
 
-          def on_at_ready
+          def on_setting_up
             emitter calling_request, :on_answer
           end
 
-          def on_at_starting
+          def on_started
             attach_switch_outgoing!
           end
 
@@ -199,7 +196,7 @@ module ECell
             callback = rpc.delete(:callback)
 
             begin
-              raise ECell::Error::PieceNotReady unless ECell.sync(:management).state?(:ready)
+              raise ECell::Error::PieceNotReady unless ECell.sync(:management).follower_state?(:running)
               raise ECell::Error::Call::MissingSwitch unless calling_request?
               answer = calling_request << rpc
               if rpc.async

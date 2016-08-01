@@ -9,14 +9,13 @@ require 'ecell/base/shapes/logging'
 require 'ecell/base/sketches/webstack'
 
 class ECell::Base::Sketches::Webstack < ECell::Elements::Subject
-  def at_starting
+  def startup
     super
     ECell.supervise(type: ECell::Base::Sketches::Webstack::ClientRegistry, as: :ClientRegistry)
     ECell.supervise(type: ECell::Base::Sketches::Webstack::Handler, as: :rack)
   end
 
   def at_running
-    super
     @check_process = every(INTERVALS[:check]) {
       ECell.call_sync(:process).check_in!{ |rpc|
         begin

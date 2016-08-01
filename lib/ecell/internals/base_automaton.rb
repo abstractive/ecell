@@ -11,8 +11,8 @@ module ECell
       def transition(state)
         debug({
           tag: :state,
-          message: state.to_s.capitalize,
-          reporter: actor.class,
+          message: state.to_s,
+          reporter: self.class,
           highlight: true
         }) if DEBUG_AUTOMATA
         super

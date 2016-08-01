@@ -24,39 +24,47 @@ module ECell
         # | `shutdown` | `restarting` | Pieces transition to `shutdown` when they're shut down. After transitioning, they attempt to clean up after themselves.
         # | `offline` | `shutdown` | `offline` is not currently used.
         # | `restarting` | `provisioning`, `offline` | `restarting` is not currently used.
-        class Automaton < ECell::Internals::BaseAutomaton
+        class LeaderAutomaton < ECell::Internals::BaseAutomaton
           default_state :initializing
 
-          state(:starting, to: [:attaching, :shutdown]) {
-            ECell::Run.subject.async(:at_starting)
+          state(:need_followers, to: [:followers_setting_up])
+
+          state(:followers_setting_up, to: [:followers_ready]) {
+            actor.async.wait_for_followers
           }
 
-          state(:attaching, to: [:waiting, :ready, :shutdown]) {
-            ECell::Run.subject.async(:at_attaching)
+          state(:followers_ready, to: [:followers_running]) {
+            ECell::Run.subject.figure_event(:followers_ready)
+            ECell::Run.subject.at_followers_ready if ECell::Run.subject.respond_to?(:at_followers_ready)
+            actor.async.running_together!
           }
 
-          state(:ready, to: [:active, :stalled, :shutdown]) {
-            ECell::Run.subject.async(:at_ready)
+          state(:followers_running, to: [:need_followers, :followers_setting_up]) {
+            ECell::Run.subject.figure_event(:followers_running)
+          }
+        end
+
+        class FollowerAutomaton < ECell::Internals::BaseAutomaton
+          default_state :initializing
+
+          state(:need_leader, to: [:setting_up])
+
+          state(:setting_up, to: [:ready]) {
+            ECell::Run.subject.figure_event(:setting_up)
+            transition(:ready)
           }
 
-          state(:active, to: [:running, :shutdown]) {
-            ECell::Run.subject.async(:at_active)
-          }
+          state(:ready, to: [:running])
 
-          state(:running, to: [:shutdown, :stalled]) {
-            ECell::Run.subject.async(:at_running)
-          }
-
-          state(:stalled, to: [:waiting, :shutdown]) {
-            ECell::Run.subject.async(:at_stalled)
-          }
-
-          state(:waiting, to: [:ready, :attaching, :stalled, :shutdown]) {
-            ECell::Run.subject.async(:at_waiting)
-          }
-
-          state(:shutdown) {
-            actor.shutdown
+          state(:running) {
+            debug(LOG_LINE, highlight: true, tag: :running)
+            ECell::Run.subject.figure_event(:running)
+            ECell::Run.subject.at_running if ECell::Run.subject.respond_to?(:at_running)
+            # When an instruction is given to transition to `running`, the result
+            # is gonna be the last thing in this block. Since the result of
+            # `ECell::Run.subject.at_running` may not be serializable, this can
+            # cause an error. So we manually return nil.
+            #benzrf TODO: find a better fix than this.
             nil
           }
         end

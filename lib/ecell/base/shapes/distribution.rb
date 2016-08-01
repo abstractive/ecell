@@ -13,11 +13,11 @@ module ECell
         module Distribute
           #benzrf TODO: figure out Distribute
 
-          def on_at_active
+          def on_followers_ready
             emitter distribution_pull2, ECell::Run.subject, :on_report
           end
 
-          def on_at_provisioning
+          def on_started
             #benzrf TODO: this is definitely wrong
             # unless respond_to?(:on_report)
             #   raise ECell::Error::MissingEmitter, "No on_report emitter exists."
@@ -25,9 +25,6 @@ module ECell
             # unless @line_ids.any? { |c| c.to_s.end_with?("_push2") && c.to_s.start_with?("distribution_") }
             #   raise ECell::Error::Line::Missing, "No distribution_*_push2 lines configured and initialized."
             # end
-          end
-
-          def on_at_attaching
             distribution_pull2.provision!
           end
         end
@@ -35,15 +32,15 @@ module ECell
         module Process
           include ECell::Extensions
 
-          def on_at_active
+          def on_setting_up
             emitter distribution_pull, :on_task
           end
 
-          def on_at_starting
+          def on_started
             connect_distribution_output!
           end
 
-          def on_at_provisioning
+          def on_started
             unless ECell.sync(:distribution_pull)
               raise ECell::Error::Line::Missing, "No distribution_pull line configured and initialized."
             end

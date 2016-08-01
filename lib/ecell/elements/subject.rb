@@ -1,10 +1,7 @@
-require 'forwardable'
 require 'ecell/internals/actor'
 require 'ecell/internals/conduit'
 require 'ecell/run'
 require 'ecell'
-
-require 'ecell/elements/subject/interventions'
 
 module ECell
   module Elements
@@ -20,9 +17,6 @@ module ECell
     class Subject < ECell::Internals::Actor
       extend Forwardable
       include ECell::Internals::Conduit
-
-      def_delegators :"ECell.sync(:management)", :state, :transition
-      attr_reader :configuration
 
       def initialize(configuration={})
         return unless ECell::Run.online?
@@ -45,8 +39,7 @@ module ECell
       def startup
         provision!
         yield if block_given?
-        figure_event(:at_provisioning)
-        ECell.async(:management).transition(:starting)
+        figure_event(:started)
       rescue => ex
         exception(ex, "Failure provisioning.")
         ECell::Run.shutdown
@@ -131,6 +124,4 @@ module ECell
     end
   end
 end
-
-require 'ecell/elements/subject/automaton_hooks'
 

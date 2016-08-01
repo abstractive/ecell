@@ -2,7 +2,7 @@ module ECell
   module Constants
     DEBUG             = true
     DEBUG_DEEP        = false
-    DEBUG_AUTOMATA    = false
+    DEBUG_AUTOMATA    = true
     DEBUG_RESOURCES   = false #de Broken gem!
     DEBUG_SHUTDOWN    = false
     DEBUG_PIECES      = true

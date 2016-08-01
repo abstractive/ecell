@@ -2,8 +2,7 @@ require 'forwardable'
 require 'celluloid/current'
 require 'ecell/elements/figure'
 require 'ecell/run'
-require 'ecell/base/shapes/management/automaton'
-require 'ecell/extensions'
+require 'ecell/base/shapes/management/automata'
 require 'ecell/constants'
 require 'ecell/errors'
 require 'ecell/internals/actor'
@@ -20,89 +19,87 @@ module ECell
               :management_subscribe
 
         extend Forwardable
-        def_delegators :@automaton, :state, :transition
+        def_delegator :@leader_automaton, :state, :leader_state
+        def_delegator :@leader_automaton, :transition, :leader_transition
+        def_delegator :@follower_automaton, :state, :follower_state
+        def_delegator :@follower_automaton, :transition, :follower_transition
 
         def initialize(options)
           return unless ECell::Run.online?
           super(options)
           @replies = {}
-          @automaton = Automaton.new
           debug(message: "Initialized", reporter: self.class) if DEBUG_DEEP
         end
 
-        STATES = [
+        FOLLOWER_STATES = [
           :initializing,
-          :starting,
-          :attaching,
+          :need_leader,
+          :setting_up,
           :ready,
-          :active,
-          :running,
-          :stalled,
-          :waiting,
-          :shutdown
+          :running
         ]
 
-        def state?(state, current=nil)
-          current ||= self.state
-          return true if (STATES.index(current) >= STATES.index(state)) &&
-                         (STATES.index(current) < STATES.index(:stalled))
-          return true if (STATES.index(current) >= STATES.index(state)) &&
-                         (STATES.index(current) >= STATES.index(:stalled))
-          false
+        def follower_state?(state)
+          return false unless @follower_automaton
+          FOLLOWER_STATES.index(follower_state) >= FOLLOWER_STATES.index(state)
+        end
+
+        def welcome!(follower)
+          return false if ECell::Run.piece_id == follower
+          debug("Welcome #{follower.to_s.green.bold}!")
+          true
         end
 
         module Manage
-          include ECell::Extensions
+          include ECell::Constants
 
-          def on_at_starting
+          def on_started
+            @leader_automaton = LeaderAutomaton.new
+            async.leader_transition(:need_followers)
             emitter management_router, :on_reply
           end
 
-          def on_at_active
-            async.state_together!(to: :running, at: :active)
-          end
-
           def on_attached_to_follower
-            next_state = ECell.sync(:vitality).followers? ? :ready : :waiting
-            transition(next_state) #de unless state?(:active)
+            async.leader_transition(:followers_setting_up) if ECell.sync(:vitality).followers?
           end
 
-          def state_together!(states)
-            @retry_state_together ||= {}
-            unless states[:at].is_a?(Symbol) && states[:to].is_a?(Symbol)
-              raise ArgumentError, "Expected hash[at: :state, to: :state]"
+          def wait_for_followers
+            loop do
+              debug("Running together at :ready?", highlight: true)
+              if state_together?(:ready)
+                async.leader_transition(:followers_ready)
+                break
+              end
+              sleep INTERVALS[:second_chance]
             end
+          rescue => ex
+            caught(ex, "Trouble in wait_for_followers")
+          end
 
-            debug("Running together at #{states[:at]}?", highlight: true)
-
-            if state_together?(states[:at])
-              if ECell.instruct_broadcast.transition(states[:to]).reply?(:async)
+          def running_together!
+            3.times do
+              if ECell.instruct_broadcast.follower_transition(:running).reply?(:async)
                 sleep INTERVALS[:allow_transition]
-                if state_together?(states[:to])
-                  reset_state_together!(states)
-                  debug("Everyone moved to #{states[:to]}.", highlight: true)
-                  #benzrf TODO: figure out the correct logic for managers
-                  transition(states[:to]) if configuration[:piece_id] == configuration[:leader]
+                if state_together?(:running)
+                  debug("Everyone moved to :running.", highlight: true)
+                  async.leader_transition(:followers_running)
+                  break
                 else
-
+                  debug("Retrying running_together!", highlight: true)
                 end
               else
                 raise
               end
-            else
-              retry_state_together!(states)
             end
-          rescue => ex
-            caught(ex, "Trouble in running_together!")
-            reset_state_together!
+            #benzrf TODO: what happens if we run out of tries?
           end
 
           def state_together?(at)
             states = ECell.sync(:vitality).follower_map { |id|
               Celluloid::Future.new {
                 begin
-                  rpc = ECell.instruct_sync(id).state
-                  (rpc.returns?) ? rpc.returns.to_sym : nil
+                  rpc = ECell.instruct_sync(id).follower_state?(at)
+                  (rpc.returns?) ? rpc.returns : false
                 rescue => ex
                   caught(ex, "Trouble in state_together?")
                   exception!(ex)
@@ -110,19 +107,9 @@ module ECell
               }
             }
             states = states.map(&:value)
-            at_state = states.compact.count { |s| s.is_a?(Symbol) && at == s }
-            debug("states: #{states} :: at_state: #{at_state}")
+            at_state = states.compact.count {|at| at}
+            debug("replies: #{states} :: at_state: #{at_state}")
             at_state == ECell.sync(:vitality).follower_count
-          end
-
-          def reset_state_together!(states)
-            @retry_state_together[states].cancel if @retry_state_together[states] rescue nil
-          end
-
-          def retry_state_together!(states)
-            reset_state_together!(states)
-            debug("Retry together at #{states[:at]}.", highlight: true)
-            @retry_state_together[states] = after(INTERVALS[:second_chance]) { state_together!(states) }
           end
 
           def reply_condition(uuid)
@@ -213,17 +200,16 @@ module ECell
         module Cooperate
           include ECell::Constants
 
-          def on_at_attaching
+          def on_started
+            @follower_automaton = FollowerAutomaton.new
+            async.follower_transition(:need_leader)
+            connect_management!
             emitter management_dealer, :on_instruction
             emitter management_subscribe, :on_instruction
           end
 
-          def on_at_starting
-            connect_management!
-          end
-
           def on_attached_to_leader
-            async(:transition, :ready) unless kind_of?(Manage)
+            async.follower_transition(:setting_up)
           end
 
           def attached?
@@ -246,7 +232,6 @@ module ECell
 
           def on_instruction(rpc)
             raise "No instruction." unless rpc.instruction?
-            subj = ECell::Run.subject
             return management_dealer << case rpc.instruction
             when :ping!
               symbol!(:sent_pong)
@@ -257,27 +242,27 @@ module ECell
               else
                 symbol!(:got_leader)
                 @attached = true
-                subj.async(:figure_event, :attached_to_leader, rpc)
+                ECell::Run.subject.async(:figure_event, :attached_to_leader, rpc)
               end
               new_return.reply(rpc, :ok)
             else
               debug(tag: :instruction, message:"#{rpc.instruction}, args: #{rpc[:args]}", highlight: true) #de if DEBUG_DEEP
               symbol!(:got_instruction)
-              if subj.respond_to?(rpc.instruction)
+              if respond_to?(rpc.instruction)
                 begin
-                  arity = subj.method(rpc.instruction).arity
+                  arity = method(rpc.instruction).arity
                   if rpc.args?
                     if rpc.args.is_a?(Array)
                       if rpc.args.any? && arity == 0
                         new_return.reply(rpc, :error, type: :arity_mismatch)
                       elsif rpc.args.length == arity || arity < 0
-                        new_return.reply(rpc, :result, returns: subj.send(rpc.instruction, *rpc.args))
+                        new_return.reply(rpc, :result, returns: send(rpc.instruction, *rpc.args))
                       else
                         new_return.reply(rpc, :error, type: :unknown_arity_error)
                       end
                     else
                       if arity == 1
-                        new_return.reply(rpc, :result, returns: subj.send(rpc.instruction, rpc.args))
+                        new_return.reply(rpc, :result, returns: send(rpc.instruction, rpc.args))
                       else
                         new_return.reply(rpc, :error, type: :arity_mismatch)
                       end
@@ -302,7 +287,7 @@ module ECell
         end
 
         module Administrate
-          def on_at_starting
+          def on_started
             emitter management_reply, :on_system
           end
 
@@ -341,17 +326,8 @@ module ECell
       end
     end
   end
-
-  module Elements
-    class Subject < ECell::Internals::Actor
-      def welcome!(follower)
-        return false if ECell::Run.piece_id == follower
-        debug("Welcome #{follower.to_s.green.bold}!")
-        true
-      end
-    end
-  end
 end
 
 require 'ecell/base/shapes/management_routing'
+require 'ecell/base/shapes/management_interventions'
 

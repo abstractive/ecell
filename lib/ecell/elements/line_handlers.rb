@@ -80,7 +80,7 @@ class ECell::Elements::Line
     new_data.error(:timeout)
   rescue IOError
   rescue => ex
-    caught(ex, "Transmission error in #{mode} mode.")
+    caught(ex, "Transmission error in #{mode} mode. Check it out: #{object}")
     symbol!(:error)
     exception!(ex)
   end

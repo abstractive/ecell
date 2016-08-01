@@ -4,9 +4,9 @@
   - [x] Relayers
   - [x] Events
   - [x] Executives
-- [ ] Migrate Subject FSM into Awareness/Management/Vitality Shapes.
+- [x] Migrate Subject FSM into Awareness/Management/Vitality Shapes.
   - [x] Do initial migration.
-  - [ ] Split into leader and follower FSMs.
+  - [x] Split into leader and follower FSMs.
 - [ ] Revise the purpose of and terminology for Subject.
   - [ ] Migrate base Sketches to make better use of Shapes.
   - [ ] Revise things like the RPC module to be arguments to the Calling figure.

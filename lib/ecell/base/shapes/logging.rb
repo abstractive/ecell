@@ -52,13 +52,13 @@ module ECell
         end
 
         module Collate
-          def on_at_starting
+          def on_started
             emitter logging_pull, :log
           end
         end
 
         module Document
-          def on_at_starting
+          def on_started
             connect_logging!
           end
 
@@ -74,7 +74,7 @@ module ECell
         end
 
         module Relay
-          def on_at_attaching
+          def on_setting_up
             async.relayer logging_pull, logging_push
           end
         end
