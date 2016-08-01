@@ -42,14 +42,6 @@ module ECell
           }
         }
       ]
-
-      # If the {Methods} module exists in a Design, it will be included into
-      # any Sketches that use the Design.
-      module Methods
-        def method_on_subject(*args)
-          debug("method_on_subject called with: #{args}")
-        end
-      end
     end
   end
 end

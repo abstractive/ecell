@@ -1,5 +1,5 @@
 - [x] Write event system.
-- [ ] Migrate injection functionality and methods defined in Designs into Figures.
+- [x] Migrate injection functionality and methods defined in Designs into Figures.
   - [x] Emitters
   - [x] Relayers
   - [x] Events

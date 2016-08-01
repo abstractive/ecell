@@ -59,9 +59,6 @@ module ECell
       def provision!
         @actor_ids = []
         @shapes = @designs.each_with_object([]) { |design, shapes|
-          if defined? design::Methods
-            self.class.send(:include, design::Methods)
-          end
           if defined? design::Shapes
             shapes.concat(design::Shapes)
           else
