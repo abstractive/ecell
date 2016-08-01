@@ -43,49 +43,6 @@ module ECell
         }
       ]
 
-      # There are 4 kinds of "injections":
-      #
-      # * Emitters - attaching on-message callbacks to Lines.
-      # * Relayers - automatically relaying messages from one Line to another.
-      # * Events - registering callbacks for certain kinds of events.
-      # * Executives - methods to run at specified FSM states. Can be sync or async.
-      #
-      # {Injections} is a hash specifying the injections added by the Design.
-      Injections = {
-        emitters: {
-          fsm_state_to_start_emitting_at: [
-            [:line_id, :method_on_subject],
-            [:line_id2, :figure_id, :method_on_figure]
-          ]
-        },
-        relayers: {
-          relayer_figure_id: [
-            [:source_line_id, :target_line_id]
-          ]
-        },
-        events: {
-          event_id: [
-            :method_on_subject
-          ]
-        },
-        executive_sync: {
-          some_fsm_state: [
-            :method_on_subject,
-            [:method_on_subject, ["some", "args", 42]],
-            [:figure_id, :method_on_figure],
-            [:figure_id, :method_on_figure, ["some", "args", 42]]
-          ]
-        },
-        executive_async: {
-          # same format as executive_sync
-        }
-      }
-      # {Disabled} will optionally indicate injections to disable that might
-      # otherwise be added by other Designs.
-      Disabled = {
-        # same format as Injections
-      }
-
       # If the {Methods} module exists in a Design, it will be included into
       # any Sketches that use the Design.
       module Methods

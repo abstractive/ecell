@@ -49,7 +49,7 @@ module ECell
       end
 
       def relayer(from, to)
-        debug(message: "Setting a relay from #{from}, to #{to}") if DEBUG_INJECTIONS
+        debug(message: "Setting a relay from #{from}, to #{to}") if DEBUG_DEEP
         if to.ready?
           from.reader { |data|
             to << data

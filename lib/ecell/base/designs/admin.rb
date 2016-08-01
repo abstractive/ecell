@@ -27,9 +27,6 @@ module ECell
             init: {management_reply: {mode: :binding}}
           }
         ]
-
-        Injections = {
-        }
       end
     end
   end

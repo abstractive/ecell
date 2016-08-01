@@ -15,9 +15,6 @@ module ECell
           }
         ]
 
-        Injections = {
-        }
-
         module Methods
           def at_provisioning
             super {

@@ -9,14 +9,6 @@ module ECell
         leader_shapes.reject! {|sh| sh[:as] == :logging_storage}
         leader_shapes.find {|sh| sh[:as] == :logging}[:faces] = [:relay]
         Shapes = leader_shapes + Follower::Shapes
-
-        Injections = {
-          merge: [
-            Leader,
-            Follower
-          ],
-          scope: self
-        }
       end
     end
   end

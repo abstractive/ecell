@@ -33,7 +33,7 @@ module ECell
             when :heartbeat
               ECell.async(:vitality).heartbeat!(data.id) if ECell.sync(:vitality).follower?(data.id)
             else
-              debug("on_announcement[#{data.announcement}]: #{data}", reporter: self.class) if DEBUG_INJECTIONS
+              debug("on_announcement[#{data.announcement}]: #{data}", reporter: self.class) if DEBUG_EVENTS
             end
           rescue => ex
             caught(ex, "Failure in on_announcement")

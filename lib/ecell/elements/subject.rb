@@ -6,7 +6,6 @@ require 'ecell/elements/subject/automaton'
 require 'ecell'
 
 require 'ecell/elements/subject/interventions'
-require 'ecell/elements/subject/injections'
 
 module ECell
   module Elements
@@ -59,7 +58,6 @@ module ECell
 
       def provision!
         @actor_ids = []
-        @injections = Injections.injections_for(@designs)
         @shapes = @designs.each_with_object([]) { |design, shapes|
           if defined? design::Methods
             self.class.send(:include, design::Methods)

@@ -29,9 +29,6 @@ module ECell
             strokes: {awareness_publish: {mode: :connecting}}
           }
         ]
-
-        Injections = {
-        }
       end
     end
   end

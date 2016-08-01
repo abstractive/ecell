@@ -9,8 +9,7 @@ module ECell
     DEBUG_RELOADING   = false
     DEBUG_HTTP        = false
     DEBUG_SOCKET      = false
-    DEBUG_INJECTIONS  = false
-    DEBUG_EVENTS      = true
+    DEBUG_EVENTS      = false
     DEBUG_RPCS        = false
     DEBUG_BACKTRACING = true
 
@@ -36,9 +35,6 @@ module ECell
     ]
 
     DEFAULT_LOG_DIR = File.expand_path("../../../logs", __FILE__)
-
-    INJECTION_LAYERS = [
-    ]
 
     LINGER = 0
 

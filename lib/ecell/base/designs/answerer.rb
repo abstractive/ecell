@@ -12,9 +12,6 @@ module ECell
             strokes: {calling_reply: {mode: :connecting}}
           }
         ]
-
-        Injections = {
-        }
       end
     end
   end

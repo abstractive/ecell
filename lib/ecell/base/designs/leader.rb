@@ -41,9 +41,6 @@ module ECell
             strokes: {awareness_subscribe: {mode: :binding}}
           }
         ]
-
-        Injections = {
-        }
       end
     end
   end

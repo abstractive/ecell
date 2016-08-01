@@ -15,9 +15,6 @@ module ECell
             }
           }
         ]
-
-        Injections = {
-        }
       end
     end
   end
