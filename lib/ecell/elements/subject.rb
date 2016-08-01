@@ -58,13 +58,7 @@ module ECell
 
       def provision!
         @actor_ids = []
-        @shapes = @designs.each_with_object([]) { |design, shapes|
-          if defined? design::Shapes
-            shapes.concat(design::Shapes)
-          else
-            debug("No shapes defined for #{design}.")
-          end
-        }.each { |config|
+        @shapes = @designs.flatten.each { |config|
           config = config.dup
           #de Instantiate supervised actors once, but keep adding figures.
           begin
