@@ -14,7 +14,7 @@ require 'ecell/base/sketches/webstack/web_socket'
 require 'ecell/base/sketches/webstack/extensions'
 require 'ecell/base/sketches/webstack/puma'
 
-require 'ecell/base/sketches/webstack'
+require 'ecell/base/sketches/webstack/shape'
 
 class ECell::Base::Sketches::Webstack::WebServer < ECell::Internals::Actor
   include ECell::Base::Sketches::Webstack::Extensions

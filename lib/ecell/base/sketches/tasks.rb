@@ -1,4 +1,5 @@
 require 'ecell/elements/subject'
+require 'ecell/elements/figure'
 require 'ecell/base/designs/follower'
 require 'ecell/base/designs/worker'
 require 'ecell'
@@ -7,19 +8,27 @@ module ECell
   module Base
     module Sketches
       class Tasks < ECell::Elements::Subject
+        class TasksShape < ECell::Elements::Figure
+          def on_started
+            endpoint = ECell.sync(:distribution).distribution_input!(:tasks)
+            ECell::Run.subject.line!(:distribution_pull, mode: :connecting, endpoint: endpoint)
+          end
+        end
+
+        TasksDesign = [
+          {
+            as: :tasks_shape,
+            type: TasksShape
+          }
+        ]
+
         def initialize(configuration={})
           design! ECell::Base::Designs::Follower,
-                  ECell::Base::Designs::Worker
+                  ECell::Base::Designs::Worker,
+                  TasksDesign
           super(configuration)
         rescue => ex
           raise exception(ex, "Failure initializing.")
-        end
-
-        def startup
-          super {
-            endpoint = ECell.sync(:distribution).distribution_input!(:tasks)
-            line! :distribution_pull, mode: :connecting, endpoint: endpoint
-          }
         end
 
         module Operations

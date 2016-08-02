@@ -1,3 +1,4 @@
+require 'ecell/elements/figure'
 require 'ecell/internals/base_automaton'
 require 'ecell/run'
 
@@ -35,7 +36,6 @@ module ECell
 
           state(:followers_ready, to: [:followers_running]) {
             ECell::Run.subject.figure_event(:followers_ready)
-            ECell::Run.subject.at_followers_ready if ECell::Run.subject.respond_to?(:at_followers_ready)
             actor.async.running_together!
           }
 
@@ -59,10 +59,9 @@ module ECell
           state(:running) {
             debug(LOG_LINE, highlight: true, tag: :running)
             ECell::Run.subject.figure_event(:running)
-            ECell::Run.subject.at_running if ECell::Run.subject.respond_to?(:at_running)
             # When an instruction is given to transition to `running`, the result
             # is gonna be the last thing in this block. Since the result of
-            # `ECell::Run.subject.at_running` may not be serializable, this can
+            # `ECell::Run.subject.figure_event` may not be serializable, this can
             # cause an error. So we manually return nil.
             #benzrf TODO: find a better fix than this.
             nil

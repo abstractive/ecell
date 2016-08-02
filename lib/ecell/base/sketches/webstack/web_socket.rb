@@ -6,7 +6,7 @@ require 'forwardable'
 require 'ecell/internals/actor'
 require 'ecell/base/sketches/webstack/extensions'
 
-require 'ecell/base/sketches/webstack'
+require 'ecell/base/sketches/webstack/shape'
 
 class ECell::Base::Sketches::Webstack::WebSocket < ECell::Internals::Actor
   extend Forwardable

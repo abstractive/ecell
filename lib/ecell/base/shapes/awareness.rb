@@ -18,7 +18,7 @@ module ECell
         module Notice
           include ECell::Extensions
 
-          def on_started
+          def on_started2
             emitter awareness_subscribe, :on_announcement
           end
 
@@ -45,6 +45,9 @@ module ECell
 
           def on_started
             connect_awareness!
+          end
+
+          def on_started2
             async.announce_presence!
             async.announce_heartbeat!
           end

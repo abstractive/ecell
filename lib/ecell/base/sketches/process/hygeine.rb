@@ -1,8 +1,8 @@
-require 'ecell/elements/subject'
+require 'ecell/elements/figure'
 
-require 'ecell/base/sketches/process'
+require 'ecell/base/sketches/process/shape'
 
-class ECell::Base::Sketches::Process < ECell::Elements::Subject
+class ECell::Base::Sketches::Process::ProcessShape < ECell::Elements::Figure
   # For simple processes with no end events defined then if all tasks are complete then set process status to complete
   def review_process_completion(execution_id)
     #benzrf TODO: how to migrate these?

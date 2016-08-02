@@ -1,11 +1,11 @@
-require 'ecell/elements/subject'
+require 'ecell/elements/figure'
 require 'ecell/internals/base_automaton'
 require 'ecell/internals/timer'
 require 'ecell/run'
 
-require 'ecell/base/sketches/process'
+require 'ecell/base/sketches/process/shape'
 
-class ECell::Base::Sketches::Process < ECell::Elements::Subject
+class ECell::Base::Sketches::Process::ProcessShape < ECell::Elements::Figure
   module Cycle
     class Automaton < ECell::Internals::BaseAutomaton
       default_state :uninitialized

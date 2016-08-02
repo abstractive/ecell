@@ -8,7 +8,7 @@ require 'ecell/base/sketches/webstack/puma'
 #de Custom refactor/cleaning of Rack::Handler::Puma
 #de Wrapped as an actor, so as not to block the Piece.
 
-require 'ecell/base/sketches/webstack'
+require 'ecell/base/sketches/webstack/shape'
 
 class ECell::Base::Sketches::Webstack::Handler < ECell::Internals::Actor
   finalizer :stop!

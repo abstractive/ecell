@@ -4,11 +4,18 @@ require 'ecell/base/designs/caller'
 require 'ecell/base/designs/answerer'
 require 'ecell/base/sketches/webstack/extensions'
 
+require 'ecell/base/sketches/webstack/shape'
+
 module ECell
   module Base
     module Sketches
       class Webstack < ECell::Elements::Subject
-        PUBLIC_ROOT = File.expand_path("../../../../../public", __FILE__)
+        WebstackDesign = [
+          {
+            as: :webstack_shape,
+            type: WebstackShape
+          }
+        ]
 
         def initialize(configuration={})
           #benzrf TODO: fix infinite-recursion bug due to `Extensions`-defined
@@ -16,7 +23,8 @@ module ECell
           # do *not* swap the order of `Answerer` and `Caller` below.
           design! ECell::Base::Designs::Follower,
                   ECell::Base::Designs::Answerer,
-                  ECell::Base::Designs::Caller
+                  ECell::Base::Designs::Caller,
+                  WebstackDesign
           super(configuration)
         rescue => ex
           raise exception(ex, "Failure initializing.")
@@ -49,6 +57,4 @@ module ECell
     end
   end
 end
-
-require 'ecell/base/sketches/webstack/automaton_hooks'
 

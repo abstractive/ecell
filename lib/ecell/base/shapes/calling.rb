@@ -79,7 +79,7 @@ module ECell
         module Switch
           include ECell::Extensions
 
-          def on_started
+          def on_started2
             emitter calling_router2, :from_caller
             emitter calling_router, :from_answerer
           end

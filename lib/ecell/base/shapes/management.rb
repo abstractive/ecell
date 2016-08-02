@@ -53,7 +53,7 @@ module ECell
         module Manage
           include ECell::Constants
 
-          def on_started
+          def on_started2
             @leader_automaton = LeaderAutomaton.new
             async.leader_transition(:need_followers)
             emitter management_router, :on_reply
@@ -208,10 +208,6 @@ module ECell
             emitter management_subscribe, :on_instruction
           end
 
-          def on_attached_to_leader
-            async.follower_transition(:setting_up)
-          end
-
           def attached?
             @attached
           end
@@ -242,7 +238,7 @@ module ECell
               else
                 symbol!(:got_leader)
                 @attached = true
-                ECell::Run.subject.async(:figure_event, :attached_to_leader, rpc)
+                async.follower_transition(:setting_up)
               end
               new_return.reply(rpc, :ok)
             else
@@ -287,7 +283,7 @@ module ECell
         end
 
         module Administrate
-          def on_started
+          def on_started2
             emitter management_reply, :on_system
           end
 

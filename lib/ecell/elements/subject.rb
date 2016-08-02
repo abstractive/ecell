@@ -39,7 +39,13 @@ module ECell
       def startup
         provision!
         yield if block_given?
+        #benzrf Having two separate events is currently necessary. Some
+        # emitters must only be set up once every Figure is already done
+        # with basic provisioning, because otherwise they might cause a method
+        # to be called before basic provisioning is done, and that method may
+        # depend on other Figures being set up.
         figure_event(:started)
+        figure_event(:started2)
       rescue => ex
         exception(ex, "Failure provisioning.")
         ECell::Run.shutdown

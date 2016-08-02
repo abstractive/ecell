@@ -1,7 +1,7 @@
 require 'ecell/internals/actor'
 require 'ecell/run'
 
-require 'ecell/base/sketches/webstack'
+require 'ecell/base/sketches/webstack/shape'
 
 class ECell::Base::Sketches::Webstack::ClientRegistry < ECell::Internals::Actor
   #de This is a specialized implementation of what ends up being a "concurrent hash"

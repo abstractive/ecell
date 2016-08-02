@@ -52,7 +52,7 @@ module ECell
         end
 
         module Collate
-          def on_started
+          def on_started2
             emitter logging_pull, :log
           end
         end

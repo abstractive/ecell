@@ -33,17 +33,14 @@ module ECell
           include ECell::Extensions
 
           def on_setting_up
+            unless distribution_pull
+              raise ECell::Error::Line::Missing, "No distribution_pull line configured and initialized."
+            end
             emitter distribution_pull, :on_task
           end
 
           def on_started
             connect_distribution_output!
-          end
-
-          def on_started
-            unless ECell.sync(:distribution_pull)
-              raise ECell::Error::Line::Missing, "No distribution_pull line configured and initialized."
-            end
           end
 
           def distribution_root(piece_id, line_id=:distribution_pull2)

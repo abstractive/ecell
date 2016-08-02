@@ -5,12 +5,12 @@ require 'ecell'
 require 'ecell/base/shapes/calling'
 require 'ecell/elements/color'
 
-require 'ecell/base/sketches/webstack'
+require 'ecell/base/sketches/webstack/shape'
 
 class ECell::Base::Sketches::Webstack::Routes < Sinatra::Base
   set :server, :puma
   set :static, true
-  set :public_folder, ECell::Base::Sketches::Webstack::PUBLIC_ROOT
+  set :public_folder, ECell::Base::Sketches::Webstack::WebstackShape::PUBLIC_ROOT
 
   get('/') {
     break redirect('/loading') unless ECell.sync(:management).follower_state?(:running)
