@@ -12,6 +12,9 @@
   - [x] Revise things like the RPC module to be arguments to the Calling figure.
   - [x] Remove leftover dependencies on Subject (e.g., in the Management automaton)
   - [ ] Do actual revision.
+    - [ ] Rename to Frame.
+    - [ ] Frames get passed around instead of stuff using ECell::Run.
+    - [ ] Replace Sketches with a configuration item.
 - [ ] Possibly write a new piece-global FSM based on the non-management parts of the old one.
 - [ ] Redesign moved APIs to better fit new usage.
 - [ ] Possibly move Line specifications from Designs to Shapes.
