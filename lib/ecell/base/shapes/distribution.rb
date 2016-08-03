@@ -14,7 +14,7 @@ module ECell
           #benzrf TODO: figure out Distribute
 
           def on_followers_ready
-            emitter distribution_pull2, ECell::Run.subject, :on_report
+            emitter distribution_pull2, :on_report
           end
 
           def on_started
@@ -63,13 +63,15 @@ module ECell
               #de TODO: Check vitals, then answer.
               new_return.report(rpc, :yes)
             else
-              subj = ECell::Run.subject
-              owner = subj.class.method_defined?(rpc.call) &&
-                subj.class.instance_method(rpc.call).owner
-              if owner == subj.class::Operations
-                new_return.report(rpc, :ok, returns: subj.send(*rpc.executable))
+              handler = configuration[:task_handler]
+              handler &&= ECell.sync(handler)
+              return new_return.error(rpc, :no_handler) unless handler
+              owner = handler.class.method_defined?(rpc.call) &&
+                handler.class.instance_method(rpc.call).owner
+              if owner == handler.class::Operations
+                new_return.report(rpc, :ok, returns: handler.send(*rpc.executable))
               else
-                new_data.error(:method_missing)
+                new_return.error(rpc, :method_missing)
               end
             end
           end

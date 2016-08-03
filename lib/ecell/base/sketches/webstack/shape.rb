@@ -48,6 +48,24 @@ module ECell
 
             ECell::Internals::Logger.dump! ECell.call_async(:process).web_trigger(rpc: {message: "RPC.async #{Time.now.iso8601}"})
           end
+
+          module RPC
+            include ECell::Base::Sketches::Webstack::Extensions
+
+            def announcement(rpc, *args)
+              dump!(args)
+              message = rpc.delete(:message)
+              timestamp = rpc.delete(:timestamp)
+              tag = rpc.delete(:tag)
+              return new_data.error(:missing_message) unless message
+              message = "[#{tag}] #{message}" if tag
+              message += " #{Time.at(timestamp)}" if timestamp
+              clients_announce!("#{rpc.id}#{message}", rpc.topic)
+              new_return.answer(rpc, :ok)
+            end
+          end
+
+          include RPC
         end
       end
     end

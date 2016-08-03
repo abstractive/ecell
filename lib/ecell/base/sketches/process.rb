@@ -23,6 +23,7 @@ module ECell
                   ECell::Base::Designs::Caller,
                   ECell::Base::Designs::Coordinator,
                   ProcessDesign
+          configuration[:call_handler] = :process_shape
           super(configuration)
 
           line! :distribution_tasks_push2,
@@ -36,26 +37,6 @@ module ECell
         rescue => ex
           raise exception(ex, "Failure initializing.")
         end
-
-        module RPC
-          def web_trigger(rpc)
-            console(message: "Message from #{rpc.id}: #{rpc.message}", banner: true, store: rpc.delete(:data), quiet: true)
-
-            #de TODO: Execute events and tasks jobs.
-            new_return.answer(rpc, :ok, message: "This is the process piece responding to web_trigger.")
-          end
-
-          def check_in!
-            :alive
-          end
-
-          def get_list(type, *args)
-            debug("Getting list: #{type} with extra arguments: #{args}")
-            { type => ECell.sync(:process_shape).send(:"get_#{type}!") }
-          end
-        end
-
-        include RPC
       end
     end
   end

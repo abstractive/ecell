@@ -43,13 +43,15 @@ module ECell
           end
 
           def on_call(rpc)
-            subj = ECell::Run.subject
-            owner = subj.class.method_defined?(rpc.call) &&
-              subj.class.instance_method(rpc.call).owner
-            answer = if owner == subj.class::RPC
+            handler = configuration[:call_handler]
+            handler &&= ECell.sync(handler)
+            return new_return.error(rpc, :no_handler) unless handler
+            owner = handler.class.method_defined?(rpc.call) &&
+              handler.class.instance_method(rpc.call).owner
+            answer = if owner == handler.class::RPC
               begin
                 dump!("rpc // #{rpc.executable}")
-                subj.send(*rpc.executable)
+                handler.send(*rpc.executable)
               rescue ArgumentError => ex
                 exception(ex, "Trouble with call: incorrect arguments: #{ex.message}")
                 new_return.failure(rpc, :incorrect_arity, exception: ex)

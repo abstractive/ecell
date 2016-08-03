@@ -25,34 +25,11 @@ module ECell
                   ECell::Base::Designs::Answerer,
                   ECell::Base::Designs::Caller,
                   WebstackDesign
+          configuration[:call_handler] = :webstack_shape
           super(configuration)
         rescue => ex
           raise exception(ex, "Failure initializing.")
         end
-
-        module RPC
-          include ECell::Base::Sketches::Webstack::Extensions
-
-          def announcement(rpc, *args)
-            dump!(args)
-            message = rpc.delete(:message)
-            timestamp = rpc.delete(:timestamp)
-            tag = rpc.delete(:tag)
-            return new_data.error(:missing_message) unless message
-            message = "[#{tag}] #{message}" if tag
-            message += " #{Time.at(timestamp)}" if timestamp
-            clients_announce!("#{rpc.id}#{message}", rpc.topic)
-            new_return.answer(rpc, :ok)
-          end
-
-          def welcome!(member)
-            if super
-              clients_announce!("[ #{member} ] Connected")
-            end
-          end
-        end
-
-        include RPC
       end
     end
   end
