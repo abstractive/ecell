@@ -10,7 +10,7 @@
 - [ ] Revise the purpose of and terminology for Subject.
   - [x] Migrate base Sketches to make better use of Shapes.
   - [x] Revise things like the RPC module to be arguments to the Calling figure.
-  - [ ] Remove leftover dependencies on Subject (e.g., in the Management automaton)
+  - [x] Remove leftover dependencies on Subject (e.g., in the Management automaton)
   - [ ] Do actual revision.
 - [ ] Possibly write a new piece-global FSM based on the non-management parts of the old one.
 - [ ] Redesign moved APIs to better fit new usage.
