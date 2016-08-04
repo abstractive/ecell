@@ -1,7 +1,6 @@
 require 'ecell/elements/figure'
 require 'ecell/extensions'
 require 'ecell'
-require 'ecell/run'
 
 require 'ecell/base/shapes/management'
 

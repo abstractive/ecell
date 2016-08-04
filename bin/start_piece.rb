@@ -5,7 +5,7 @@ piece_id = ARGV[0].downcase
 
 require 'celluloid/current'
 require 'ecell/constants'
-require 'ecell/run'
+require 'ecell/runner'
 
 Celluloid.shutdown_timeout = ECell::Constants::INTERVALS[:max_graceful]
 module Celluloid
@@ -14,15 +14,13 @@ module Celluloid
   end
 end
 
-deconstructor = ->{
-  ECell::Run.shutdown
-}
+runner = ECell::Runner.new
 
 case RUBY_ENGINE.to_sym
 when :rbx
-  Signal.trap("SIGINT") { deconstructor.call }
+  Signal.trap("SIGINT") { runner.shutdown }
 when :jruby
-  at_exit { deconstructor.call }
+  at_exit { runner.shutdown }
 else
   raise "Unsupported Ruby engine. Use Rubinius or jRuby."
 end
@@ -33,5 +31,5 @@ configuration = {piece_id: piece_id.to_sym, bindings: DEMO_MESH_BINDINGS}
 configuration.merge! DEMO_MESH_HIERARCHY[piece_id.to_sym]
 configuration.merge! ECell::Base::Sketches.const_get(piece_id.capitalize)
 
-ECell::Run.run! configuration
+runner.run! configuration
 

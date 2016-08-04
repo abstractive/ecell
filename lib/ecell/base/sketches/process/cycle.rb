@@ -1,7 +1,6 @@
 require 'ecell/elements/figure'
 require 'ecell/internals/base_automaton'
 require 'ecell/internals/timer'
-require 'ecell/run'
 
 require 'ecell/base/sketches/process/shape'
 

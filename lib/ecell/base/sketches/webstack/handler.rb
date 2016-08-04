@@ -1,6 +1,5 @@
 require 'sinatra'
 require 'ecell/internals/actor'
-require 'ecell/run'
 require 'ecell/base/sketches/webstack/web_server'
 require 'ecell/base/sketches/webstack/routes'
 require 'ecell/base/sketches/webstack/puma'

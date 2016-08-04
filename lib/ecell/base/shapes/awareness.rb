@@ -1,7 +1,6 @@
 require 'colorize'
 require 'ecell/elements/figure'
 require 'ecell/extensions'
-require 'ecell/run'
 require 'ecell'
 
 module ECell

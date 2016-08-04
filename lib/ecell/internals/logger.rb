@@ -1,6 +1,5 @@
 require 'colorize'
 require 'ecell/constants'
-require 'ecell/run'
 require 'ecell/errors'
 
 module ECell
@@ -182,6 +181,29 @@ module ECell
 
       alias_method :console, :info
 
+      def writer
+        @frame && @frame.alive? ? @frame : self
+      end
+
+      def output
+        io = STDOUT
+        if block_given?
+          yield(io)
+          return io.flush
+        end
+        io
+      end
+
+      def dump
+        io = STDERR
+        if block_given?
+          yield io
+          return io.flush
+        end
+        io
+      end
+
+
       def dump!(*args)
         output = args.shift
         str = if output.respond_to?(:message)
@@ -199,7 +221,7 @@ module ECell
           dump << LOG_LINE if args.any?
           dump += Array(args)
         end
-        ECell::Run.dump { |io|
+        writer.dump { |io|
           str.each { |d| io.puts(mark!(d)) }
         }
       end
@@ -231,11 +253,11 @@ module ECell
 
       #de Prescrive asynchronous behaviors when pushing indicators.
       def print!(characters)
-        ECell::Run.output { |io| io.print(characters) }
+        writer.output { |io| io.print(characters) }
       end
 
       def puts!(characters)
-        ECell::Run.output { |io| io.puts(characters) }
+        writer.output { |io| io.puts(characters) }
       end
 
       private
@@ -259,15 +281,15 @@ module ECell
       def display(entry)
         return entry if entry.level == :debug && DEBUG === false
         log = entry.formatted
-        ECell::Run.dump { |io| io.puts(log) } if [:warn, :error, :dump].include?(entry.level)
+        writer.dump { |io| io.puts(log) } if [:warn, :error, :dump].include?(entry.level)
         return entry if entry.dump?
-        ECell::Run.output { |io|
+        writer.output { |io|
           io.puts entry.formatted(LOG_LINE) if entry.banner
           io.puts(log)
           io.puts entry.formatted(LOG_LINE) if entry.banner
         }
         if entry.store
-          io = (([ :warn, :error ].include?(entry.level)) ? ECell::Run.dump : ECell::Run.output)
+          io = (([ :warn, :error ].include?(entry.level)) ? writer.dump : writer.output)
           unless entry.quiet?
             data = (entry.store.respond_to? :export) ? entry.store.export : entry.store
             io.puts (entry.store.is_a?(String) ? ">> #{entry.store}" : JSON.pretty_generate(data))

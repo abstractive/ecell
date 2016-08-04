@@ -1,5 +1,4 @@
 require 'ecell/internals/base_automaton'
-require 'ecell/run'
 
 module ECell
   module Elements

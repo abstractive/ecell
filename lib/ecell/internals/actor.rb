@@ -1,7 +1,6 @@
 require 'celluloid/current'
 require 'ecell/extensions'
 require 'ecell/internals/logger'
-require 'ecell/run'
 require 'ecell/autoload'
 require 'ecell'
 

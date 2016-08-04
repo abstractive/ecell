@@ -15,7 +15,7 @@
     - [x] Rename to Frame.
     - [x] Frames get passed around instead of stuff using ECell::Run.
     - [x] Replace Sketches with a configuration item.
-    - [ ] Move relevant parts of ECell::Run into Frame.
+    - [x] Move relevant parts of ECell::Run into Frame.
 - [ ] Possibly write a new piece-global FSM based on the non-management parts of the old one.
 - [ ] Redesign moved APIs to better fit new usage.
 - [ ] Possibly move Line specifications from Designs to Shapes.

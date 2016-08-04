@@ -4,7 +4,7 @@ require 'celluloid/zmq'
 require 'socket'
 require 'ecell/internals/conduit'
 require 'ecell/extensions'
-require 'ecell/run'
+require 'ecell/runner'
 require 'ecell/elements/line/automaton'
 require 'ecell/errors'
 require 'ecell/constants'
@@ -179,7 +179,7 @@ module ECell
 
       def wait_for_port
         print!("Waiting for #{@interface}:#{@port} to be available: ")
-        ECell::Run.wait_for_port(@interface, @port)
+        ECell::Runner.wait_for_port(@interface, @port)
       end
 
       #de Grab a system assigned port.

@@ -1,7 +1,6 @@
 require 'ecell/internals/actor'
 require 'ecell/extensions'
 require 'ecell/internals/conduit'
-require 'ecell/run'
 require 'ecell/errors'
 require 'ecell'
 require 'ecell/constants'

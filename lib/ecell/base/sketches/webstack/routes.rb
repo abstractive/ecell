@@ -1,6 +1,5 @@
 require 'sinatra'
 require 'time'
-require 'ecell/run'
 require 'ecell'
 require 'ecell/base/shapes/calling'
 require 'ecell/elements/color'

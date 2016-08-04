@@ -16,6 +16,7 @@ module ECell
     CODE_RELOADING    = false
     CODE_PRYING       = true
 
+    #benzrf TODO: GET RID OF THIS HARDCODING
     RETURNS = {
       call: [:calling, :answer],
       instruction: [:management, :reply],

@@ -1,7 +1,6 @@
 require 'celluloid/current'
 require 'timeout'
 require 'ecell/elements/color'
-require 'ecell/run'
 require 'ecell'
 
 require 'ecell/elements/line'

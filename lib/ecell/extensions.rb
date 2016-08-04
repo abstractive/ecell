@@ -26,6 +26,7 @@ module ECell
 
     def logging
       #benzrf TODO: possible race condition here?
+      # also, this is kiiinda relying on global state
       if Celluloid::Actor[:logging]
         Celluloid::Actor[:logging].async
       else

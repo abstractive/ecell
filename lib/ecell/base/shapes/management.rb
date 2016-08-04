@@ -1,7 +1,6 @@
 require 'forwardable'
 require 'celluloid/current'
 require 'ecell/elements/figure'
-require 'ecell/run'
 require 'ecell/base/shapes/management/automata'
 require 'ecell/constants'
 require 'ecell/errors'

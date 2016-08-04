@@ -1,6 +1,5 @@
 require 'ecell/elements/figure'
 require 'ecell/errors'
-require 'ecell/run'
 require 'ecell/base/shapes/management'
 require 'ecell/internals/timer'
 require 'timeout'

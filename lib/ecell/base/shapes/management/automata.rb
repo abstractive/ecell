@@ -1,6 +1,5 @@
 require 'ecell/elements/figure'
 require 'ecell/internals/base_automaton'
-require 'ecell/run'
 
 module ECell
   module Base

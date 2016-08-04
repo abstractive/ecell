@@ -7,7 +7,7 @@ require 'bundler/setup'
 Bundler.setup
 require 'celluloid/current'
 require 'ecell/constants'
-require 'ecell/run'
+require 'ecell/runner'
 
 Celluloid.shutdown_timeout = ECell::Constants::INTERVALS[:max_graceful]
 module Celluloid
@@ -16,17 +16,21 @@ module Celluloid
   end
 end
 
-Signal.trap('INT') { ECell::Run.shutdown }
+runner = ECell::Runner.new
+
+Signal.trap('INT') { runner.shutdown }
 
 
 require_relative 'demo_mesh_configuration'
+require "ecell/base/sketches/#{piece_id}"
 log_dir = File.expand_path("../logs", __FILE__)
 configuration = {
   piece_id: piece_id.to_sym,
   bindings: DEMO_MESH_BINDINGS(ARGV[1], ARGV[2]),
   log_dir: log_dir
-}.merge(DEMO_MESH_HIERARCHY[piece_id.to_sym])
+}
+configuration.merge!(DEMO_MESH_HIERARCHY[piece_id.to_sym])
+configuration.merge!(ECell::Base::Sketches.const_get(piece_id.capitalize))
 
-require "ecell/base/sketches/#{piece_id}"
-ECell::Run.run! ECell::Base::Sketches.const_get(piece_id.capitalize), configuration
+runner.run! configuration
 

@@ -1,5 +1,4 @@
 require 'ecell/elements/figure'
-require 'ecell/run'
 require 'ecell/elements/color'
 require 'ecell/extensions'
 require 'ecell/errors'

@@ -1,6 +1,5 @@
 require 'ecell/internals/actor'
 require 'ecell/internals/conduit'
-require 'ecell/run'
 require 'ecell'
 
 module ECell
@@ -15,18 +14,20 @@ module ECell
 
       attr_reader :configuration
 
-      def initialize(configuration)
+      def initialize(configuration, runner)
         @configuration = configuration
+        @runner = runner
         fail "No piece_id provided." unless configuration[:piece_id]
         @figure_ids = []
         @actor_ids = []
-        #benzrf TODO: ECell::Run.path!(File.dirname(caller[0].split(':')[0])) if CODE_RELOADING
+        #benzrf TODO: runner.path!(File.dirname(caller[0].split(':')[0])) if CODE_RELOADING
         debug(message: "Initialized", reporter: self.class, highlight: true) if DEBUG_PIECES && DEBUG_DEEP
       rescue => ex
         raise exception(ex, "Failure initializing.")
       end
 
       def startup
+        select_output!
         provision!
         #benzrf Having two separate events is currently necessary. Some
         # emitters must only be set up once every Figure is already done
@@ -37,7 +38,7 @@ module ECell
         figure_event(:started2)
       rescue => ex
         exception(ex, "Failure provisioning.")
-        ECell::Run.shutdown
+        @runner.shutdown
       end
 
       def provision!
@@ -73,6 +74,12 @@ module ECell
       end
 
       def shutdown
+        @output.flush
+        @output.close
+        @output = nil
+        @dump.flush
+        @dump.close
+        @dump = nil
         @actor_ids.map { |actor|
           begin
             if actor && ECell.sync(actor)
@@ -86,6 +93,36 @@ module ECell
             nil
           end
         }.map {|s| s.value if s}
+      end
+
+      def select_output!
+        dir = configuration[:log_dir] || DEFAULT_LOG_DIR
+        log = File.join(dir, "#{@configuration[:piece_id]}-console.log")
+        dump = File.join(dir, "#{@configuration[:piece_id]}-errors.log")
+        @output = File.open(log, "a")
+        @dump = File.open(dump, "a")
+        if DEBUG_DEEP
+          console("Logging to: #{log}")
+          console("Dumping to: #{dump}", level: :dump)
+        end
+      end
+
+      def output
+        io = @output || STDOUT
+        if block_given?
+          yield(io)
+          return io.flush
+        end
+        io
+      end
+
+      def dump
+        io = @dump || STDERR
+        if block_given?
+          yield io
+          return io.flush
+        end
+        io
       end
     end
   end

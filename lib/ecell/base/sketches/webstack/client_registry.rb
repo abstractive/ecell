@@ -1,5 +1,4 @@
 require 'ecell/internals/actor'
-require 'ecell/run'
 
 require 'ecell/base/sketches/webstack/shape'
 

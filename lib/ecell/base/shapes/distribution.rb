@@ -1,6 +1,5 @@
 require 'ecell/elements/figure'
 require 'ecell/extensions'
-require 'ecell/run'
 
 module ECell
   module Base
