@@ -197,10 +197,9 @@ module ECell
           sleep INTERVALS[:third_chance]
           return pinging(id) if ping?(id)
           debug(message: "Piece missing: #{id}", scope: :vitality, banner: true)
-          #de TODO: Remove from leader's @pieces Array, reassess the Piece's own state.
-          #de       Without this missing Piece, must the Leader revert to :attaching for example?
+          oversaw!(id)
+          ECell.async(:management).leader_transition(:need_followers)
         end
-
       end
     end
   end
