@@ -3,12 +3,11 @@ require 'ecell/run'
 
 require 'ecell/base/sketches/webstack/shape'
 
-class ECell::Base::Sketches::Webstack::ClientRegistry < ECell::Internals::Actor
+class ECell::Base::Sketches::WebstackShape::ClientRegistry < ECell::Internals::Actor
   #de This is a specialized implementation of what ends up being a "concurrent hash"
   #de This satisfies the requirement of a thread-safe registry.
 
   def initialize
-    return unless ECell::Run.online?
     # The registry is a 2-dimensional hash, the first level is the hash of topics, the second level is the hash of clients for a topic.
     # When a topic is requested from the registry, create an empty hash for it.
     @registry = Hash.new { |registry, topic| registry[topic] = {} }

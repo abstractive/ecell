@@ -24,9 +24,8 @@ module ECell
         def_delegator :@follower_automaton, :state, :follower_state
         def_delegator :@follower_automaton, :transition, :follower_transition
 
-        def initialize(options)
-          return unless ECell::Run.online?
-          super(options)
+        def initialize(frame, faces, strokes)
+          super
           @replies = {}
           debug(message: "Initialized", reporter: self.class) if DEBUG_DEEP
         end
@@ -45,7 +44,7 @@ module ECell
         end
 
         def welcome!(follower)
-          return false if ECell::Run.piece_id == follower
+          return false if piece_id == follower
           debug("Welcome #{follower.to_s.green.bold}!")
           true
         end
@@ -78,7 +77,7 @@ module ECell
 
           def running_together!
             3.times do
-              if ECell.instruct_broadcast.follower_transition(:running).reply?(:async)
+              if ECell.sync(:management).instruct_broadcast.follower_transition(:running).reply?(:async)
                 sleep INTERVALS[:allow_transition]
                 if state_together?(:running)
                   debug("Everyone moved to :running.", highlight: true)
@@ -98,7 +97,7 @@ module ECell
             states = ECell.sync(:vitality).follower_map { |id|
               Celluloid::Future.new {
                 begin
-                  rpc = ECell.instruct_sync(id).follower_state?(at)
+                  rpc = ECell.sync(:management).instruct_sync(id).follower_state?(at)
                   (rpc.returns?) ? rpc.returns : false
                 rescue => ex
                   caught(ex, "Trouble in state_together?")
@@ -191,7 +190,6 @@ module ECell
             debug("Sending #{reply} to callback? #{callback && callback.respond_to?(:call)}") if DEBUG_RPCS
             (callback && callback.respond_to?(:call)) ? callback.call(reply) : reply
           rescue => ex
-            return unless ECell::Run.online?
             caught(ex, "Failure on instruction reply.")
             exception!(ex)
           end
@@ -305,7 +303,7 @@ module ECell
             async.authority!
           end
 
-          def authority!(id=configuration[:leader])
+          def authority!(id=leader)
             @allowed ||= []
             caught(ex, "Admin authority given to #{id}", reporter: self.class)
             @allowed << id

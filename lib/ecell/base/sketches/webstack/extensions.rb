@@ -1,11 +1,11 @@
 require 'forwardable'
 require 'ecell'
-require 'ecell/elements/subject'
+require 'ecell/elements/figure'
 
 module ECell
   module Base
     module Sketches
-      class Webstack < ECell::Elements::Subject
+      class WebstackShape < ECell::Elements::Figure
         module Extensions
           extend Forwardable
 

@@ -33,9 +33,16 @@ module ECell
       include ECell::Extensions
       include ECell::Internals::Conduit
 
-      def initialize(options)
-        @options = options
+      def initialize(frame, faces, strokes)
+        @frame = frame
         @sockets = {}
+        faces.each do |face|
+          face = self.class.const_get(face.to_s.capitalize.to_sym)
+          extend face
+        end
+        strokes.map do |line_id, options|
+          future.initialize_line(line_id, options)
+        end.map(&:value)
       end
 
       def shutdown
@@ -56,7 +63,7 @@ module ECell
           }
         end
       rescue => ex
-        caught(ex, "Trouble with relayer.") if ECell::Run.online?
+        caught(ex, "Trouble with relayer.")
         return
       end
 

@@ -1,39 +1,35 @@
+require 'ecell/elements/figure'
 require 'ecell/extensions'
 require 'ecell'
-require 'ecell/internals'
 require 'ecell/run'
 
 require 'ecell/base/shapes/calling'
 
-module ECell
-  class Base::Shapes::Calling::Router
+class ECell::Base::Shapes::Calling < ECell::Elements::Figure
+  class Router
     include ECell::Extensions
 
-    def initialize(piece_id, async=nil)
-      debug("Generating router for #{piece_id}.") if DEBUG_DEEP
-      @piece_id = piece_id
+    def initialize(frame, to_id, async=nil)
+      @frame = frame
+      @to_id = to_id
       @async = async
+      debug("Generating router for #{to_id}.") if DEBUG_DEEP
     end
 
     def method_missing(method, *args, &block)
-      dump!("Routing call to #{method}@#{@piece_id} with args: #{args.dup}}") #de if DEBUG_DEEP
-      ECell.sync(:calling).place_call! new_data.call(method, {to: @piece_id, callback: block, async: @async, args: args})
+      dump!("Routing call to #{method}@#{@to_id} with args: #{args.dup}}") #de if DEBUG_DEEP
+      ECell.sync(:calling).place_call! new_data.call(method, {to: @to_id, callback: block, async: @async, args: args})
     end
   end
 
-  #benzrf TODO: redesign the means through which Figure methods are called
-  class << self
-    def call_sync(piece)
-      piece_id = piece.respond_to?(:id) ? piece.id : piece
-      return ECell::Internals::Blocker.new unless ECell::Run.online?
-      (@cs_routers ||= {})[piece_id] ||= ECell::Base::Shapes::Calling::Router.new(piece_id)
-    end
+  def call_sync(to)
+    to_id = to.respond_to?(:id) ? to.id : to
+    (@cs_routers ||= {})[to_id] ||= Router.new(frame, to_id)
+  end
 
-    def call_async(piece)
-      piece_id = piece.respond_to?(:id) ? piece.id : piece
-      return ECell::Internals::Blocker.new unless ECell::Run.online?
-      (@ca_routers ||= {})[piece_id] ||= ECell::Base::Shapes::Calling::Router.new(piece_id, true)
-    end
+  def call_async(to)
+    to_id = to.respond_to?(:id) ? to.id : to
+    (@ca_routers ||= {})[to_id] ||= Router.new(frame, to_id, true)
   end
 end
 

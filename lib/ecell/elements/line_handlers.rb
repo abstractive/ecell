@@ -47,7 +47,7 @@ class ECell::Elements::Line
   def emitter(actor, method)
     each_message { |data| actor.async(method, data) }
   rescue => ex
-    caught(ex, "Trouble with emitter.") if ECell::Run.online?
+    caught(ex, "Trouble with emitter.")
     return
   end
 
@@ -58,7 +58,7 @@ class ECell::Elements::Line
       rpc = data.to? && data.to
       #de This is an RPC, and this piece made the call
       #de therefore it is waiting for the answer.
-      if rpc && data.id?(@piece_id) && condition = RETURNS[data.form]
+      if rpc && data.id?(piece_id) && condition = RETURNS[data.form]
         figure_id, return_form = condition
         waiting = data.uuid
         waiter = :"#{return_form}_condition"

@@ -17,8 +17,8 @@ module ECell
 
         include ECell::Internals::Logger
 
-        def initialize(options)
-          super(options)
+        def initialize(frame, faces, strokes)
+          super
           @storage = ECell.sync(:logging_storage)
           debug(message: "Initialized", reporter: self.class) if DEBUG_DEEP
         end
@@ -37,7 +37,7 @@ module ECell
 
         def log(options)
           entry = log_entry(options)
-          unless entry.local?
+          unless entry.local?(piece_id)
             if logging_push?
               symbol!(:sent_log)
               return logging_push << entry

@@ -13,9 +13,8 @@ module ECell
               :calling_router,
               :calling_router2
 
-        def initialize(options)
-          return unless ECell::Run.online?
-          super(options)
+        def initialize(frame, faces, strokes)
+          super
           @answers = {}
           debug(message: "Initialized", reporter: self.class) if DEBUG_DEEP
         end

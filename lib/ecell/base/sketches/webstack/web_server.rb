@@ -16,8 +16,8 @@ require 'ecell/base/sketches/webstack/puma'
 
 require 'ecell/base/sketches/webstack/shape'
 
-class ECell::Base::Sketches::Webstack::WebServer < ECell::Internals::Actor
-  include ECell::Base::Sketches::Webstack::Extensions
+class ECell::Base::Sketches::WebstackShape::WebServer < ECell::Internals::Actor
+  include ECell::Base::Sketches::WebstackShape::Extensions
 
   def initialize(app)
     @app = app
@@ -34,7 +34,7 @@ class ECell::Base::Sketches::Webstack::WebServer < ECell::Internals::Actor
   end
 
   def websocket!(env)
-    ws = ECell::Base::Sketches::Webstack::WebSocket.new(env)
+    ws = ECell::Base::Sketches::WebstackShape::WebSocket.new(env)
     debug(message: "Added physical connection.", reporter: self.class) if DEBUG_HTTP
     ws.emitters!
     debug(message: "Added emitters to socket.", reporter: self.class) if DEBUG_HTTP

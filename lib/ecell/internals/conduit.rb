@@ -12,11 +12,11 @@ module ECell
       class << self
         include ECell::Extensions
 
-        def interface(piece_id)
+        def interface(bindings, piece_id)
           bindings[piece_id] && bindings[piece_id][:interface] || DEFAULT_INTERFACE
         end
 
-        def port(piece_id, stroke_id)
+        def port(bindings, piece_id, stroke_id)
           bindings[piece_id] && bindings[piece_id][stroke_id] || DEFAULT_PORT
         end
 

@@ -10,7 +10,7 @@ require 'ecell/base/sketches/webstack/puma'
 
 require 'ecell/base/sketches/webstack/shape'
 
-class ECell::Base::Sketches::Webstack::Handler < ECell::Internals::Actor
+class ECell::Base::Sketches::WebstackShape::Handler < ECell::Internals::Actor
   finalizer :stop!
 
   WEBSTACK = {
@@ -22,13 +22,11 @@ class ECell::Base::Sketches::Webstack::Handler < ECell::Internals::Actor
   }
 
   def initialize(options={})
-    return unless ECell::Run.online?
     options = WEBSTACK.merge(options)
-    options[:port] ||= bindings[ECell::Run.piece_id][:http_server]
     @rack ||= Rack::Builder.new do
-      use ECell::Base::Sketches::Webstack::WebServer
+      use ECell::Base::Sketches::WebstackShape::WebServer
       map( '/') {
-        run ECell::Base::Sketches::Webstack::Routes
+        run ECell::Base::Sketches::WebstackShape::Routes
       }
     end
     @puma ||= ::Puma::Server.new(@rack)

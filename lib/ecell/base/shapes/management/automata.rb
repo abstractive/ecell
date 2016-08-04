@@ -35,12 +35,12 @@ module ECell
           }
 
           state(:followers_ready, to: [:followers_running]) {
-            ECell::Run.subject.figure_event(:followers_ready)
+            actor.frame.figure_event(:followers_ready)
             actor.async.running_together!
           }
 
           state(:followers_running, to: [:need_followers, :followers_setting_up]) {
-            ECell::Run.subject.figure_event(:followers_running)
+            actor.frame.figure_event(:followers_running)
           }
         end
 
@@ -50,7 +50,7 @@ module ECell
           state(:need_leader, to: [:setting_up])
 
           state(:setting_up, to: [:ready]) {
-            ECell::Run.subject.figure_event(:setting_up)
+            actor.frame.figure_event(:setting_up)
             transition(:ready)
           }
 
@@ -58,10 +58,10 @@ module ECell
 
           state(:running) {
             debug(LOG_LINE, highlight: true, tag: :running)
-            ECell::Run.subject.figure_event(:running)
+            actor.frame.figure_event(:running)
             # When an instruction is given to transition to `running`, the result
             # is gonna be the last thing in this block. Since the result of
-            # `ECell::Run.subject.figure_event` may not be serializable, this can
+            # `actor.frame.figure_event` may not be serializable, this can
             # cause an error. So we manually return nil.
             #benzrf TODO: find a better fix than this.
             nil

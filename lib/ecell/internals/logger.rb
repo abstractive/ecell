@@ -46,7 +46,7 @@ module ECell
           @dump ||= options.fetch(:dump, nil)
           @timer = options.fetch(:timer, nil)
           @declare = options.fetch(:declare, DEFAULTS[:log_declare])
-          @piece_id = options.fetch(:piece_id, ECell::Run.piece_id)
+          @piece_id = options.fetch(:piece_id)
           #de @storage = options.fetch(:storage, ECell.sync(:storage))
           #de TODO: Store IP address?
 
@@ -67,8 +67,8 @@ module ECell
           raise ECell::Error::Logging::MalformedEntry, errors.join(' ') if errors.any?
         end
 
-        def local?
-          @local === true && me?
+        def local?(piece_id)
+          @local === true && @piece_id == piece_id
         end
 
         def quiet?
@@ -81,10 +81,6 @@ module ECell
 
         def declare?
           @declare === true
-        end
-
-        def me?
-          @piece_id == ECell::Run.piece_id
         end
 
         def method_missing(var, *args)
@@ -106,7 +102,7 @@ module ECell
 
           #{reporter}#{string || @message}#{callsite}
           scope = (@scope) ? "#{@scope}" : nil
-          scope = " ".yellow + "#{@piece_id.to_s.bold}#{scope ? ":" : ""}#{scope.to_s.light_blue}" #de if !local? && !me?
+          scope = " ".yellow + "#{@piece_id.to_s.bold}#{scope ? ":" : ""}#{scope.to_s.light_blue}"
           timestamp = (@timestamp.is_a? Float) ? Time.at(@timestamp) : @timestamp
           Logger.mark!(output.join(' '), timestamp: timestamp, level: @level.to_s.upcase[0], scope: scope)
         rescue => ex
@@ -254,6 +250,7 @@ module ECell
 
       def log_entry(options)
         return options if options.is_a? Entry
+        options[:piece_id] ||= @frame ? self.piece_id : :unknown
         Entry.new(options)
       rescue => ex
         raise exception(ex, "Problem instantiating Logger::Entry", options)

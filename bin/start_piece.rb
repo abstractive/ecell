@@ -28,9 +28,10 @@ else
 end
 
 require_relative 'demo_mesh_configuration'
+require "ecell/base/sketches/#{piece_id}"
 configuration = {piece_id: piece_id.to_sym, bindings: DEMO_MESH_BINDINGS}
 configuration.merge! DEMO_MESH_HIERARCHY[piece_id.to_sym]
+configuration.merge! ECell::Base::Sketches.const_get(piece_id.capitalize)
 
-require "ecell/base/sketches/#{piece_id}"
-ECell::Run.run! ECell::Base::Sketches.const_get(piece_id.capitalize), configuration
+ECell::Run.run! configuration
 

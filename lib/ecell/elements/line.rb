@@ -34,7 +34,6 @@ module ECell
 
       extend Forwardable
       def_delegators :@automaton, :transition
-      def_delegators :@socket, :piece_id
 
       attr_reader :port, :interface, :endpoint, :online, :engaged, :ready, :line_id
 
@@ -79,19 +78,16 @@ module ECell
         status
       end
 
-      def initialize(line, options={})
-        return unless ECell::Run.online?
+      def initialize(line, frame, options={})
+        @frame = frame
         @automaton = Automaton.new
         begin
-          @piece_id ||= options.fetch(:piece_id, ECell::Run.piece_id)
           @ready = Queue.new
           @port, @interface = nil, nil
           @line_id = line if line.is_a? Symbol
           @line_id ||= line.class.name.split("::")[-2,2].join("_")
           @line_id = @line_id.downcase.to_sym if @line_id.is_a? String and !@line_id.empty?
           fail "Missing line socket." unless @socket
-          #benzrf TODO: "conduit"?
-          fail "Missing conduit piece." unless @piece_id
           @mode ||= options.fetch(:mode, nil)
           @endpoint ||= options.fetch(:endpoint, nil)
           fail ECell::Error::Line::MissingMode unless @mode
@@ -103,18 +99,18 @@ module ECell
             fail "Missing line endpoint." unless @endpoint
             @socket.linger = ECell::Constants::LINGER
           end
-          @socket.identity = @piece_id
+          @socket.identity = piece_id
           defer { transition(:initialized) }
           debug(message: "Initialized.", reporter: self.class) if DEBUG_DEEP
           async.provision! if @endpoint && options[:provision]
         rescue => ex
-          caught(ex, "Line initialization failure: #{@piece_id}/#{@line_id}")
+          caught(ex, "Line initialization failure: #{piece_id}/#{@line_id}")
           transition :disrupted
         end
       end
 
       def handle
-        "#{@line_id}@#{@piece_id}"
+        "#{@line_id}@#{piece_id}"
       end
 
       def connect=(endpoint)
@@ -178,7 +174,6 @@ module ECell
         @provisioned = @ready = nil
         transition :offline
       rescue => ex
-        return unless ECell::Run.online?
         caught(ex, "Error closing socket.")
       end
 
@@ -190,7 +185,7 @@ module ECell
       #de Grab a system assigned port.
       def endpoint!
         @endpoint ||= if binding?
-          bindings[@piece_id][@line_id] if bindings[@piece_id] and bindings[@piece_id][@line_id]
+          bindings[piece_id][@line_id] if bindings[piece_id] and bindings[piece_id][@line_id]
         end
         return if @endpoint.is_a? String
         if @endpoint.is_a? Hash
@@ -199,8 +194,8 @@ module ECell
         end
         #de TODO: May need to distinguish between interfaces per line.
         #de       For instance, if there are different network interfaces on the same machine.
-        @interface ||= ECell::Internals::Conduit.interface(@piece_id)
-        @port ||= ECell::Internals::Conduit.port(@piece_id, @line_id)
+        @interface ||= ECell::Internals::Conduit.interface(bindings, piece_id)
+        @port ||= ECell::Internals::Conduit.port(bindings, piece_id, @line_id)
         @endpoint = available_socket
       rescue Errno::EADDRINUSE
         wait_for_port

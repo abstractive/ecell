@@ -26,7 +26,8 @@ module ECell
       def online?;              @online === true        end
       def piece_id?(piece_id);  @piece_id == piece_id   end
 
-      def run!(sketch, configuration)
+      def run!(configuration)
+        require 'ecell/internals/frame'
         @configuration = configuration
         @online = true
         @piece_id = configuration.fetch(:piece_id)
@@ -38,7 +39,7 @@ module ECell
         check_port_availability
 
         ECell.supervise({
-          type: sketch,
+          type: ECell::Internals::Frame,
           as: piece_id,
           args: [configuration]
         })
@@ -53,10 +54,6 @@ module ECell
           raise
         end
         shutdown
-      end
-
-      def subject
-        ECell.sync(@piece_id)
       end
 
       def pid!(piece_id) #de TODO: Check for Windows compatibility.

@@ -5,7 +5,7 @@ require 'ecell/run'
 
 require 'ecell/base/sketches/process/shape'
 
-class ECell::Base::Sketches::Process::ProcessShape < ECell::Elements::Figure
+class ECell::Base::Sketches::ProcessShape < ECell::Elements::Figure
   module Cycle
     class Automaton < ECell::Internals::BaseAutomaton
       default_state :uninitialized
@@ -101,7 +101,7 @@ class ECell::Base::Sketches::Process::ProcessShape < ECell::Elements::Figure
 
       state(:shutdown, to: [:initializing, :offline]) {
         clear!
-        transition(:offline) unless ECell::Run.online?
+        transition(:offline)
       }
 
       state(:offline) {
