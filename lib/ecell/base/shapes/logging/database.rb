@@ -1,22 +1,22 @@
 require 'ecell/elements/figure'
-require 'ecell/internals/actor'
 
 module ECell
   module Base
     module Shapes
       class Logging < ECell::Elements::Figure
-        class Database < ECell::Internals::Actor
+        class Database < ECell::Elements::Figure
           require 'ecell/base/shapes/logging'
 
           #de For fully functioning storage class... see: Storage::File
 
           finalizer :shutdown
 
-          def initialize(config={})
+          def initialize(frame, faces, strokes)
+            super
             #de This actually activates the storage mechanism by asking, am I default leader?
             #benzrf TODO: actually it now just checks "am I my own leader?"
             # not sure if that's correct behavior
-            @enabled = config[:piece_id] == configuration[:leader]
+            @enabled = piece_id == leader
             execute {
               #de @db = ECell::Base::Shapes::Database::MySQL.new({}) #de Create connection to database.
             }

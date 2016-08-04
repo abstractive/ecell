@@ -6,13 +6,14 @@ module ECell
   module Base
     module Shapes
       class Logging < ECell::Elements::Figure
-        class File < ECell::Internals::Actor
+        class File < ECell::Elements::Figure
           require 'ecell/base/shapes/logging'
 
           finalizer :shutdown
 
-          def initialize(config={})
-            @enabled = config[:piece_id] == configuration[:leader]
+          def initialize(frame, faces, strokes)
+            super
+            @enabled = piece_id == leader
             execute {
               tag = mark("FINISH", :after)
               dir = configuration[:log_dir] || DEFAULT_LOG_DIR

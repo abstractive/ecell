@@ -10,8 +10,23 @@ module ECell
   module Extensions
     #benzrf TODO: should this be in `Internals`?
 
+    attr_reader :frame
+
+    def configuration
+      frame.configuration
+    end
+
+    def piece_id
+      configuration[:piece_id]
+    end
+
+    def bindings
+      configuration[:bindings]
+    end
+
     def logging
       #benzrf TODO: possible race condition here?
+      # also, this is kiiinda relying on global state
       if Celluloid::Actor[:logging]
         Celluloid::Actor[:logging].async
       else
@@ -20,11 +35,11 @@ module ECell
     end
 
     def new_data
-      ECell::Elements::Color::Instantiator[configuration[:piece_id]]
+      ECell::Elements::Color::Instantiator[piece_id]
     end
 
     def new_return
-      ECell::Elements::Color::ReturnInstantiator[configuration[:piece_id]]
+      ECell::Elements::Color::ReturnInstantiator[piece_id]
     end
 
     def exception!(ex)
@@ -42,10 +57,6 @@ module ECell
         # that it also requires the file to which the delegator delegates
 
         #benzrf TODO: remove unnecessary delegators
-
-        object.def_delegators :"ECell::Run",
-          :configuration,
-          :bindings
 
         object.def_delegators :"logging",
           :caught,

@@ -6,11 +6,11 @@ require 'forwardable'
 require 'ecell/internals/actor'
 require 'ecell/base/sketches/webstack/extensions'
 
-require 'ecell/base/sketches/webstack'
+require 'ecell/base/sketches/webstack/shape'
 
-class ECell::Base::Sketches::Webstack::WebSocket < ECell::Internals::Actor
+class ECell::Base::Sketches::WebstackShape::WebSocket < ECell::Internals::Actor
   extend Forwardable
-  include ECell::Base::Sketches::Webstack::Extensions
+  include ECell::Base::Sketches::WebstackShape::Extensions
 
   BUFFER_SIZE = 16384
   attr_accessor :online

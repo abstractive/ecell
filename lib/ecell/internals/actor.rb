@@ -1,7 +1,6 @@
 require 'celluloid/current'
 require 'ecell/extensions'
 require 'ecell/internals/logger'
-require 'ecell/run'
 require 'ecell/autoload'
 require 'ecell'
 
@@ -39,7 +38,6 @@ module ECell
       end
 
       def initialize_line(line_id, options)
-        return unless ECell::Run.online?
         unless options[:stroke]
           stroke_parts = line_id.to_s.split("_").map{|w| w.capitalize}
           stroke_shape, stroke_pattern = stroke_parts.first, stroke_parts.last
@@ -50,7 +48,7 @@ module ECell
         puts "Initializing socket: #{line_id} :: #{stroke}" if DEBUG_DEEP
         ECell.supervise({
           as: line_id,
-          args: [options],
+          args: [frame, options],
           type: stroke
         })
         ECell.sync(line_id)

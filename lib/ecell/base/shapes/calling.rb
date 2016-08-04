@@ -1,5 +1,4 @@
 require 'ecell/elements/figure'
-require 'ecell/run'
 require 'ecell/elements/color'
 require 'ecell/extensions'
 require 'ecell/errors'
@@ -13,15 +12,19 @@ module ECell
               :calling_router,
               :calling_router2
 
-        def initialize(options)
-          return unless ECell::Run.online?
-          super(options)
+        def initialize(frame, faces, strokes)
+          super
           @answers = {}
           debug(message: "Initialized", reporter: self.class) if DEBUG_DEEP
         end
 
         module Answer
           include ECell::Extensions
+
+          def on_setting_up
+            attach_switch_incoming!
+            emitter calling_reply, :on_call
+          end
 
           def calling_root(piece_id)
             "tcp://#{bindings[piece_id][:interface]}:#{bindings[piece_id][:calling_router]}"
@@ -38,13 +41,15 @@ module ECell
           end
 
           def on_call(rpc)
-            subj = ECell::Run.subject
-            owner = subj.class.method_defined?(rpc.call) &&
-              subj.class.instance_method(rpc.call).owner
-            answer = if owner == subj.class::RPC
+            handler = configuration[:call_handler]
+            handler &&= ECell.sync(handler)
+            return new_return.error(rpc, :no_handler) unless handler
+            owner = handler.class.method_defined?(rpc.call) &&
+              handler.class.instance_method(rpc.call).owner
+            answer = if owner == handler.class::RPC
               begin
                 dump!("rpc // #{rpc.executable}")
-                subj.send(*rpc.executable)
+                handler.send(*rpc.executable)
               rescue ArgumentError => ex
                 exception(ex, "Trouble with call: incorrect arguments: #{ex.message}")
                 new_return.failure(rpc, :incorrect_arity, exception: ex)
@@ -73,6 +78,11 @@ module ECell
 
         module Switch
           include ECell::Extensions
+
+          def on_started2
+            emitter calling_router2, :from_caller
+            emitter calling_router, :from_answerer
+          end
 
           def from_caller(rpc)
             console({
@@ -116,6 +126,14 @@ module ECell
 
         module Call
           include ECell::Extensions
+
+          def on_setting_up
+            emitter calling_request, :on_answer
+          end
+
+          def on_started
+            attach_switch_outgoing!
+          end
 
           def answering_root(piece_id)
             "tcp://#{bindings[piece_id][:interface]}:#{bindings[piece_id][:calling_router2]}"
@@ -178,7 +196,7 @@ module ECell
             callback = rpc.delete(:callback)
 
             begin
-              raise ECell::Error::PieceNotReady unless ECell::Run.subject.state?(:ready)
+              raise ECell::Error::PieceNotReady unless ECell.sync(:management).follower_state?(:running)
               raise ECell::Error::Call::MissingSwitch unless calling_request?
               answer = calling_request << rpc
               if rpc.async

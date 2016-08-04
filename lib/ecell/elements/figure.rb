@@ -1,7 +1,6 @@
 require 'ecell/internals/actor'
 require 'ecell/extensions'
 require 'ecell/internals/conduit'
-require 'ecell/run'
 require 'ecell/errors'
 require 'ecell'
 require 'ecell/constants'
@@ -33,9 +32,16 @@ module ECell
       include ECell::Extensions
       include ECell::Internals::Conduit
 
-      def initialize(options)
-        @options = options
+      def initialize(frame, faces, strokes)
+        @frame = frame
         @sockets = {}
+        faces.each do |face|
+          face = self.class.const_get(face.to_s.capitalize.to_sym)
+          extend face
+        end
+        strokes.map do |line_id, options|
+          future.initialize_line(line_id, options)
+        end.map(&:value)
       end
 
       def shutdown
@@ -44,15 +50,19 @@ module ECell
         }.map(&:value)
       end
 
+      def emitter(line, receiver=current_actor, method)
+        line.async.emitter(receiver, method)
+      end
+
       def relayer(from, to)
-        debug(message: "Setting a relay from #{from}, to #{to}") if DEBUG_INJECTIONS
-        if @sockets[to].ready?
-          @sockets[from].reader { |data|
-            @sockets[to] << data
+        debug(message: "Setting a relay from #{from}, to #{to}") if DEBUG_DEEP
+        if to.ready?
+          from.reader { |data|
+            to << data
           }
         end
       rescue => ex
-        caught(ex, "Trouble with relayer.") if ECell::Run.online?
+        caught(ex, "Trouble with relayer.")
         return
       end
 
@@ -64,6 +74,25 @@ module ECell
 
       def leader
         configuration[:leader]
+      end
+
+      def handle_event(event, data)
+        handler_id = :"on_#{event}"
+        handlers = singleton_class.ancestors.map do |anc|
+          anc.instance_method(handler_id) if anc.method_defined?(handler_id)
+        end.compact.uniq(&:owner)
+        handlers.each do |handler|
+          handler = handler.bind(self)
+          arity = handler.arity
+          case arity
+          when 0
+            handler.call
+          when 1
+            handler.call(data)
+          else
+            error("A[n] #{event} event handler has bad arity (#{arity} vs. 1 or 0) and was bypassed.")
+          end
+        end
       end
 
       #benzrf TODO: probably improve on this

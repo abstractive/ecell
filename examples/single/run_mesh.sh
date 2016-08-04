@@ -20,6 +20,6 @@ echo "$startup_notice"
 
 ruby -e sleep
 
-jobs="$(jobs -p)"
-if [[ -n "$jobs" ]]; then kill -INT $(jobs -p) && wait; fi
+if [[ -n "$(jobs -p)" ]]; then kill -INT $(jobs -p) && sleep 5; fi
+if [[ -n "$(jobs -p)" ]]; then kill -KILL $(jobs -p) && wait; fi
 

@@ -1,6 +1,5 @@
 require 'colorize'
 require 'ecell/constants'
-require 'ecell/run'
 require 'ecell/errors'
 
 module ECell
@@ -46,7 +45,7 @@ module ECell
           @dump ||= options.fetch(:dump, nil)
           @timer = options.fetch(:timer, nil)
           @declare = options.fetch(:declare, DEFAULTS[:log_declare])
-          @piece_id = options.fetch(:piece_id, ECell::Run.piece_id)
+          @piece_id = options.fetch(:piece_id)
           #de @storage = options.fetch(:storage, ECell.sync(:storage))
           #de TODO: Store IP address?
 
@@ -67,8 +66,8 @@ module ECell
           raise ECell::Error::Logging::MalformedEntry, errors.join(' ') if errors.any?
         end
 
-        def local?
-          @local === true && me?
+        def local?(piece_id)
+          @local === true && @piece_id == piece_id
         end
 
         def quiet?
@@ -81,10 +80,6 @@ module ECell
 
         def declare?
           @declare === true
-        end
-
-        def me?
-          @piece_id == ECell::Run.piece_id
         end
 
         def method_missing(var, *args)
@@ -106,7 +101,7 @@ module ECell
 
           #{reporter}#{string || @message}#{callsite}
           scope = (@scope) ? "#{@scope}" : nil
-          scope = " ".yellow + "#{@piece_id.to_s.bold}#{scope ? ":" : ""}#{scope.to_s.light_blue}" #de if !local? && !me?
+          scope = " ".yellow + "#{@piece_id.to_s.bold}#{scope ? ":" : ""}#{scope.to_s.light_blue}"
           timestamp = (@timestamp.is_a? Float) ? Time.at(@timestamp) : @timestamp
           Logger.mark!(output.join(' '), timestamp: timestamp, level: @level.to_s.upcase[0], scope: scope)
         rescue => ex
@@ -186,6 +181,29 @@ module ECell
 
       alias_method :console, :info
 
+      def writer
+        @frame && @frame.alive? ? @frame : self
+      end
+
+      def output
+        io = STDOUT
+        if block_given?
+          yield(io)
+          return io.flush
+        end
+        io
+      end
+
+      def dump
+        io = STDERR
+        if block_given?
+          yield io
+          return io.flush
+        end
+        io
+      end
+
+
       def dump!(*args)
         output = args.shift
         str = if output.respond_to?(:message)
@@ -203,7 +221,7 @@ module ECell
           dump << LOG_LINE if args.any?
           dump += Array(args)
         end
-        ECell::Run.dump { |io|
+        writer.dump { |io|
           str.each { |d| io.puts(mark!(d)) }
         }
       end
@@ -235,11 +253,11 @@ module ECell
 
       #de Prescrive asynchronous behaviors when pushing indicators.
       def print!(characters)
-        ECell::Run.output { |io| io.print(characters) }
+        writer.output { |io| io.print(characters) }
       end
 
       def puts!(characters)
-        ECell::Run.output { |io| io.puts(characters) }
+        writer.output { |io| io.puts(characters) }
       end
 
       private
@@ -254,6 +272,7 @@ module ECell
 
       def log_entry(options)
         return options if options.is_a? Entry
+        options[:piece_id] ||= @frame ? self.piece_id : :unknown
         Entry.new(options)
       rescue => ex
         raise exception(ex, "Problem instantiating Logger::Entry", options)
@@ -262,15 +281,15 @@ module ECell
       def display(entry)
         return entry if entry.level == :debug && DEBUG === false
         log = entry.formatted
-        ECell::Run.dump { |io| io.puts(log) } if [:warn, :error, :dump].include?(entry.level)
+        writer.dump { |io| io.puts(log) } if [:warn, :error, :dump].include?(entry.level)
         return entry if entry.dump?
-        ECell::Run.output { |io|
+        writer.output { |io|
           io.puts entry.formatted(LOG_LINE) if entry.banner
           io.puts(log)
           io.puts entry.formatted(LOG_LINE) if entry.banner
         }
         if entry.store
-          io = (([ :warn, :error ].include?(entry.level)) ? ECell::Run.dump : ECell::Run.output)
+          io = (([ :warn, :error ].include?(entry.level)) ? writer.dump : writer.output)
           unless entry.quiet?
             data = (entry.store.respond_to? :export) ? entry.store.export : entry.store
             io.puts (entry.store.is_a?(String) ? ">> #{entry.store}" : JSON.pretty_generate(data))

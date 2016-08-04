@@ -1,6 +1,5 @@
 require 'sinatra'
 require 'ecell/internals/actor'
-require 'ecell/run'
 require 'ecell/base/sketches/webstack/web_server'
 require 'ecell/base/sketches/webstack/routes'
 require 'ecell/base/sketches/webstack/puma'
@@ -8,9 +7,9 @@ require 'ecell/base/sketches/webstack/puma'
 #de Custom refactor/cleaning of Rack::Handler::Puma
 #de Wrapped as an actor, so as not to block the Piece.
 
-require 'ecell/base/sketches/webstack'
+require 'ecell/base/sketches/webstack/shape'
 
-class ECell::Base::Sketches::Webstack::Handler < ECell::Internals::Actor
+class ECell::Base::Sketches::WebstackShape::Handler < ECell::Internals::Actor
   finalizer :stop!
 
   WEBSTACK = {
@@ -22,13 +21,11 @@ class ECell::Base::Sketches::Webstack::Handler < ECell::Internals::Actor
   }
 
   def initialize(options={})
-    return unless ECell::Run.online?
     options = WEBSTACK.merge(options)
-    options[:port] ||= bindings[ECell::Run.piece_id][:http_server]
     @rack ||= Rack::Builder.new do
-      use ECell::Base::Sketches::Webstack::WebServer
+      use ECell::Base::Sketches::WebstackShape::WebServer
       map( '/') {
-        run ECell::Base::Sketches::Webstack::Routes
+        run ECell::Base::Sketches::WebstackShape::Routes
       }
     end
     @puma ||= ::Puma::Server.new(@rack)

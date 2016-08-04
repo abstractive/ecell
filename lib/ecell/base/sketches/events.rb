@@ -1,4 +1,4 @@
-require 'ecell/elements/subject'
+require 'ecell/elements/figure'
 require 'ecell/base/designs/follower'
 require 'ecell/base/designs/worker'
 require 'ecell'
@@ -6,20 +6,10 @@ require 'ecell'
 module ECell
   module Base
     module Sketches
-      class Events < ECell::Elements::Subject
-        def initialize(configuration={})
-          design! ECell::Base::Designs::Follower,
-                  ECell::Base::Designs::Worker
-          super(configuration)
-        rescue => ex
-          raise exception(ex, "Failure initializing.")
-        end
-
-        def at_provisioning
-          super {
-            endpoint = ECell.sync(:distribution).distribution_input!(:events)
-            line!(:distribution_pull, mode: :connecting, endpoint: endpoint)
-          }
+      class EventsShape < ECell::Elements::Figure
+        def on_started
+          endpoint = ECell.sync(:distribution).distribution_input!(:events)
+          initialize_line(:distribution_pull, mode: :connecting, endpoint: endpoint)
         end
 
         module Operations
@@ -39,6 +29,22 @@ module ECell
         end
         include Operations
       end
+
+      events_design = [
+        {
+          as: :events_shape,
+          type: EventsShape
+        }
+      ]
+
+      Events = {
+        designs: [
+          ECell::Base::Designs::Follower,
+          ECell::Base::Designs::Worker,
+          events_design
+        ],
+        task_handler: :events_shape
+      }
     end
   end
 end

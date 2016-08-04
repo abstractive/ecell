@@ -5,9 +5,9 @@ require 'ecell/base/sketches/webstack/extensions'
 
 require 'ecell/base/sketches/webstack/web_socket'
 
-class ECell::Base::Sketches::Webstack::WebSocket
+class ECell::Base::Sketches::WebstackShape::WebSocket
   include ECell::Extensions
-  include ECell::Base::Sketches::Webstack::Extensions
+  include ECell::Base::Sketches::WebstackShape::Extensions
 
   def emitters!
     @timers = []

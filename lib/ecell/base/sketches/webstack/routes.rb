@@ -1,24 +1,23 @@
 require 'sinatra'
 require 'time'
-require 'ecell/run'
 require 'ecell'
 require 'ecell/base/shapes/calling'
 require 'ecell/elements/color'
 
-require 'ecell/base/sketches/webstack'
+require 'ecell/base/sketches/webstack/shape'
 
-class ECell::Base::Sketches::Webstack::Routes < Sinatra::Base
+class ECell::Base::Sketches::WebstackShape::Routes < Sinatra::Base
   set :server, :puma
   set :static, true
-  set :public_folder, ECell::Base::Sketches::Webstack::PUBLIC_ROOT
+  set :public_folder, ECell::Base::Sketches::WebstackShape::PUBLIC_ROOT
 
   get('/') {
-    break redirect('/loading') unless ECell::Run.subject.state?(:running)
+    break redirect('/loading') unless ECell.sync(:management).follower_state?(:running)
     redirect("/index.html")
   }
 
   get('/rpc') {
-    break redirect('/loading') unless ECell::Run.subject.state?(:running)
+    break redirect('/loading') unless ECell.sync(:management).follower_state?(:running)
     redirect("/rpc.html")
   }
 
@@ -30,7 +29,7 @@ class ECell::Base::Sketches::Webstack::Routes < Sinatra::Base
     response = nil
     begin
       ECell.sync(:ClientRegistry).clients_announce!("Making RPC to :process piece. Waiting for reply...")
-      ECell.call_sync(:process).web_trigger(rpc: {message: "RPC #{Time.now.iso8601}"}) { |rpc|
+      ECell.sync(:calling).call_sync(:process).web_trigger(rpc: {message: "RPC #{Time.now.iso8601}"}) { |rpc|
         if rpc.success?
           ECell.sync(:ClientRegistry).clients_announce!("#{rpc.id}[#{rpc.answer}] #{rpc.message}.")
           ECell.async(:logging).debug("Ran web_trigger.", store: rpc, quiet: true)
@@ -47,7 +46,7 @@ class ECell::Base::Sketches::Webstack::Routes < Sinatra::Base
         response = rpc
       }
     rescue => ex
-      response = ECell::Elements::Color::Instantiator[ECell::Run.piece_id].error(:exception, exception: ex)
+      response = ECell::Elements::Color::Instantiator[:self].error(:exception, exception: ex)
     end
     unless response.success?
       if response[:exception]
@@ -64,7 +63,7 @@ class ECell::Base::Sketches::Webstack::Routes < Sinatra::Base
     response = nil
     begin
       ECell.sync(:ClientRegistry).clients_announce!("Requested list of #{params[:type]}. Waiting for reply...")
-      ECell.call_sync(:process).get_list(params[:type], :indiscriminate_demonstration) { |rpc|
+      ECell.sync(:calling).call_sync(:process).get_list(params[:type], :indiscriminate_demonstration) { |rpc|
         if rpc.success?
           ECell.sync(:ClientRegistry).clients_announce!("List of mock #{params[:type]}:")
           rpc.returns[:"#{params[:type]}"].each { |item|
@@ -85,7 +84,7 @@ class ECell::Base::Sketches::Webstack::Routes < Sinatra::Base
         response = rpc
       }
     rescue => ex
-      response = ECell::Elements::Color::Instantiator[ECell::Run.piece_id].error(:exception, exception: ex)
+      response = ECell::Elements::Color::Instantiator[:self].error(:exception, exception: ex)
     end
     unless response.success?
       if response[:exception]

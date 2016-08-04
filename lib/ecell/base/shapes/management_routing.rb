@@ -1,17 +1,17 @@
+require 'ecell/elements/figure'
 require 'ecell/extensions'
 require 'ecell'
-require 'ecell/internals'
-require 'ecell/run'
 
 require 'ecell/base/shapes/management'
 
-module ECell
-  class Base::Shapes::Management::Router
+class ECell::Base::Shapes::Management < ECell::Elements::Figure
+  class Router
     include ECell::Extensions
 
-    def initialize(options)
-      #benzrf debug("Generating router for #{piece_id}.") if DEBUG_DEEP
+    def initialize(frame, options)
+      @frame = frame
       @options = options
+      debug("Generating router for #{options[:to]}.") if DEBUG_DEEP
     end
 
     def method_missing(method, *args, &block)
@@ -20,24 +20,19 @@ module ECell
     end
   end
 
-  class << self
-    def instruct_async(piece)
-      piece_id = piece.respond_to?(:id) ? piece.id : piece
-      return ECell::Internals::Blocker.new unless ECell::Run.online?
-      (@ia_routers ||= {})[piece_id] ||= ECell::Base::Shapes::Management::Router.new(to: piece_id, async: true)
-    end
+  def instruct_async(to)
+    to_id = to.respond_to?(:id) ? to.id : to
+    (@ia_routers ||= {})[to_id] ||= Router.new(frame, to: to_id, async: true)
+  end
 
-    def instruct_broadcast
-      return ECell::Internals::Blocker.new unless ECell::Run.online?
-      #benzrf debug("Routing broadcast to #{method} w/ args: #{args}") #de if DEBUG_DEEP
-      @ib_router ||= ECell::Base::Shapes::Management::Router.new(broadcast: true, async: true)
-    end
+  def instruct_broadcast
+    #benzrf debug("Routing broadcast to #{method} w/ args: #{args}") #de if DEBUG_DEEP
+    @ib_router ||= Router.new(frame, broadcast: true, async: true)
+  end
 
-    def instruct_sync(piece)
-      piece_id = piece.respond_to?(:id) ? piece.id : piece
-      return ECell::Internals::Blocker.new unless ECell::Run.online?
-      (@is_routers ||= {})[piece_id] ||= ECell::Base::Shapes::Management::Router.new(to: piece_id)
-    end
+  def instruct_sync(to)
+    to_id = to.respond_to?(:id) ? to.id : to
+    (@is_routers ||= {})[to_id] ||= Router.new(frame, to: to_id)
   end
 end
 

@@ -2,21 +2,21 @@ module ECell
   module Constants
     DEBUG             = true
     DEBUG_DEEP        = false
-    DEBUG_AUTOMATA    = false
+    DEBUG_AUTOMATA    = true
     DEBUG_RESOURCES   = false #de Broken gem!
     DEBUG_SHUTDOWN    = false
     DEBUG_PIECES      = true
     DEBUG_RELOADING   = false
     DEBUG_HTTP        = false
     DEBUG_SOCKET      = false
-    DEBUG_INJECTIONS  = false
-    DEBUG_EVENTS      = true
+    DEBUG_EVENTS      = false
     DEBUG_RPCS        = false
     DEBUG_BACKTRACING = true
 
     CODE_RELOADING    = false
     CODE_PRYING       = true
 
+    #benzrf TODO: GET RID OF THIS HARDCODING
     RETURNS = {
       call: [:calling, :answer],
       instruction: [:management, :reply],
@@ -36,14 +36,6 @@ module ECell
     ]
 
     DEFAULT_LOG_DIR = File.expand_path("../../../logs", __FILE__)
-
-    INJECTION_LAYERS = [
-      :emitters,
-      :relayers,
-      :events,
-      :executive_sync,
-      :executive_async
-    ]
 
     LINGER = 0
 
@@ -82,21 +74,6 @@ module ECell
     VITALITY = {
       max_threads: 90
     }
-
-    PIECE_STATES = [
-      :initializing,
-      :provisioning,
-      :starting,
-      :attaching,
-      :ready,
-      :active,
-      :running,
-      :stalled,
-      :waiting,
-      :shutdown,
-      :offline,
-      :restarting
-    ]
 
     #de Bindings & Interfaces could be loaded from a yml configuration file.
 

@@ -1,5 +1,4 @@
 require 'ecell/internals/base_automaton'
-require 'ecell/run'
 
 module ECell
   module Elements
@@ -43,7 +42,7 @@ module ECell
         state(:disrupted, to:[:offline, :shutdown, :provisioned]) {
           debug(message: "Disrupted.. try again.")
           sleep INTERVALS[:reprovision_line]
-          actor.provision! if ECell::Run.online?
+          actor.provision!
         }
 
         state(:shutdown, to: [:offline]) {

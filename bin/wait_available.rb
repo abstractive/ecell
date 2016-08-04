@@ -1,8 +1,7 @@
 #!/usr/bin/env ruby
 
-$LOAD_PATH.push(File.expand_path("../../lib", __FILE__))
 require 'ecell/internals/timer'
-require 'ecell/run'
+require 'ecell/runner'
 
 @success = false
 deconstructor = ->{
@@ -27,7 +26,7 @@ DEMO_MESH_BINDINGS.each { |piece_id,options|
     next if line == :interface
     waited = ECell::Internals::Timer.begin
     begin
-      unless ECell::Run.port_available?(options[:interface], port)
+      unless ECell::Runner.port_available?(options[:interface], port)
         unless waiting
           puts "Checking if ports are available for all pieces..."
           waiting = true
@@ -35,7 +34,7 @@ DEMO_MESH_BINDINGS.each { |piece_id,options|
         print ">> "
         print "#{line}@#{piece_id} needs:".ljust(40)
         print "#{options[:interface]}:#{port} ".ljust(20)
-        ECell::Run.wait_for_port(options[:interface], port)
+        ECell::Runner.wait_for_port(options[:interface], port)
         print "Available: took #{"%0.4f" % (waited.stop)} seconds to free up."
         print "\n"
       end

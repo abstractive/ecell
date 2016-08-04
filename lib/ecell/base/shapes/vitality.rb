@@ -1,6 +1,5 @@
 require 'ecell/elements/figure'
 require 'ecell/errors'
-require 'ecell/run'
 require 'ecell/base/shapes/management'
 require 'ecell/internals/timer'
 require 'timeout'
@@ -9,8 +8,8 @@ module ECell
   module Base
     module Shapes
       class Vitality < ECell::Elements::Figure
-        def initialize(options)
-          super(options)
+        def initialize(frame, faces, strokes)
+          super
           debug(message: "Initialized", reporter: self.class) if DEBUG_DEEP
           @pieces = {}
           @waiting = []
@@ -54,7 +53,7 @@ module ECell
           else
             return if @waiting.include?(data.id)
             @waiting << data.id
-            ECell.instruct_sync(data).attach! { |rpc|
+            ECell.sync(:management).instruct_sync(data).attach! { |rpc|
               unless rpc && rpc.reply?(:ok)
                 debug("Failure attaching: #{rpc}", reporter: self.class)
                 oversaw!(id)
@@ -62,8 +61,8 @@ module ECell
                 @waiting.delete(id)
                 oversee! rpc.id
                 symbol!(:got_follower)
-                ECell.instruct_broadcast.welcome!(rpc.id)
-                ECell::Run.subject.event!(:attached_to_follower, rpc)
+                ECell.sync(:management).instruct_broadcast.welcome!(rpc.id)
+                frame.figure_event(:attached_to_follower, rpc)
               end
             }
           end
@@ -88,7 +87,7 @@ module ECell
         end
 
         def ping?(id)
-          ECell.instruct_sync(id).ping! { |rpc|
+          ECell.sync(:management).instruct_sync(id).ping! { |rpc|
             if rpc.reply?(:pong)
               symbol!(:got_pong)
               true
@@ -102,7 +101,7 @@ module ECell
         end
 
         def audit_threads!(id)
-          ECell.instruct_sync(id).system_check!
+          ECell.sync(:management).instruct_sync(id).system_check!
         rescue => ex
           caught(ex, "Failure in system check #{id}.")
           respawn(id)
@@ -180,7 +179,7 @@ module ECell
 
         def restart!(id, reason)
           log_warn("Issuing restart instruction on :#{id}, for reason: #{reason}", scope: :vitality)
-          ECell.instruct_sync(id).restart_piece! { |rpc|
+          ECell.sync(:management).instruct_sync(id).restart_piece! { |rpc|
             if rpc.reply?(:ok)
               console("[#{id}] Accepted restart instruction.", scope: :vitality)
             else
@@ -190,7 +189,6 @@ module ECell
         end
 
         def respawn(id, reason=nil)
-          return unless ECell::Run.online?
           @pieces[id][:ping].cancel rescue nil
           reason = ": #{reason}" if reason
           debug(message: "May need to respawn :#{id}#{reason}.", scope: :vitality)

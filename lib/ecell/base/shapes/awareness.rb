@@ -1,7 +1,6 @@
 require 'colorize'
 require 'ecell/elements/figure'
 require 'ecell/extensions'
-require 'ecell/run'
 require 'ecell'
 
 module ECell
@@ -18,6 +17,10 @@ module ECell
         module Notice
           include ECell::Extensions
 
+          def on_started2
+            emitter awareness_subscribe, :on_announcement
+          end
+
           def on_announcement(data)
             missing = []
             missing << "piece id" unless data.id?
@@ -29,7 +32,7 @@ module ECell
             when :heartbeat
               ECell.async(:vitality).heartbeat!(data.id) if ECell.sync(:vitality).follower?(data.id)
             else
-              debug("on_announcement[#{data.announcement}]: #{data}", reporter: self.class) if DEBUG_INJECTIONS
+              debug("on_announcement[#{data.announcement}]: #{data}", reporter: self.class) if DEBUG_EVENTS
             end
           rescue => ex
             caught(ex, "Failure in on_announcement")
@@ -38,6 +41,15 @@ module ECell
 
         module Announce
           include ECell::Extensions
+
+          def on_started
+            connect_awareness!
+          end
+
+          def on_started2
+            async.announce_presence!
+            async.announce_heartbeat!
+          end
 
           def connect_awareness!
             awareness_publish.connect = awareness_root(leader)
