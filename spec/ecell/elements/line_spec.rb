@@ -1,33 +1,33 @@
 require 'ecell/elements/line'
+require 'ecell/internals/frame'
 require 'ecell/base/strokes'
 
 class TestLine < ECell::Elements::Line
-  def initialize(line_id, socket, options={})
+  def initialize(line_id, socket, frame, options={})
     @socket = socket
-    super(line_id, options)
+    super(line_id, frame, options)
   end
 end
 
 RSpec.describe ECell::Elements::Line do
   let(:instantiator) {ECell::Elements::Color::Instantiator[:test_piece]}
   let(:data) {[instantiator.msg(1), instantiator.msg(:two), instantiator.msg(3.0)]}
+  let(:frame) {ECell::Internals::Frame.new({
+    piece_id: :test_piece,
+    bindings: {
+      test_piece: {
+        interface: ECell::Constants::DEFAULT_INTERFACE,
+        demo_binder: 7000
+      }
+    }
+  }, nil)}
 
   it "can set up a binding socket and read messages" do
-    # restoring `configuration` to normal causes an error on Rubinius (as of 3.49)
-    # run the tests on JRuby to avoid this
-    allow(ECell::Run).to receive(:configuration) {{
-      bindings: {
-        test_piece: {
-          interface: ECell::Constants::DEFAULT_INTERFACE,
-          demo_binder: 7000
-        }
-      }
-    }}
     socket = double(Celluloid::ZMQ::Socket::Rep)
 
     expect(socket).to receive(:linger=).with(kind_of(Numeric))
     expect(socket).to receive(:identity=).with(:test_piece)
-    line = TestLine.new(:demo_binder, socket, mode: :binding, piece_id: :test_piece)
+    line = TestLine.new(:demo_binder, socket, frame, mode: :binding, piece_id: :test_piece)
     expect(line.state).to be :initialized
 
     recvd = []
@@ -49,7 +49,7 @@ RSpec.describe ECell::Elements::Line do
     socket = double(Celluloid::ZMQ::Socket::Req)
 
     expect(socket).to receive(:identity=).with(:test_piece)
-    line = TestLine.new(:demo_connector, socket, mode: :connecting, piece_id: :test_piece)
+    line = TestLine.new(:demo_connector, socket, frame, mode: :connecting, piece_id: :test_piece)
     expect(line.state).to be :initialized
 
     addr = "tcp://#{ECell::Constants::DEFAULT_INTERFACE}:7000"
@@ -75,9 +75,9 @@ RSpec.describe ECell::Elements::Line do
 
   it "successfully operates a pair of communicating endpoints" do
     endpoint = "inproc://test"
-    opts = {piece_id: :test_piece, endpoint: endpoint}
-    push = ECell::Base::Strokes::Logging::Push.new(opts.merge(mode: :binding, provision: true))
-    pull = ECell::Base::Strokes::Logging::Pull.new(opts.merge(mode: :connecting))
+    opts = {endpoint: endpoint}
+    push = ECell::Base::Strokes::Logging::Push.new(frame, opts.merge(mode: :binding, provision: true))
+    pull = ECell::Base::Strokes::Logging::Pull.new(frame, opts.merge(mode: :connecting))
 
     handler = double("Handler")
     data.each do |datum|
