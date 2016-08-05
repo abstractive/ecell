@@ -7,6 +7,7 @@ require 'ecell/constants'
 
 module ECell
   module Elements
+    #benzrf TODO: this stuff is a little bit out of date since the overhaul.
     # A Figure is an actor which serves to provide the Piece to which it
     # belongs with some kind of faculty, such as making RPCs. This is the
     # base class that every Figure is an instance of.

@@ -56,8 +56,6 @@ module ECell
         #benzrf TODO: when a file uses one of these delegators, make sure
         # that it also requires the file to which the delegator delegates
 
-        #benzrf TODO: remove unnecessary delegators
-
         object.def_delegators :"logging",
           :caught,
           :console,
