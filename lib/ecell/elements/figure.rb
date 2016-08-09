@@ -28,7 +28,9 @@ module ECell
     # The current naming convention is that Shape names should be nouns
     # describing the multi-Piece functionality they provide, and Face names
     # should be verbs describing the actions that they allow a Figure to
-    # perform.
+    # perform. This applies primarily to Shapes intended for use in multiple
+    # Pieces; Shapes that implement Piece-specific logic have no particular
+    # convention.
     class Figure < ECell::Internals::Actor
       include ECell::Extensions
       include ECell::Internals::Conduit
