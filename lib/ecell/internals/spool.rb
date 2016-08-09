@@ -4,6 +4,9 @@ require 'celluloid/current'
 #benzrf TODO: get logging working again
 module ECell
   module Internals
+    # An instance of {Spool} is used to keep track of async calls to
+    # not-yet-started actors, and to pass the calls forward once those actors
+    # start.
     class Spool
       include Celluloid
       def initialize

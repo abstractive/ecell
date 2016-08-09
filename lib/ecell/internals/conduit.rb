@@ -8,6 +8,8 @@ Celluloid::ZMQ.init(9)
 
 module ECell
   module Internals
+    # {Conduit} is included in a couple of places. It mainly just provides
+    # some convenience methods, but it also maintains a list of known Line IDs.
     module Conduit
       class << self
         include ECell::Extensions
