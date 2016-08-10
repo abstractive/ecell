@@ -1,5 +1,5 @@
 require 'ecell/elements/line'
-require 'ecell/internals/frame'
+require 'ecell/frame'
 require 'ecell/base/strokes'
 
 class TestLine < ECell::Elements::Line
@@ -12,7 +12,7 @@ end
 RSpec.describe ECell::Elements::Line do
   let(:instantiator) {ECell::Elements::Color::Instantiator[:test_piece]}
   let(:data) {[instantiator.msg(1), instantiator.msg(:two), instantiator.msg(3.0)]}
-  let(:frame) {ECell::Internals::Frame.new({
+  let(:frame) {ECell::Frame.new({
     piece_id: :test_piece,
     bindings: {
       test_piece: {

@@ -19,7 +19,7 @@ module ECell
     attr_reader :piece_id, :pid, :configuration
 
     def run!(configuration)
-      require 'ecell/internals/frame'
+      require 'ecell/frame'
       @configuration = configuration
       @online = true
       @piece_id = configuration.fetch(:piece_id)
@@ -30,7 +30,7 @@ module ECell
       check_port_availability
 
       ECell.supervise({
-        type: ECell::Internals::Frame,
+        type: ECell::Frame,
         as: piece_id,
         args: [configuration, self]
       })
