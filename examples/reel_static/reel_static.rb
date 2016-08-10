@@ -39,6 +39,7 @@ class ReelStaticPiece < ECell::Elements::Figure
       begin
         File.open(path) do |f|
           raise Errno::EISDIR unless f.lstat.file?
+          #benzrf TODO: not sure if this is the right way to make the response
           request.respond(:ok, f)
         end
       rescue Errno::ENOENT
