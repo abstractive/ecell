@@ -35,6 +35,13 @@ describing the actions that they allow a Figure to perform. This applies
 primarily to Shapes intended for use in multiple Pieces; Shapes that implement
 Piece-specific logic have no particular convention.
 
+## Frames
+
+Each Piece is managed by an instance of `ECell::Frame`. A Piece's Frame handles
+the startup and shutdown processes, stores configuration, and acts as a hub to
+publish events through. Most ECell-specific objects in a Piece will have access
+to its Frame.
+
 ## Lines
 
 Connections between Pieces are referred to in the abstract as **Lines**. The
