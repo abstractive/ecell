@@ -9,7 +9,7 @@ module ECell
     module Sketches
       webstack_design = [
         {
-          as: :webstack_shape,
+          as: :webstack_figure,
           type: WebstackShape
         }
       ]
@@ -21,7 +21,7 @@ module ECell
           ECell::Base::Designs::Caller,
           webstack_design
         ],
-        call_handler: :webstack_shape
+        call_handler: :webstack_figure
       }
     end
   end

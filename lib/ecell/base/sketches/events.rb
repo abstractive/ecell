@@ -32,7 +32,7 @@ module ECell
 
       events_design = [
         {
-          as: :events_shape,
+          as: :events_figure,
           type: EventsShape
         }
       ]
@@ -43,7 +43,7 @@ module ECell
           ECell::Base::Designs::Worker,
           events_design
         ],
-        task_handler: :events_shape
+        task_handler: :events_figure
       }
     end
   end

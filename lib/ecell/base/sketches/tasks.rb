@@ -32,7 +32,7 @@ module ECell
 
       tasks_design = [
         {
-          as: :tasks_shape,
+          as: :tasks_figure,
           type: TasksShape
         }
       ]
@@ -43,7 +43,7 @@ module ECell
           ECell::Base::Designs::Worker,
           tasks_design
         ],
-        task_handler: :tasks_shape
+        task_handler: :tasks_figure
       }
     end
   end

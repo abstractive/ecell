@@ -10,7 +10,7 @@ module ECell
     module Sketches
       process_design = [
         {
-          as: :process_shape,
+          as: :process_figure,
           type: ProcessShape
         }
       ]
@@ -23,7 +23,7 @@ module ECell
           ECell::Base::Designs::Coordinator,
           process_design
         ],
-        call_handler: :process_shape
+        call_handler: :process_figure
       }
     end
   end
