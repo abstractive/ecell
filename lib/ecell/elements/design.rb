@@ -10,9 +10,9 @@ module ECell
     # Each specification should be a Hash with the following keys:
     #
     # * `:as`: (Symbol) What to supervise the Figure as.
-    # * `:type`: (Class) The Shape.
+    # * `:type`: (Class) The Shape of the Figure.
     # * `:faces`: (Array<Symbol>) (optional) A list of Face names to include
-    #   in the Shape (in lowercase).
+    #   in the Figure (in lowercase).
     # * `:strokes`: (Hash<Symbol, Hash>) (optional) Some specifications for
     #   Lines to provide the Figure with. The keys are line IDs (doubling as
     #   stroke IDs to look up in {ECell::Autoload::Strokes}); the value a
