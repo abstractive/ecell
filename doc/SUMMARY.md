@@ -4,4 +4,7 @@
   * [Writing Designs](basic_usage.md#writing-designs)
   * [Writing Shapes](basic_usage.md#writing-designs)
   * [Using `ECell::Extensions`](basic_usage.md#using-ecellextensions)
+* [Extending ECell](extending_ecell.md)
+  * [Strokes](extending_ecell.md#strokes)
+  * [General-Purpose Shapes](extending_ecell.md#general-purpose-shapes)
 

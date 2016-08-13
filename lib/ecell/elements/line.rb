@@ -214,6 +214,10 @@ module ECell
         socket.close && socket = nil rescue nil
         url
       end
+
+      def read_one
+        @socket.read_multipart.last
+      end
     end
   end
 end
