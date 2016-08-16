@@ -9,7 +9,7 @@ module ECell
       Coordinator = [
         {
           as: :distribution,
-          type: ECell::Base::Shapes::Distribution,
+          shape: ECell::Base::Shapes::Distribution,
           strokes: {
             distribution_pull2: {mode: :binding},
           }

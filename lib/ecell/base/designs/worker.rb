@@ -8,7 +8,7 @@ module ECell
       Worker = [
         {
           as: :distribution,
-          type: ECell::Base::Shapes::Distribution,
+          shape: ECell::Base::Shapes::Distribution,
           faces: [:process],
           strokes: {distribution_push: {mode: :connecting}}
         }

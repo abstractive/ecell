@@ -11,7 +11,7 @@ module ECell
       process_design = [
         {
           as: :process_figure,
-          type: ProcessShape
+          shape: ProcessShape
         }
       ]
 

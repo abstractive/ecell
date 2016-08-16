@@ -9,20 +9,20 @@ module ECell
       Admin = [
         {
           as: :logging,
-          type: ECell::Base::Shapes::Logging,
+          shape: ECell::Base::Shapes::Logging,
           faces: [:document],
           strokes: {logging_push: {mode: :connecting}}
         },
         {
           as: :awareness,
           faces: [:announce],
-          type: ECell::Base::Shapes::Awareness,
+          shape: ECell::Base::Shapes::Awareness,
           strokes: {awareness_publish: {mode: :connecting}}
         },
         {
           as: :system,
           faces: [:administrate],
-          type: ECell::Base::Shapes::Management,
+          shape: ECell::Base::Shapes::Management,
           init: {management_reply: {mode: :binding}}
         }
       ]

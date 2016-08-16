@@ -52,8 +52,7 @@ module ECell
       specs.each do |spec|
         @actor_ids.concat((spec[:strokes] || {}).keys)
         cspec = celluloid_specs[spec[:as]]
-        #benzrf TODO: maybe replace the `type` key with a `shape` key?
-        cspec[:type] ||= spec[:type]
+        cspec[:type] ||= spec[:shape]
         cspec[:args][1].concat(spec[:faces] || [])
         cspec[:args][2].merge!(spec[:strokes] || {})
       end

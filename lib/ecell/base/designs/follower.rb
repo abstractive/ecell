@@ -8,13 +8,13 @@ module ECell
       Follower = [
         {
           as: :logging,
-          type: ECell::Base::Shapes::Logging,
+          shape: ECell::Base::Shapes::Logging,
           faces: [:document],
           strokes: {logging_push: {mode: :connecting}}
         },
         {
           as: :management,
-          type: ECell::Base::Shapes::Management,
+          shape: ECell::Base::Shapes::Management,
           faces: [:cooperate],
           strokes: {
             management_dealer: {mode: :connecting},
@@ -23,7 +23,7 @@ module ECell
         },
         {
           as: :awareness,
-          type: ECell::Base::Shapes::Awareness,
+          shape: ECell::Base::Shapes::Awareness,
           faces: [:announce],
           strokes: {awareness_publish: {mode: :connecting}}
         }

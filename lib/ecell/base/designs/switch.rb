@@ -6,7 +6,7 @@ module ECell
       Switch = [
         {
           as: :calling,
-          type: ECell::Base::Shapes::Calling,
+          shape: ECell::Base::Shapes::Calling,
           faces: [:switch],
           strokes: {
             calling_router: {mode: :binding},

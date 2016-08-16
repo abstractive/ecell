@@ -12,17 +12,17 @@ module ECell
       Leader = [
         {
           as: :logging_storage,
-          type: ECell::Base::Shapes::Logging::STORAGE
+          shape: ECell::Base::Shapes::Logging::STORAGE
         },
         {
           as: :logging,
-          type: ECell::Base::Shapes::Logging,
+          shape: ECell::Base::Shapes::Logging,
           faces: [:collate],
           strokes: {logging_pull: {mode: :binding}}
         },
         {
           as: :management,
-          type: ECell::Base::Shapes::Management,
+          shape: ECell::Base::Shapes::Management,
           faces: [:manage],
           strokes: {
             management_router: {mode: :binding},
@@ -31,11 +31,11 @@ module ECell
         },
         {
           as: :vitality,
-          type: ECell::Base::Shapes::Vitality
+          shape: ECell::Base::Shapes::Vitality
         },
         {
           as: :awareness,
-          type: ECell::Base::Shapes::Awareness,
+          shape: ECell::Base::Shapes::Awareness,
           faces: [:notice],
           strokes: {awareness_subscribe: {mode: :binding}}
         }

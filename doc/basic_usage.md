@@ -54,7 +54,7 @@ Each Design takes the form of a list of specifications for Figures. Each
 specification should be a hash with the following keys:
 
 * `:as`: (Symbol) What to supervise the Figure as.
-* `:type`: (Class) The Shape of the Figure.
+* `:shape`: (Class) The Shape of the Figure.
 * `:faces`: (Array<Symbol>) (optional) A list of Face names to include in the
   Figure (in lowercase).
 * `:strokes`: (Hash<Symbol, Hash>) (optional) Some specifications for Lines to
@@ -79,7 +79,7 @@ Here's an example:
 ExampleDesign = [
   {
     as: :foo,
-    type: Hypothetical,
+    shape: Hypothetical,
     faces: [:some, :faces],
     strokes: {
       hypothetical_connector: {mode: :connecting}
@@ -165,7 +165,7 @@ list:
 PesterDesign = [
   {
     as: :pester,
-    type: Pester
+    shape: Pester
   }
 ]
 ```

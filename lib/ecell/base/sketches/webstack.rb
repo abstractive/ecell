@@ -10,7 +10,7 @@ module ECell
       webstack_design = [
         {
           as: :webstack_figure,
-          type: WebstackShape
+          shape: WebstackShape
         }
       ]
 

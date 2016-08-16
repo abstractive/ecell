@@ -33,7 +33,7 @@ module ECell
       tasks_design = [
         {
           as: :tasks_figure,
-          type: TasksShape
+          shape: TasksShape
         }
       ]
 

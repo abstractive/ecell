@@ -10,7 +10,7 @@ module ECell
     # Each specification should be a Hash with the following keys:
     #
     # * `:as`: (Symbol) What to supervise the Figure as.
-    # * `:type`: (Class) The Shape of the Figure.
+    # * `:shape`: (Class) The Shape of the Figure.
     # * `:faces`: (Array<Symbol>) (optional) A list of Face names to include
     #   in the Figure (in lowercase).
     # * `:strokes`: (Hash<Symbol, Hash>) (optional) Some specifications for
@@ -33,7 +33,7 @@ module ECell
       ExampleDesign = [
         {
           as: :foo,
-          type: Hypothetical,
+          shape: Hypothetical,
           faces: [:some, :faces],
           strokes: {
             hypothetical_connector: {mode: :connecting}

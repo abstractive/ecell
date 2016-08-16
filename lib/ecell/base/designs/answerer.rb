@@ -6,7 +6,7 @@ module ECell
       Answerer = [
         {
           as: :calling,
-          type: ECell::Base::Shapes::Calling,
+          shape: ECell::Base::Shapes::Calling,
           faces: [:answer],
           strokes: {calling_reply: {mode: :connecting}}
         }

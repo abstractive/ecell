@@ -33,7 +33,7 @@ module ECell
       events_design = [
         {
           as: :events_figure,
-          type: EventsShape
+          shape: EventsShape
         }
       ]
 

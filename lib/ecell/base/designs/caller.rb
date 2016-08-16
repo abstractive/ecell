@@ -6,7 +6,7 @@ module ECell
       Caller = [
         {
           as: :calling,
-          type: ECell::Base::Shapes::Calling,
+          shape: ECell::Base::Shapes::Calling,
           faces: [:call],
           strokes: {calling_request: {mode: :connecting}}
         }
