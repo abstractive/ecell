@@ -150,7 +150,8 @@ class Pester < ECell::Elements::Figure
     every(5) do
       # `ECell.sync` is an alias to `Celluloid::Actor.[]`.
       # The `call_async` method on the `Calling` Figure is used to make
-      # async RPCs. We're assuming that `:other_piece` has a `poke` RPC.
+      # async RPCs. We're assuming that `:other_piece` supports a `poke`
+      # RPC.
       ECell.sync(:calling).call_async(:other_piece).poke
     end
   end

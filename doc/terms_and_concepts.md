@@ -4,7 +4,7 @@
 
 ECell systems are built out of services called **Pieces**. Generally speaking,
 Pieces will correspond one-to-one with Ruby processes. Pieces communicate with
-each other over ØMQ sockets. To run a Piece, make an instance of
+each other over ZeroMQ sockets. To run a Piece, make an instance of
 `ECell::Runner` and call its `run!` method with a configuration hash.
 
 A fragment of a Piece configuration hash that contains everything except
@@ -46,9 +46,9 @@ to its Frame.
 
 Connections between Pieces are referred to in the abstract as **Lines**. The
 term Line is also used to refer to instances of the class
-`ECell::Elements::Line`, which wrap ØMQ sockets. Subclasses of `Line` are
-referred to as **Strokes**, and generally correspond to specific types of ØMQ
-socket.
+`ECell::Elements::Line`, which wrap ZeroMQ sockets. Subclasses of `Line` are
+referred to as **Strokes**, and generally correspond to specific types of
+ZeroMQ socket.
 
 ## Designs
 
