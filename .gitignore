@@ -1,2 +1,7 @@
 Gemfile.lock
 *.log
+.bundle
+vendor
+.yardoc
+*.swp
+_book
