@@ -1,4 +1,4 @@
-## Source Code currently **being transferred** from private repository!
+## Source Code currently *being transferred* from private repository!
 
 ![ECell](https://github.com/energyone/ecell/raw/master/logo-ETh2-1024w.png)
 ---
@@ -18,17 +18,17 @@ This codebase was originally developed by @[digitalextremist]((https://github.co
 
 ## Work In Progress
 
-The form this framework exists in now is the result of combining the styles and approaches of both @[digitalextremist](https://github.com/digitalextremist) and @[benzrf](https://github.com/benzrf). It is currently in a transitional state -- freshly done with this `GSoC` season. Please feel free to use the [issue tracker](https://github.com/celluloid/ecell/issues) for bug reports, feature requests, *and* for discussion of key concepts while the framework is hardened and polished in the immediate future.
+The form this framework exists in now is the result of combining the styles and approaches of both @[digitalextremist](https://github.com/digitalextremist) and @[benzrf](https://github.com/benzrf). It is currently in a transitional state -- freshly done with this `GSoC` season.
 
-Contributing
--------------------------
+Please feel free to use the [issue tracker](https://github.com/celluloid/ecell/issues) for bug reports, feature requests, *and* for discussion of key concepts while the framework is hardened and polished in the immediate future.
+
+## Contributing
 
 * Fork this repository on github.
 * Make your changes and send a pull request.
 * If we like them we'll merge them.
 * If we've accepted a patch, feel free to ask for commit access.
 
-License
--------
+## License
 
 Copyright (c) Celluloid Framework Corporation, and each past and present contributing author or participating organization as given in [LICENSE.md](https://github.com/celluloid/ecell/blob/master/LICENSE.md). Distributed under the [GPLv3](https://www.gnu.org/licenses/gpl.html) License.
