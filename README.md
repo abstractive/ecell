@@ -18,7 +18,7 @@ This codebase was originally developed by @[digitalextremist]((https://github.co
 
 ## Work In Progress
 
-The form this framework exists in now is the result of combining the styles and approaches of both @[digitalextremist]((https://github.com/digitalextremist) and @[benzrf](https://github.com/benzrf). It is currently in a transitional state -- freshly done with this `GSoC` season. Please feel free to use the [issue tracker](https://github.com/celluloid/ecell/issues) for bug reports, feature requests, *and* for discussion of key concepts while the framework is hardened and polished in the immediate future.
+The form this framework exists in now is the result of combining the styles and approaches of both @[digitalextremist](https://github.com/digitalextremist) and @[benzrf](https://github.com/benzrf). It is currently in a transitional state -- freshly done with this `GSoC` season. Please feel free to use the [issue tracker](https://github.com/celluloid/ecell/issues) for bug reports, feature requests, *and* for discussion of key concepts while the framework is hardened and polished in the immediate future.
 
 Contributing
 -------------------------
