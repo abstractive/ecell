@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |gem|
   gem.name          = "ecell"
-  gem.version       = '0.0.0.1'
+  gem.version       = '0.5.0.0'
   gem.authors       = ["Donovan Keme, //de", "benzrf"]
   gem.email         = ["code@extremist.digital"]
-  gem.description   = "ECell: Distributed strategic actors."
-  gem.summary       = "ECell is a framework built on Celluloid and ØMQ for building concurrent, networked, service-based systems."
+  gem.description   = "Distributed strategic Celluloid actors."
+  gem.summary       = "Framework built on Celluloid and ØMQ for building concurrent, networked, service-based systems."
   gem.homepage      = "https://github.com/celluloid/ecell"
 
   gem.files         = Dir.glob("{bin,lib,public}/**/*") + %w(README.md ZMQ.md CHANGELOG)
@@ -20,10 +20,6 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency 'celluloid-zmq'
 
   gem.add_runtime_dependency 'celluloid-task-pooledfiber'
-
-  # gem.add_runtime_dependency 'esto'
-  # gem.add_runtime_dependency 'refrescar'
-
   gem.add_runtime_dependency 'pry'
   gem.add_runtime_dependency 'colorize'
   gem.add_runtime_dependency 'sinatra'
@@ -33,4 +29,3 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'rspec'
   gem.add_development_dependency 'reel'
 end
-

@@ -13,7 +13,7 @@ Carrying on the tradition of distributed [`Celluloid`](https://github.com/cellul
 
 This codebase was originally designed and developed by @[digitalextremist](https://github.com/digitalextremist) using ideas he had for such a framework, worked with through his company [emotive mediums limited](https://github.com/emotivemediums), which was commissioned by @[rjattrill](https://github.com/rjattrill) on behalf of his employer [Energy One Limited](https://github.com/energyone). The original concepts were first given form as a working demonstration of a new microservices framework, based on the company's existing extensive use of [`Celluloid`](https://github.com/celluloid/celluloid) and [`Reel`](https://github.com/celluloid/reel).
 
-This incarnation as `ECell` is an extraction of the framework from the original work, but now it is even more so the result of @[benzrf](https://github.com/benzrf) taking part in the [2016 Google Summer of Code](https://summerofcode.withgoogle.com/organizations/6688531397214208/) ( `GSoC` ) in which he revamped it and prepared it for F/OSS release and now its further evolution in the public domain.
+This incarnation as `ECell` is an extraction of the framework from the original work, but now it is also the result of @[benzrf](https://github.com/benzrf) taking part in the [2016 Google Summer of Code](https://summerofcode.withgoogle.com/organizations/6688531397214208/) ( `GSoC` ) in which he revamped it and profoundly influenced its design while preparing it for F/OSS release, and now its further evolution in the public domain.
 
 
 ## Work In Progress
