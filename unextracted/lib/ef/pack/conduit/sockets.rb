@@ -1,6 +1,0 @@
-require 'ef/pack/conduit/sockets/presence'
-require 'ef/pack/conduit/sockets/logging'
-require 'ef/pack/conduit/sockets/assertion'
-require 'ef/pack/conduit/sockets/calling'
-require 'ef/pack/conduit/sockets/coordinator'
-require 'ef/pack/conduit/sockets/operative'
