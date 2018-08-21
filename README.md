@@ -1,5 +1,5 @@
-![ECell][logo]
----
+# ECell
+[![Maintained: no](https://img.shields.io/maintenance/no/2016.svg)](https://github.com/celluloid/celluloid/issues/779)
 
 Carrying on the tradition of distributed [`Celluloid`](https://github.com/celluloid/celluloid) actors started by [`DCell`](https://github.com/celluloid/dcell), which implements [`Celluloid::ZMQ`](https://github.com/celluloid/celluloid-zmq); `ECell` introduces a new *strategic* perspective on distributed [`Celluloid`](https://github.com/celluloid/celluloid) actor meshes.
 
@@ -33,5 +33,4 @@ Please feel free to use the [issue tracker](https://github.com/celluloid/ecell/i
 
 Copyright (c) Celluloid Framework Corporation, and each past and present contributing author or participating organization as given in [LICENSE.md](https://github.com/celluloid/ecell/blob/master/LICENSE.md). Distributed under the [GPLv3](https://www.gnu.org/licenses/gpl.html) License.
 
-[logo]: https://github.com/energyone/ecell/raw/master/logo-ETh2-1024w.png
 [book]: https://digitalextremist.gitbooks.io/ecell/content/
